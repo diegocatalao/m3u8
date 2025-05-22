@@ -1,4 +1,16 @@
-PROJECT = libm3u8.dylib
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+    EXT = so
+else ifeq ($(UNAME_S),Darwin)
+    EXT = dylib
+else ifeq ($(OS),Windows_NT)
+    EXT = dll
+else
+    $(error Operating system not supported)
+endif
+
+PROJECT = libm3u8.$(EXT)
 
 CC = gcc
 DEPENDENCIES = libcurl
