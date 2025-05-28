@@ -94,19 +94,6 @@ clean_up:
   return status;
 }
 
-/**
- * @brief Fetches and parses an M3U8 playlist from a remote URI.
- *
- * @param uri remote M3U8 URI (null-terminated string).
- * @param m3u8_ptr pointer to a valid m3u8_t structure to be filled.
- *
- * @return M3U8_STATUS_NO_ERROR           on success.
- *         M3U8_STATUS_INVALID_ARG        if uri or m3u8_ptr is NULL.
- *         M3U8_STATUS_INIT_CURL_ERROR    if curl fails to initialize or request fails.
- *         M3U8_STATUS_CURL_OP_ERROR      on libcurl transfer error.
- *         M3U8_STATUS_MEM_ALLOC_ERROR    on memory allocation failure.
- *         M3U8_STATUS_UNKNOWN_ERROR      on unexpected failure.
- */
 int m3u8_open_from_remote(char* uri, m3u8_t* m3u8_ptr) {
   int status = M3U8_STATUS_NO_ERROR;
 
