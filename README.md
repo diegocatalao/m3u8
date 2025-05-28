@@ -1,5 +1,5 @@
 # M3U8
----
+
 M3U8 is a C library for parsing, generating, and managing M3U8 playlists.
 Designed for performance and strict adherence to both the current M3U8 RFC 
 standards and the Apple HLS specification.
