@@ -27,6 +27,18 @@ $ cd m3u8
 $ make
 ```
 
+## Documentation
+
+You can generate the doxygen documentation following this steps:
+
+1. install the Doxygen from [official website][doxygen_documentation];
+
+2. generate the documentation from source:
+
+```bash
+$ doxygen Doxyfile
+```
+
 ## Releases
 
 Stay up-to-date with the latest improvements and features! We publish new 
@@ -91,6 +103,7 @@ in enhancing this library and ensuring its continued evolving M3U8 standards.
 To maintain a high quality and consistent development flow, please review the 
 guidelines below before initiating any contributions.
 
+[doxygen_documentation]: https://www.doxygen.nl/download.html#google_vignette "Dogygen documentation"
 [changelog]: CHANGELOG.md "M3U8.c Changelog"
 [github_releases]: https://github.com/seuusuario/m3u8.c/releases "M3U8.c GitHub Releases"
 [apple_hls_spec]: https://developer.apple.com/documentation/http_live_streaming/hls_authoring_specification_for_apple_devices "Apple HLS Authoring Specs"
