@@ -7,7 +7,7 @@ else ifeq ($(UNAME_S),Darwin)
 else ifeq ($(OS),Windows_NT)
     EXT = dll
 else
-    $(error Operating system not supported)
+  $(error "Operating system not supported")
 endif
 
 PROJECT = libm3u8.$(EXT)
