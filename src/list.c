@@ -100,13 +100,16 @@ int m3u8_list_count(const m3u8_list_node_t* head, int* size) {
     RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Head cannot to be null");
   }
 
-  int                     count = 0;
+  int count = 0;
+  // set the head next inside node
   const m3u8_list_node_t* node = head->next;
 
   while (node != head) {
     count++;
     node = node->next;
   }
+
+  *size = count;
 
 clean_up:
   return status;
