@@ -37,9 +37,9 @@ static pthread_mutex_t write_stdout_handler_mutex = PTHREAD_MUTEX_INITIALIZER;
 /**
  * @brief Writes a log event to stdout or stderr based on severity.
  *
- * This function writes a log message to stdout for lower severity levels and to stderr for higher 
- * severity levels, including the date, time, severity, source file, line number, and the log 
- * message.
+ * This function writes a log message to stdout for lower severity levels and 
+ * to stderr for higher severity levels, including the date, time, severity, 
+ * source file, line number, and the log message.
  *
  * @param event The log event to write.
  */
@@ -71,8 +71,9 @@ static void logger_write_stdout_handler(LogEvent event) {
 /**
  * @brief Writes a log event to a file.
  *
- * This function writes a log message to a file specified in the log attributes, including the 
- * date, time, severity, source file, line number, and the log message.
+ * This function writes a log message to a file specified in the log 
+ * attributes, including the date, time, severity, source file, line number, 
+ * and the log message.
  *
  * @param event The log event to write.
  */
@@ -130,11 +131,11 @@ static void logger_write_file_handler(LogEvent event) {
 /**
  * @brief Thread callback function to handle log events.
  *
- * This function is executed in a separate thread to handle log events by invoking the appropriate 
- * log handler function.
+ * This function is executed in a separate thread to handle log events by 
+ * invoking the appropriate log handler function.
  *
- * @param vargs The arguments passed to the thread, containing the log event handler and the log 
- *              event.
+ * @param vargs The arguments passed to the thread, containing the log event 
+ *              handler and the log event.
  * @return NULL
  */
 static void* logger_pthread_handler_fn(void* vargs) {
@@ -151,8 +152,9 @@ static void* logger_pthread_handler_fn(void* vargs) {
 /**
  * @brief Logs a message with the specified severity and details.
  *
- * This function logs a message with the specified severity, source file, and line number. It 
- * creates a log event and dispatches it to all registered log handlers.
+ * This function logs a message with the specified severity, source file, 
+ * and line number. It creates a log event and dispatches it to all registered 
+ * log handlers.
  *
  * @param msg The log message format string.
  * @param rlt The source file name.
@@ -191,7 +193,8 @@ void logger(char* msg, char* rlt, int line, LogSeverity severity, ...) {
     log_event_handler->event = ptr_log_event;
     log_event_handler->handler = ptr_log_handler;
 
-    pthread_create(&thread_id, NULL, logger_pthread_handler_fn, (void*)log_event_handler);
+    pthread_create(&thread_id, NULL, logger_pthread_handler_fn,
+                   (void*)log_event_handler);
     pthread_detach(thread_id);
     ptr_log_handler++;
   }
@@ -200,8 +203,9 @@ void logger(char* msg, char* rlt, int line, LogSeverity severity, ...) {
 /**
  * @brief Adds a log handler to the logger.
  *
- * This function adds a new log handler to the logger, allowing it to process log events. It 
- * returns an error code if the maximum number of handlers is exceeded.
+ * This function adds a new log handler to the logger, allowing it to process 
+ * log events. It returns an error code if the maximum number of handlers is 
+ * exceeded.
  *
  * @param name The name of the log handler.
  * @param fnp The function pointer to the log handler.
@@ -243,8 +247,8 @@ clean_up:
 /**
  * @brief Removes a log handler from the logger.
  *
- * This function removes a log handler by name. It returns an error code if the handler is not 
- * found.
+ * This function removes a log handler by name. It returns an error code if 
+ * the handler is not found.
  *
  * @param name The name of the log handler to remove.
  * @return int Status code indicating the result of the operation.
@@ -285,8 +289,9 @@ clean_up:
 /**
  * @brief Sets the log attribute for the logger.
  *
- * This function sets the log attribute, including the log file path, maximum size, and maximum 
- * line size. It returns an error code if there is an issue with resource allocation.
+ * This function sets the log attribute, including the log file path, maximum 
+ * size, and maximum line size. It returns an error code if there is an issue 
+ * with resource allocation.
  *
  * @param attr The log attribute to set.
  * @return int Status code indicating the result of the operation.

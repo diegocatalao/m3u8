@@ -103,7 +103,8 @@ typedef void (*log_handler)(LogEvent event);
  * @def __RLT__
  * @brief Macro to get the relative path of the source file.
  */
-#define __RLT__                 (strstr(__FILE__, PFX_SRC_PATH) ? strstr(__FILE__, PFX_SRC_PATH) : __FILE__)
+#define __RLT__ \
+  (strstr(__FILE__, PFX_SRC_PATH) ? strstr(__FILE__, PFX_SRC_PATH) : __FILE__)
 
 /**
  * @def DEBUG
@@ -112,7 +113,8 @@ typedef void (*log_handler)(LogEvent event);
  * @param message The debug message.
  * @param ... Additional arguments for the debug message.
  */
-#define DEBUG(message, ...)     logger(message, __RLT__, __LINE__, DEBUG, ##__VA_ARGS__);
+#define DEBUG(message, ...) \
+  logger(message, __RLT__, __LINE__, DEBUG, ##__VA_ARGS__);
 
 /**
  * @def INFO
@@ -121,7 +123,8 @@ typedef void (*log_handler)(LogEvent event);
  * @param message The informational message.
  * @param ... Additional arguments for the informational message.
  */
-#define INFO(message, ...)      logger(message, __RLT__, __LINE__, INFO, ##__VA_ARGS__);
+#define INFO(message, ...) \
+  logger(message, __RLT__, __LINE__, INFO, ##__VA_ARGS__);
 
 /**
  * @def WARN
@@ -130,7 +133,8 @@ typedef void (*log_handler)(LogEvent event);
  * @param message The warning message.
  * @param ... Additional arguments for the warning message.
  */
-#define WARN(message, ...)      logger(message, __RLT__, __LINE__, WARN, ##__VA_ARGS__);
+#define WARN(message, ...) \
+  logger(message, __RLT__, __LINE__, WARN, ##__VA_ARGS__);
 
 /**
  * @def ERROR
@@ -139,7 +143,8 @@ typedef void (*log_handler)(LogEvent event);
  * @param message The error message.
  * @param ... Additional arguments for the error message.
  */
-#define ERROR(message, ...)     logger(message, __RLT__, __LINE__, ERROR, ##__VA_ARGS__);
+#define ERROR(message, ...) \
+  logger(message, __RLT__, __LINE__, ERROR, ##__VA_ARGS__);
 
 /**
  * @def CRIT
@@ -148,7 +153,8 @@ typedef void (*log_handler)(LogEvent event);
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define CRIT(message, ...)      logger(message, __RLT__, __LINE__, CRIT, ##__VA_ARGS__);
+#define CRIT(message, ...) \
+  logger(message, __RLT__, __LINE__, CRIT, ##__VA_ARGS__);
 
 /**
  * @def RAISE_STATUS
