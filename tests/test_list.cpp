@@ -1,9 +1,9 @@
 
 #include <gtest/gtest.h>
 #include <stdbool.h>
+
 extern "C" {
 #include "../src/list.h"
-#include "../src/m3u8.h"
 }
 
 // ----------- m3u8_list_init -----------
@@ -110,7 +110,7 @@ TEST(m3u8_list_empty_test, given_empty_list_returns_true) {
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
   bool is_empty = false;
-  EXPECT_EQ(m3u8_list_empty(head, &is_empty), M3U8_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_empty(head, &is_empty), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_TRUE(is_empty);
 
   free(head);
@@ -123,7 +123,7 @@ TEST(m3u8_list_empty_test, given_non_empty_list_returns_false) {
   EXPECT_EQ(m3u8_list_add_head(head, node), M3U8_LIST_STATUS_NO_ERROR);
 
   bool is_empty = true;
-  EXPECT_EQ(m3u8_list_empty(head, &is_empty), M3U8_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_empty(head, &is_empty), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_FALSE(is_empty);
 
   free(node);
@@ -148,7 +148,7 @@ TEST(m3u8_list_count_test, given_empty_list_returns_zero) {
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
   int count = -1;
-  EXPECT_EQ(m3u8_list_count(head, &count), M3U8_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_count(head, &count), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_EQ(count, 0);
 
   free(head);
@@ -156,17 +156,18 @@ TEST(m3u8_list_count_test, given_empty_list_returns_zero) {
 
 TEST(m3u8_list_count_test, given_non_empty_list_returns_count) {
   m3u8_list_node_t* head = nullptr;
-  EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
+  ASSERT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
+  ASSERT_NE(head, nullptr);
 
   m3u8_list_node_t* node1 = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
   m3u8_list_node_t* node2 = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
 
-  EXPECT_EQ(m3u8_list_add_head(head, node1), M3U8_LIST_STATUS_NO_ERROR);
-  EXPECT_EQ(m3u8_list_add_head(head, node2), M3U8_LIST_STATUS_NO_ERROR);
+  ASSERT_EQ(m3u8_list_add_head(head, node1), M3U8_LIST_STATUS_NO_ERROR);
+  ASSERT_EQ(m3u8_list_add_head(head, node2), M3U8_LIST_STATUS_NO_ERROR);
 
   int count = -1;
-  EXPECT_EQ(m3u8_list_count(head, &count), M3U8_STATUS_NO_ERROR);
-  EXPECT_EQ(count, 2);
+  ASSERT_EQ(m3u8_list_count(head, &count), M3U8_LIST_STATUS_NO_ERROR);
+  ASSERT_EQ(count, 2);
 
   free(node1);
   free(node2);

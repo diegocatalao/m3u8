@@ -3,7 +3,6 @@
 
 #include "list.h"
 #include "logger.h"
-#include "m3u8.h"
 
 int m3u8_list_init(m3u8_list_node_t** list) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
@@ -81,7 +80,7 @@ clean_up:
 }
 
 int m3u8_list_empty(const m3u8_list_node_t* head, bool* is_empty) {
-  int status = M3U8_STATUS_NO_ERROR;
+  int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
     RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
@@ -99,7 +98,7 @@ clean_up:
 }
 
 int m3u8_list_count(const m3u8_list_node_t* head, int* size) {
-  int status = M3U8_STATUS_NO_ERROR;
+  int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
     RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
