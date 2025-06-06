@@ -1,0 +1,92 @@
+name: m3u8-cmake-ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test-ubuntu:
+    name: Build and Test (Ubuntu)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config
+          sudo apt-get install -y libgtest-dev
+          sudo apt-get install -y libpthread-stubs0-dev
+          
+          # build googletest libraries
+          cd /usr/src/gtest
+          sudo cmake .
+          sudo make
+          sudo cp lib/*.a /usr/lib
+
+      - name: Configure CMake
+        run: cmake -DCOMPILE_TESTS=ON -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: |
+          cd build
+          ctest --output-on-failure
+
+  build-and-test-macos:
+    name: Build and Test (macOS)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install cmake pkg-config
+          brew install googletest
+
+      - name: Configure CMake
+        run: |
+          cmake -DCOMPILE_TESTS=ON -B build
+
+      - name: Build
+        run: |
+          cmake --build build
+
+      - name: Test
+        run: |
+          cd build
+          ctest --output-on-failure
+
+  build-and-test-windows:
+    name: Build and Test (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+          choco install ninja -y
+          choco install googletest -y
+
+      - name: Configure CMake
+        run: cmake -G "Ninja" -DCOMPILE_TESTS=ON -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: |
+          cd build
+          ctest --output-on-failure
