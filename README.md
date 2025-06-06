@@ -24,7 +24,9 @@ $ cd m3u8
 
 2. create and navigate to the build directory, then run make:
 ```bash
-$ make
+$ mkdir build
+$ cmake .. && make
+$ sudo make install
 ```
 
 ## Documentation
@@ -65,23 +67,28 @@ int main() {
     "#EXTINF:9.009,\n"
     "http://example.com/movie/segment1.ts\n";
 
-  m3u8_media_segment_t* segment;
-  m3u8_playlist_t* playlist = m3u8_parse_from_string(playlist_string);
-
-  if (playlist) {
-    printf("M3U8 Version: %d\n", playlist->version);
-    printf("Target Duration: %d\n", playlist->target_duration);
-
-    for (size_t i = 0; i < playlist->segments->count; ++i) {
-      segment = (m3u8_media_segment_t*)playlist->segments->items[i];
-      printf("URL: %s, Duration: %.3f\n", segment->uri, segment->duration);
-    }
-
-    m3u8_free_playlist(playlist);
-  } else {
-    fprintf(stderr, "Failed to parse M3U8 playlist.\n");
+  m3u8_t *playlist_ptr = NULL;
+  
+  if (m3u8_create_playlist(&playlist_ptr) != M3U8_STATUS_NO_ERROR) {
+    fprintf(stderr, "Unable to allocated playlist.\n");
     return -1;
   }
+
+  if (m3u8_parse_from_str(playlist_string) != M3U8_STATUS_NO_ERROR) {
+    m3u8_free_playlist(playlist_ptr);
+    fprintf(stderr, "Unable to parse playlist.\n");
+    return -1;
+  }
+
+  printf("M3U8 Version: %d\n", playlist->version);
+  printf("Target Duration: %d\n", playlist->target_duration);
+
+  for (size_t i = 0; i < playlist->segments->count; ++i) {
+    segment = (m3u8_media_segment_t*)playlist->segments->items[i];
+    printf("URL: %s, Duration: %.3f\n", segment->uri, segment->duration);
+  }
+
+  m3u8_free_playlist(playlist);
 
   return 0;
 }
