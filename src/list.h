@@ -44,18 +44,21 @@
 #define M3U8_LIST_STATUS_UNKNOWN_ERROR (M3U8_LIST_STATUS_NO_ERROR + 0x99)
 
 /**
- * @brief Initializes a statically allocated list head node.
+ * @brief Iterates over all nodes in the list (excluding the head node).
  *
- * @param list_ptr Pointer to a m3u8_list_node_t structure.
+ * @param pos  A pointer of type m3u8_list_node_t* used as the loop iterator.
+ * @param head A pointer to the list head node.
  *
- * @note This macro does not allocate memory, only initializes pointers for a 
- *       static node.
+ * @details This macro traverses the circular doubly-linked list from the node
+ *          immediately after the head to the node just before the head,
+ *          skipping the head itself.
+ *
+ * @note To access the actual structure containing the node, cast the `pos`
+ *       pointer to your container struct type.
+ *
  */
-#define m3u8_list_head_init(list_ptr) \
-  do {                                \
-    (list_ptr)->next = (list_ptr);    \
-    (list_ptr)->prev = (list_ptr);    \
-  } while (0)
+#define m3u8_list_foreach(pos, head) \
+  for ((pos) = (head)->next; (pos) != (head); (pos) = (pos)->next)
 
 /**
  * @struct m3u8_list_node
