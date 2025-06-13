@@ -4,7 +4,7 @@
 #include "list.h"
 #include "logger.h"
 
-int m3u8_list_init(m3u8_list_node_t** list) {
+int m3u8_list_init(m3u8_list_node_t* list) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (list == NULL) {
@@ -12,15 +12,13 @@ int m3u8_list_init(m3u8_list_node_t** list) {
                  "Pointer to list pointer cannot be null");
   }
 
-  *list = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
-
-  if (*list == NULL) {
+  if (list == NULL) {
     RAISE_STATUS(M3U8_LIST_STATUS_MEM_ALL_ERROR,
                  "Failed to allocate memory for m3u8_list_node_t");
   }
 
-  (*list)->next = (*list);
-  (*list)->prev = (*list);
+  list->next = list;
+  list->prev = list;
 
 clean_up:
   return status;
@@ -30,8 +28,11 @@ int m3u8_list_add_head(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL || node == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS,
-                 "The arguments head and new cannot be null");
+    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "List head or node is null");
+  }
+
+  if (head->next == NULL || head->prev == NULL) {
+    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "List head is not initialized");
   }
 
   node->next = head->next;

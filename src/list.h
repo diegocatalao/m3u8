@@ -77,7 +77,7 @@ typedef struct m3u8_list_node {
  * @retval M3U8_LIST_STATUS_INVALID_ARGS  If list is NULL.
  * @retval M3U8_LIST_STATUS_MEM_ALL_ERROR If memory allocation fails.
  */
-int m3u8_list_init(m3u8_list_node_t** list);
+int m3u8_list_init(m3u8_list_node_t* list);
 
 /**
  * @brief Inserts a node immediately after the head node.
