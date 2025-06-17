@@ -13,7 +13,7 @@
  *
  * @details Returned when a function executes without error.
  */
-#define M3U8_LIST_STATUS_NO_ERROR      0x01
+#define M3U8_LIST_STATUS_NO_ERROR      0x10000000
 
 /**
  * @brief Received an invalid argument from function parameters.
@@ -44,6 +44,12 @@
 #define M3U8_LIST_STATUS_UNKNOWN_ERROR (M3U8_LIST_STATUS_NO_ERROR + 0x99)
 
 /**
+ *
+ */
+#define container_of(ptr, type, member) \
+  ((type*)((char*)(ptr) - offsetof(type, member)))
+
+/**
  * @brief Iterates over all nodes in the list (excluding the head node).
  *
  * @param pos  A pointer of type m3u8_list_node_t* used as the loop iterator.
@@ -57,8 +63,13 @@
  *       pointer to your container struct type.
  *
  */
-#define m3u8_list_foreach(pos, head) \
-  for ((pos) = (head)->next; (pos) != (head); (pos) = (pos)->next)
+#define m3u8_list_foreach(head, iter, type, member)                     \
+  for (m3u8_list_node_t* _node = (head)->next;                          \
+       _node != (head) && ((iter) = container_of(_node, type, member)); \
+       _node = _node->next)
+
+#define m3u8_list_next(ptr, type, member) \
+  ((type*)((char*)(ptr) - offsetof(type, member)))
 
 /**
  * @struct m3u8_list_node

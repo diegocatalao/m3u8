@@ -157,14 +157,14 @@ typedef void (*log_handler)(LogEvent event);
   logger(message, __RLT__, __LINE__, CRIT, ##__VA_ARGS__);
 
 /**
- * @def RAISE_STATUS
+ * @def RAISE
  * @brief Macro to change status to bad code and go to clean up.
  *
  * @param __status The status code to set.
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define RAISE_STATUS(__status, message, ...)                \
+#define RAISE(__status, message, ...)                       \
   logger(message, __RLT__, __LINE__, ERROR, ##__VA_ARGS__); \
   status = __status;                                        \
   goto clean_up

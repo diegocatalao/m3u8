@@ -8,13 +8,13 @@ int m3u8_list_init(m3u8_list_node_t* list) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (list == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS,
-                 "Pointer to list pointer cannot be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
+          "Pointer to list pointer cannot be null");
   }
 
   if (list == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_MEM_ALL_ERROR,
-                 "Failed to allocate memory for m3u8_list_node_t");
+    RAISE(M3U8_LIST_STATUS_MEM_ALL_ERROR,
+          "Failed to allocate memory for m3u8_list_node_t");
   }
 
   list->next = list;
@@ -28,11 +28,11 @@ int m3u8_list_add_head(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL || node == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "List head or node is null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "List head or node is null");
   }
 
   if (head->next == NULL || head->prev == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "List head is not initialized");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "List head is not initialized");
   }
 
   node->next = head->next;
@@ -49,8 +49,8 @@ int m3u8_list_add_tail(m3u8_list_node_t* node, m3u8_list_node_t* head) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (node == NULL || head == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS,
-                 "The arguments head and node cannot be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
+          "The arguments head and node cannot be null");
   }
 
   node->prev = head->prev;
@@ -67,8 +67,8 @@ int m3u8_list_remove(m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (node == NULL || node->prev == NULL || node->next == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS,
-                 "Node and its neighbors cannot be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
+          "Node and its neighbors cannot be null");
   }
 
   node->prev->next = node->next;
@@ -84,12 +84,11 @@ int m3u8_list_empty(const m3u8_list_node_t* head, bool* is_empty) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
   }
 
   if (is_empty == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS,
-                 "Arg is_empty cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg is_empty cannot to be null");
   }
 
   *is_empty = head->next == head;
@@ -102,11 +101,11 @@ int m3u8_list_count(const m3u8_list_node_t* head, int* size) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
   }
 
   if (size == NULL) {
-    RAISE_STATUS(M3U8_LIST_STATUS_INVALID_ARGS, "Arg size cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg size cannot to be null");
   }
 
   int count = 0;
