@@ -4,57 +4,61 @@
 #include "list.h"
 #include "logger.h"
 
-int m3u8_list_init(m3u8_list_node_t* list) {
+int m3u8_list_init(m3u8_list_node_t* head) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
-  if (list == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
-          "Pointer to list pointer cannot be null");
+  if (head == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument head is NULL");
   }
 
-  if (list == NULL) {
-    RAISE(M3U8_LIST_STATUS_MEM_ALL_ERROR,
-          "Failed to allocate memory for m3u8_list_node_t");
+  if (memset(head, 0, sizeof(m3u8_list_node_t)) == NULL) {
+    RAISE(M3U8_LIST_STATUS_MEM_ALL_ERROR, "Method memset return null for head");
   }
 
-  list->next = list;
-  list->prev = list;
+  head->next = head;
+  head->prev = head;
 
 clean_up:
   return status;
 }
 
-int m3u8_list_add_head(m3u8_list_node_t* head, m3u8_list_node_t* node) {
+int m3u8_list_insert_after(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
-  if (head == NULL || node == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "List head or node is null");
+  if (head == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: head is NULL");
   }
 
-  if (head->next == NULL || head->prev == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "List head is not initialized");
+  if (node == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: node is NULL");
   }
 
   node->next = head->next;
   node->prev = head;
 
-  head->next->prev = node;
+  if (head->next != NULL) {
+    head->next->prev = node;
+  }
+
   head->next = node;
 
 clean_up:
   return status;
 }
 
-int m3u8_list_add_tail(m3u8_list_node_t* node, m3u8_list_node_t* head) {
+int m3u8_list_insert_before(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
-  if (node == NULL || head == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
-          "The arguments head and node cannot be null");
+  if (head == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: head is NULL");
   }
 
-  node->prev = head->prev;
+  if (node == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: node is NULL");
+  }
+
   node->next = head;
+  node->prev = head->prev;
 
   head->prev->next = node;
   head->prev = node;
@@ -66,13 +70,17 @@ clean_up:
 int m3u8_list_remove(m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
-  if (node == NULL || node->prev == NULL || node->next == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS,
-          "Node and its neighbors cannot be null");
+  if (node == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: node is NULL");
+  }
+
+  if (node->next == node && node->prev == node) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Unable to remove the head");
   }
 
   node->prev->next = node->next;
   node->next->prev = node->prev;
+
   node->next = NULL;
   node->prev = NULL;
 
@@ -80,18 +88,14 @@ clean_up:
   return status;
 }
 
-int m3u8_list_empty(const m3u8_list_node_t* head, bool* is_empty) {
+int m3u8_list_is_empty(const m3u8_list_node_t* head, bool* is_empty) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: head is NULL");
   }
 
-  if (is_empty == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg is_empty cannot to be null");
-  }
-
-  *is_empty = head->next == head;
+  *is_empty = head->next == head && head->prev == head;
 
 clean_up:
   return status;
@@ -101,20 +105,23 @@ int m3u8_list_count(const m3u8_list_node_t* head, int* size) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg head cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: head is NULL");
   }
 
   if (size == NULL) {
-    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Arg size cannot to be null");
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: size is NULL");
   }
 
-  int count = 0;
-  // set the head next inside node
-  const m3u8_list_node_t* node = head->next;
+  if (head->next == NULL || head->prev == NULL) {
+    RAISE(M3U8_LIST_STATUS_INVALID_ARGS, "Invalid argument: members are NULL");
+  }
 
-  while (node != head) {
+  int               count = 0;
+  m3u8_list_node_t* pivot = head->next;
+
+  while (pivot != head) {
     count++;
-    node = node->next;
+    pivot = pivot->next;
   }
 
   *size = count;
