@@ -20,9 +20,9 @@ TEST(m3u8_list_test, null_pointer_returns_invalid_args) {
   EXPECT_EQ(m3u8_list_init(nullptr), M3U8_LIST_STATUS_INVALID_ARGS);
 }
 
-// ----------- m3u8_list_insert_after -----------
+// ----------- m3u8_list_ina -----------
 
-TEST(m3u8_list_insert_after, insert_node) {
+TEST(m3u8_list_ina, insert_node) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -31,7 +31,7 @@ TEST(m3u8_list_insert_after, insert_node) {
 
   m3u8_list_node_t node;
   memset(&node, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_after(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_ina(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node);
   EXPECT_EQ(head.prev, &node);
@@ -39,7 +39,7 @@ TEST(m3u8_list_insert_after, insert_node) {
   EXPECT_EQ(node.prev, &head);
 }
 
-TEST(m3u8_list_insert_after, inserts_multiple_nodes) {
+TEST(m3u8_list_ina, inserts_multiple_nodes) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -48,7 +48,7 @@ TEST(m3u8_list_insert_after, inserts_multiple_nodes) {
 
   m3u8_list_node_t node1;
   memset(&node1, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_after(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node1);
@@ -57,7 +57,7 @@ TEST(m3u8_list_insert_after, inserts_multiple_nodes) {
 
   m3u8_list_node_t node2;
   memset(&node2, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_after(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_ina(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node2);
   EXPECT_EQ(head.prev, &node1);
@@ -65,29 +65,29 @@ TEST(m3u8_list_insert_after, inserts_multiple_nodes) {
   EXPECT_EQ(node2.prev, &head);
 }
 
-TEST(m3u8_list_insert_after, null_node_returns_invalid_args) {
+TEST(m3u8_list_ina, null_node_returns_invalid_args) {
   m3u8_list_node_t* head = nullptr;
   m3u8_list_node_t* node = nullptr;
 
   // when head and node are null
-  EXPECT_EQ(m3u8_list_insert_after(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_ina(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   // when head is null
   node = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_after(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_ina(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   // when node is null
   free(node);
   node = nullptr;
   head = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_after(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_ina(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   free(head);
 }
 
-// ----------- m3u8_list_insert_before -----------
+// ----------- m3u8_list_inb -----------
 
-TEST(m3u8_list_insert_before, insert_node) {
+TEST(m3u8_list_inb, insert_node) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -96,7 +96,7 @@ TEST(m3u8_list_insert_before, insert_node) {
 
   m3u8_list_node_t node;
   memset(&node, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node);
   EXPECT_EQ(head.prev, &node);
@@ -104,7 +104,7 @@ TEST(m3u8_list_insert_before, insert_node) {
   EXPECT_EQ(node.prev, &head);
 }
 
-TEST(m3u8_list_insert_before, inserts_multiple_nodes) {
+TEST(m3u8_list_inb, inserts_multiple_nodes) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -113,7 +113,7 @@ TEST(m3u8_list_insert_before, inserts_multiple_nodes) {
 
   m3u8_list_node_t node1;
   memset(&node1, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node1);
@@ -122,7 +122,7 @@ TEST(m3u8_list_insert_before, inserts_multiple_nodes) {
 
   m3u8_list_node_t node2;
   memset(&node2, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node2);
@@ -130,22 +130,22 @@ TEST(m3u8_list_insert_before, inserts_multiple_nodes) {
   EXPECT_EQ(node2.prev, &node1);
 }
 
-TEST(m3u8_list_insert_before, null_node_returns_invalid_args) {
+TEST(m3u8_list_inb, null_node_returns_invalid_args) {
   m3u8_list_node_t* head = nullptr;
   m3u8_list_node_t* node = nullptr;
 
   // when head and node are null
-  EXPECT_EQ(m3u8_list_insert_before(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_inb(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   // when head is null
   node = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_inb(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   // when node is null
   free(node);
   node = nullptr;
   head = (m3u8_list_node_t*)malloc(sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
+  EXPECT_EQ(m3u8_list_inb(head, node), M3U8_LIST_STATUS_INVALID_ARGS);
 
   free(head);
 }
@@ -160,7 +160,7 @@ TEST(m3u8_list_remove_test, given_valid_node_removes_node_from_list) {
 
   m3u8_list_node_t node1;
   memset(&node1, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node1), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node1);
@@ -169,7 +169,7 @@ TEST(m3u8_list_remove_test, given_valid_node_removes_node_from_list) {
 
   m3u8_list_node_t node2;
   memset(&node2, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node2), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node2);
@@ -222,7 +222,7 @@ TEST(m3u8_list_empty_test, given_non_empty_list_returns_false) {
   EXPECT_EQ(m3u8_list_is_empty(&head, &empty), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_TRUE(empty);
 
-  EXPECT_EQ(m3u8_list_insert_after(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_ina(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_EQ(m3u8_list_is_empty(&head, &empty), M3U8_LIST_STATUS_NO_ERROR);
   EXPECT_FALSE(empty);
 }
@@ -260,7 +260,7 @@ TEST(m3u8_list_count_test, given_non_empty_list_returns_count) {
 
   m3u8_list_node_t node;
   memset(&node, 0, sizeof(m3u8_list_node_t));
-  EXPECT_EQ(m3u8_list_insert_before(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_list_inb(&head, &node), M3U8_LIST_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node);
   EXPECT_EQ(head.prev, &node);
@@ -322,7 +322,7 @@ TEST(m3u8_list_foreach, iterates_over_list_from_container) {
   EXPECT_EQ(m3u8_list_init(&generics[0].list), M3U8_LIST_STATUS_NO_ERROR);
 
   for (int i = 1; i < sizeof(generics) / sizeof(generics[0]); i++) {
-    int status = m3u8_list_insert_before(&generics[0].list, &generics[i].list);
+    int status = m3u8_list_inb(&generics[0].list, &generics[i].list);
     EXPECT_EQ(status, M3U8_LIST_STATUS_NO_ERROR);
   }
 
@@ -347,7 +347,7 @@ TEST(m3u8_list_next, given_an_list_goto_next) {
   EXPECT_EQ(m3u8_list_init(&generics[0].list), M3U8_LIST_STATUS_NO_ERROR);
 
   for (int i = 1; i < sizeof(generics) / sizeof(generics[0]); i++) {
-    int status = m3u8_list_insert_before(&generics[0].list, &generics[i].list);
+    int status = m3u8_list_inb(&generics[0].list, &generics[i].list);
     EXPECT_EQ(status, M3U8_LIST_STATUS_NO_ERROR);
   }
 
@@ -397,7 +397,7 @@ TEST(m3u8_list_prev, given_a_list_goto_previous) {
   EXPECT_EQ(m3u8_list_init(&generics[0].list), M3U8_LIST_STATUS_NO_ERROR);
 
   for (int i = 1; i < sizeof(generics) / sizeof(generics[0]); i++) {
-    int status = m3u8_list_insert_before(&generics[0].list, &generics[i].list);
+    int status = m3u8_list_inb(&generics[0].list, &generics[i].list);
     EXPECT_EQ(status, M3U8_LIST_STATUS_NO_ERROR);
   }
 

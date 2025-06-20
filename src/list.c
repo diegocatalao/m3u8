@@ -22,7 +22,7 @@ clean_up:
   return status;
 }
 
-int m3u8_list_insert_after(m3u8_list_node_t* head, m3u8_list_node_t* node) {
+int m3u8_list_ina(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {
@@ -46,7 +46,7 @@ clean_up:
   return status;
 }
 
-int m3u8_list_insert_before(m3u8_list_node_t* head, m3u8_list_node_t* node) {
+int m3u8_list_inb(m3u8_list_node_t* head, m3u8_list_node_t* node) {
   int status = M3U8_LIST_STATUS_NO_ERROR;
 
   if (head == NULL) {

@@ -133,7 +133,7 @@ int m3u8_list_init(m3u8_list_node_t* head);
  * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
  * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
  */
-int m3u8_list_insert_after(m3u8_list_node_t* head, m3u8_list_node_t* node);
+int m3u8_list_ina(m3u8_list_node_t* head, m3u8_list_node_t* node);
 
 /**
  * @brief Inserts a node immediately before the head node (at the end of the list).
@@ -143,7 +143,7 @@ int m3u8_list_insert_after(m3u8_list_node_t* head, m3u8_list_node_t* node);
  * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
  * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
  */
-int m3u8_list_insert_before(m3u8_list_node_t* head, m3u8_list_node_t* node);
+int m3u8_list_inb(m3u8_list_node_t* head, m3u8_list_node_t* node);
 
 /**
  * @brief Removes a node from the list. Does not free its memory.
