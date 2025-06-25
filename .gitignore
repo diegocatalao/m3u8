@@ -95,4 +95,8 @@ tags
 # Persistent undo
 [._]*.un~
 
+# Ignore docs and binary folder
+docs/
+bin/
+
 # End of https://www.toptal.com/developers/gitignore/api/c,vim,cmake
