@@ -96,7 +96,7 @@ int main() {
 
 ## Licensing
 
-**M3U8** adheres to both the current M4U8 RFC standards (e.g., RFC 8216) and the 
+**M3U8** adheres to both the current M3U8 RFC standards (e.g., RFC 8216) and the 
 **Apple M3U8 License** and specification. This ensures broad compatibility and 
 compliance with both open standards and Apple's proprietary extensions to the 
 HLS standard. Refer to the [IETF RFC 8216][ietf_rfc_8216] and the 
