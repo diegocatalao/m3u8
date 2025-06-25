@@ -1,0 +1,9 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@/m3u8
+
+Name: m3u8
+Description: Parsing, generating, and managing M3U8 playlists
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -lm3u8
+Cflags: -I${includedir}
