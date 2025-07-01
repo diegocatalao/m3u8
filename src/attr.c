@@ -6,32 +6,16 @@
 #include "list.h"
 #include "logger.h"
 
-/**
- * @brief Removes all occurrences of a substring from a string.
- *
- * @param[in,out] str     Pointer to a null-terminated string to modify.
- * @param[in]     replace The character to remove from the string.
- */
-void snipx(char* str, const char* sub) {
-  char*  match = NULL;
-  size_t len_sub = strlen(sub);
-
-  if (len_sub == 0)
-    return;
-
-  while ((match = strstr(str, sub))) {
-    memmove(match, match + len_sub, strlen(match + len_sub) + 1);
-  }
-}
-
 int m3u8_attr_parse(char* buffer, m3u8_attr_t* attrs) {
   int status = M3U8_ATTR_STATUS_NO_ERROR;
 
-  regex_t    regex = {0};
+  regex_t    regex;
   regmatch_t pmatch[3];  // 0: full match, 1: key, 2: value
 
   char* cursor = buffer;
   char* pattern = "([A-Z0-9_-]+)=(\"[^\"]*\"|[^,]+)";
+
+  memset(&regex, 0, sizeof(regex_t));
 
   if (buffer == NULL) {
     RAISE(M3U8_ATTR_STATUS_INVALID_ARG, "Invalid arg buffer (null)");
@@ -63,8 +47,6 @@ int m3u8_attr_parse(char* buffer, m3u8_attr_t* attrs) {
 
     attr->key = strndup(cursor + pmatch[1].rm_so, key_s);
     attr->value = strndup(cursor + pmatch[2].rm_so, value_s);
-
-    snipx(attr->value, "\"");
 
     if (m3u8_list_inb(&attrs->list, &attr->list) != M3U8_LIST_STATUS_NO_ERROR) {
       RAISE(M3U8_ATTR_STATUS_LIST_ERROR, "Could not insert attribute in list");

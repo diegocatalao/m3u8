@@ -80,40 +80,6 @@ TEST(m3u8_attr_parse_test, given_null_buffer_returns_an_error) {
   EXPECT_EQ(m3u8_attr_parse(buffer, &attrs), M3U8_ATTR_STATUS_INVALID_ARG);
 }
 
-TEST(m3u8_attr_parse_test, given_attributes_with_quotes_removes_them) {
-  m3u8_attr_t  attrs;
-  m3u8_attr_t* pivot = &attrs;
-  char*        buffer = strdup("#EXT-X-STREAM-INF:AUDIO=\"audio\"");
-
-  memset(&attrs, 0, sizeof(m3u8_attr_t));
-
-  EXPECT_EQ(m3u8_attr_parse(buffer, &attrs), M3U8_ATTR_STATUS_NO_ERROR);
-
-  EXPECT_EQ(pivot->key, nullptr);
-  EXPECT_EQ(pivot->value, nullptr);
-
-  pivot = m3u8_list_next(pivot, m3u8_attr_t, list);
-  EXPECT_STREQ(pivot->key, "AUDIO");
-  EXPECT_STREQ(pivot->value, "audio");
-}
-
-TEST(m3u8_attr_parse_test, given_malformed_quotes_handles_gracefully) {
-  m3u8_attr_t  attrs;
-  m3u8_attr_t* pivot = &attrs;
-  char*        buffer = strdup("#EXT-X-STREAM-INF:AUDIO=\"audio");
-
-  memset(&attrs, 0, sizeof(m3u8_attr_t));
-
-  EXPECT_EQ(m3u8_attr_parse(buffer, &attrs), M3U8_ATTR_STATUS_NO_ERROR);
-
-  EXPECT_EQ(pivot->key, nullptr);
-  EXPECT_EQ(pivot->value, nullptr);
-
-  pivot = m3u8_list_next(pivot, m3u8_attr_t, list);
-  EXPECT_STREQ(pivot->key, "AUDIO");
-  EXPECT_STREQ(pivot->value, "audio");
-}
-
 TEST(m3u8_attr_parse_test, given_duplicate_keys_stores_all) {
   m3u8_attr_t  attrs;
   m3u8_attr_t* pivot = &attrs;
@@ -128,11 +94,11 @@ TEST(m3u8_attr_parse_test, given_duplicate_keys_stores_all) {
 
   pivot = m3u8_list_next(pivot, m3u8_attr_t, list);
   EXPECT_STREQ(pivot->key, "AUDIO");
-  EXPECT_STREQ(pivot->value, "audio");
+  EXPECT_STREQ(pivot->value, "\"audio\"");
 
   pivot = m3u8_list_next(pivot, m3u8_attr_t, list);
   EXPECT_STREQ(pivot->key, "AUDIO");
-  EXPECT_STREQ(pivot->value, "audio");
+  EXPECT_STREQ(pivot->value, "\"audio\"");
 }
 
 // ----------- m3u8_attr_from_key -----------
@@ -150,7 +116,7 @@ TEST(m3u8_attr_from_key_test, given_existing_key_returns_attribute) {
             M3U8_ATTR_STATUS_NO_ERROR);
 
   EXPECT_STREQ(attr_audio->key, strdup("AUDIO"));
-  EXPECT_STREQ(attr_audio->value, strdup("audio"));
+  EXPECT_STREQ(attr_audio->value, strdup("\"audio\""));
 
   EXPECT_EQ(m3u8_attr_from_key(&attrs, &attr_bandwidth, strdup("BANDWIDTH")),
             M3U8_ATTR_STATUS_NO_ERROR);
