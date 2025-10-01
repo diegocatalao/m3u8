@@ -98,5 +98,9 @@ tags
 # Ignore docs and binary folder
 docs/
 bin/
+build/
+
+# Ignore mac store files
+.DS_Store
 
 # End of https://www.toptal.com/developers/gitignore/api/c,vim,cmake
