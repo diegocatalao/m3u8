@@ -7,7 +7,7 @@ extern "C" {
 }
 
 // ----------- m3u8_list_init -----------
-TEST(m3u8_list_test, given_a_list_set_next_prev_as_head) {
+TEST(m3u8_list_init_test, given_a_list_set_next_prev_as_head) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -15,14 +15,14 @@ TEST(m3u8_list_test, given_a_list_set_next_prev_as_head) {
   EXPECT_EQ(head.prev, &head);
 }
 
-TEST(m3u8_list_test, null_pointer_returns_invalid_args) {
+TEST(m3u8_list_init_test, null_pointer_returns_invalid_args) {
   m3u8_list_node_t* head = nullptr;
   EXPECT_EQ(m3u8_list_init(nullptr), M3U8_LIST_STATUS_INVALID_ARGS);
 }
 
 // ----------- m3u8_list_ina -----------
 
-TEST(m3u8_list_ina, insert_node) {
+TEST(m3u8_list_ina_test, insert_node) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -39,7 +39,7 @@ TEST(m3u8_list_ina, insert_node) {
   EXPECT_EQ(node.prev, &head);
 }
 
-TEST(m3u8_list_ina, inserts_multiple_nodes) {
+TEST(m3u8_list_ina_test, inserts_multiple_nodes) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -65,7 +65,7 @@ TEST(m3u8_list_ina, inserts_multiple_nodes) {
   EXPECT_EQ(node2.prev, &head);
 }
 
-TEST(m3u8_list_ina, null_node_returns_invalid_args) {
+TEST(m3u8_list_ina_test, null_node_returns_invalid_args) {
   m3u8_list_node_t* head = nullptr;
   m3u8_list_node_t* node = nullptr;
 
@@ -87,7 +87,7 @@ TEST(m3u8_list_ina, null_node_returns_invalid_args) {
 
 // ----------- m3u8_list_inb -----------
 
-TEST(m3u8_list_inb, insert_node) {
+TEST(m3u8_list_inb_test, insert_node) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -104,7 +104,7 @@ TEST(m3u8_list_inb, insert_node) {
   EXPECT_EQ(node.prev, &head);
 }
 
-TEST(m3u8_list_inb, inserts_multiple_nodes) {
+TEST(m3u8_list_inb_test, inserts_multiple_nodes) {
   m3u8_list_node_t head;
   EXPECT_EQ(m3u8_list_init(&head), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -130,7 +130,7 @@ TEST(m3u8_list_inb, inserts_multiple_nodes) {
   EXPECT_EQ(node2.prev, &node1);
 }
 
-TEST(m3u8_list_inb, null_node_returns_invalid_args) {
+TEST(m3u8_list_inb_test, null_node_returns_invalid_args) {
   m3u8_list_node_t* head = nullptr;
   m3u8_list_node_t* node = nullptr;
 
@@ -294,7 +294,7 @@ typedef struct {
   m3u8_list_node_t list;
 } generic_struct_t;
 
-TEST(m3u8_list_container_of, return_currect_container_pointer) {
+TEST(m3u8_list_container_of_test, return_currect_container_pointer) {
   generic_struct_t generic = {1, 0.1, strdup("generic"), nullptr};
   EXPECT_EQ(m3u8_list_init(&generic.list), M3U8_LIST_STATUS_NO_ERROR);
 
@@ -309,7 +309,7 @@ TEST(m3u8_list_container_of, return_currect_container_pointer) {
   EXPECT_STREQ(generic_ptr->string_value, "generic");
 }
 
-TEST(m3u8_list_foreach, iterates_over_list_from_container) {
+TEST(m3u8_list_foreach_test, iterates_over_list_from_container) {
   generic_struct_t generics[] = {
     {0, 0.0, NULL},  // SENTINEL
     {1, 1.0, strdup("linux")},
@@ -337,7 +337,7 @@ TEST(m3u8_list_foreach, iterates_over_list_from_container) {
   }
 }
 
-TEST(m3u8_list_next, given_an_list_goto_next) {
+TEST(m3u8_list_next_test, given_an_list_goto_next) {
   generic_struct_t generics[] = {
     {0, 0.0, nullptr},  // SENTINEL
     {1, 1.0, strdup("linux")}, {2, 2.0, strdup("is")}, {3, 3.0, strdup("the")},
@@ -387,7 +387,7 @@ TEST(m3u8_list_next, given_an_list_goto_next) {
   }
 }
 
-TEST(m3u8_list_prev, given_a_list_goto_previous) {
+TEST(m3u8_list_prev_test, given_a_list_goto_previous) {
   generic_struct_t generics[] = {
     {0, 0.0, nullptr},  // SENTINEL
     {1, 1.0, strdup("linux")}, {2, 2.0, strdup("is")}, {3, 3.0, strdup("the")},
