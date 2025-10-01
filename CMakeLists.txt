@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(m3u8 C CXX)
 
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+
 option(COMPILE_TESTS "Compile test executables" OFF)
 
 set(CMAKE_C_STANDARD 99)
@@ -42,7 +46,9 @@ if(COMPILE_TESTS)
         target_link_libraries(${test_name} PRIVATE -fsanitize=address)
         target_include_directories(${test_name} PRIVATE ${CMAKE_SOURCE_DIR}/m3u8 ${CMAKE_SOURCE_DIR}/tests/mocks)
         target_link_libraries(${test_name} PRIVATE m3u8 GTest::gmock GTest::gtest GTest::gtest_main pthread)
-        add_test(NAME ${test_name} COMMAND ${test_name})
+    
+        include(GoogleTest)
+        gtest_discover_tests(${test_name})
     endforeach()
 endif()
 
