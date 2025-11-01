@@ -3,8 +3,8 @@
  * @brief Circular doubly-linked list implementation for general use.
  */
 
-#ifndef __H_M3U8_LIST__
-#define __H_M3U8_LIST__
+#ifndef _M3U8_LIST_H_
+#define _M3U8_LIST_H_
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -166,4 +166,4 @@ int m3u8_list_is_empty(const m3u8_list_node_t* head, bool* is_empty);
  */
 int m3u8_list_count(const m3u8_list_node_t* head, int* size);
 
-#endif  // __H_M3U8_LIST__
+#endif  // _M3U8_LIST_H_

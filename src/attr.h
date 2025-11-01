@@ -3,8 +3,8 @@
  * @brief Key-value attribute parsing for M3U8 playlists.
  */
 
-#ifndef __H_M3U8_ATTR__
-#define __H_M3U8_ATTR__
+#ifndef _M3U8_ATTR_H_
+#define _M3U8_ATTR_H_
 
 #include "list.h"
 
@@ -118,4 +118,4 @@ int m3u8_attr_count(m3u8_attr_t* attrs, int* size);
  */
 int m3u8_attr_destroy(m3u8_attr_t* attrs);
 
-#endif  // __H_M3U8_ATTR__
+#endif  // _M3U8_ATTR_H_

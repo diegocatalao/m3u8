@@ -1,5 +1,5 @@
-#ifndef __H_LOGGER__
-#define __H_LOGGER__
+#ifndef _M3U8_LOGGER_H_
+#define _M3U8_LOGGER_H_
 
 #include <string.h>
 
@@ -238,4 +238,4 @@ extern int logger_remove_log_handler(char* name);
  */
 extern int logger_set_log_attribute(LogAttribute attr);
 
-#endif  // __H_LOGGER__
+#endif  // _M3U8_LOGGER_H_
