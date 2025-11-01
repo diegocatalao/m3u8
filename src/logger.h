@@ -3,239 +3,250 @@
 
 #include <string.h>
 
-#define LOGGER_NO_ERROR                     0x1000
-#define LOGGER_RESOURCE_ALLOCATION_PROBLEM  LOGGER_NO_ERROR + 0x01
-#define LOGGER_HANDLER_LIMIT_ERROR          LOGGER_NO_ERROR + 0x02
-#define LOGGER_HANDLER_NOT_FOUND            LOGGER_NO_ERROR + 0x03
-#define LOGGER_LOG_ATTR_ALREADY_INITIALIZED LOGGER_NO_ERROR + 0x04
+/**
+ * @enum m3u8_logger_status_t
+ * @brief Represents the status of a m3u8_logger operation.
+ */
+typedef enum {
+  /** Operation completed successfully. */
+  M3U8_LOGGER_NO_ERROR = 0,
+  /** Resource allocation problem. */
+  M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM = 1,
+  /** Maximum number of handlers exceeded. */
+  M3U8_LOGGER_HANDLER_LIMIT_ERROR = 2,
+  /** Log signature not found. */
+  M3U8_LOGGER_HANDLER_NOT_FOUND = 3,
+  /** Log attribute already initialized. */
+  M3U8_LOGGER_LOG_ATTR_ALREADY_INITIALIZED = 4,
+} m3u8_logger_status_t;
 
 /**
- * @enum LogSeverity
+ * @enum m3u8_logger_severity_t
  * @brief Enumeration of log severity levels.
  */
 typedef enum {
-  VERBOSE, /**< Detailed information */
-  INFO,    /**< General information */
-  DEBUG,   /**< Debugging information */
-  WARN,    /**< Warning conditions */
-  ERROR,   /**< Error conditions */
-  CRIT,    /**< Critical conditions */
-} LogSeverity;
+  /** Detailed information */
+  M3U8_LOG_SEVERITY_VERBOSE = 0,
+  /** General information */
+  M3U8_LOG_SEVERITY_INFO = 1,
+  /** Debugging information */
+  M3U8_LOG_SEVERITY_DEBUG = 2,
+  /** Warning conditions */
+  M3U8_LOG_SEVERITY_WARN = 3,
+  /** Error conditions */
+  M3U8_LOG_SEVERITY_ERROR = 4,
+  /** Critical conditions */
+  M3U8_LOG_SEVERITY_CRIT = 5,
+} m3u8_logger_severity_t;
 
 /**
- * @struct LogAttribute
+ * @struct m3u8_logger_attribute_t
  * @brief Attributes for configuring log files.
  */
 typedef struct {
-  char* path;          /**< Path to the log file */
-  int   max_line_size; /**< Maximum size of a log lines in file */
-} LogAttribute;
+  /** Path to the log file. */
+  char* path;
+  /** Maximum size of a log lines in file. */
+  int max_line_size;
+} m3u8_logger_attribute_t;
 
 /**
- * @struct LogEvent
+ * @struct m3u8_logger_event_t
  * @brief Structure representing a log event.
  */
 typedef struct {
-  long long   timestamp; /**< Timestamp of the event */
-  int         line;      /**< Line number in the source code */
-  char*       rlt;       /**< Relative path of the source file */
-  char*       msg;       /**< Log message */
-  LogSeverity severity;  /**< Severity of the log event */
-} LogEvent;
+  /** Timestamp of the event. */
+  long long timestamp;
+  /** Line number in the source code. */
+  int line;
+  /** Relative path of the source file. */
+  char* rlt;
+  /** Log message. */
+  char* msg;
+  /** Severity of the log event. */
+  m3u8_logger_severity_t severity;
+} m3u8_logger_event_t;
 
 /**
- * @struct LogHandler
- * @brief Structure representing a log handler.
+ * @struct m3u8_logger_signature_t
+ * @brief Structure representing a log signature.
  */
 typedef struct {
-  char* name; /**< Name of the handler */
-  void* fnp;  /**< Function pointer to the handler */
-} LogHandler;
+  /** Name of the signature. */
+  char* name;
+  /** Function pointer to the signature. */
+  void* fnp;
+} m3u8_logger_signature_t;
 
 /**
- * @struct LogEventHandler
- * @brief Structure representing an event and its handler.
+ * @struct m3u8_logger_event_handler_t
+ * @brief Structure representing an event and its signature.
  */
 typedef struct {
-  LogEvent*   event;   /**< Pointer to the log event */
-  LogHandler* handler; /**< Log handler */
-} LogEventHandler;
+  /** Pointer to the log event. */
+  m3u8_logger_event_t* event;
+  /** Log signature. */
+  m3u8_logger_signature_t* signature;
+} m3u8_logger_event_handler_t;
 
 /**
- * @typedef log_handler
+ * @typedef m3u8_logger_handler_t
  * @brief Function pointer type for log handlers.
  */
-typedef void (*log_handler)(LogEvent event);
-
-/** */
+typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
 
 /**
- * @def LOGGER_BUFFER_SIZE
+ * @def M3U8_LOGGER_BUFFER_SIZE
  * @brief Size of the formatted log buffer.
  */
-#define LOGGER_BUFFER_SIZE      1024
+#define M3U8_LOGGER_BUFFER_SIZE      1024
 
 /**
- * @def LOGGER_SET_MAX_HANDLERS
+ * @def M3U8_LOGGER_SET_MAX_HANDLERS
  * @brief Maximum number of global log handlers.
  */
-#define LOGGER_SET_MAX_HANDLERS 100
+#define M3U8_LOGGER_SET_MAX_HANDLERS 100
 
 /**
- * @def TIME_FMT
+ * @def M3U8_LOGGER_TIME_FMT
  * @brief Format for date and time in logs.
  */
-#define TIME_FMT                "%d-%m-%Y %H:%M:%S"
+#define M3U8_LOGGER_TIME_FMT         "%d-%m-%Y %H:%M:%S"
 
 /**
- * @def PFX_SRC_PATH
+ * @def M3U8_LOGGER_PFX_SRC_PATH
  * @brief Prefix for source path in log messages.
  */
-#define PFX_SRC_PATH            "src"
-
-/**
- * @def LABEL
- * @brief Format for log labels.
- */
-#define LABEL                   " %s:%d - "
+#define M3U8_LOGGER_PFX_SRC_PATH     "src"
 
 /**
  * @def __RLT__
  * @brief Macro to get the relative path of the source file.
  */
-#define __RLT__ \
-  (strstr(__FILE__, PFX_SRC_PATH) ? strstr(__FILE__, PFX_SRC_PATH) : __FILE__)
+#define __RLT__                                   \
+  (strstr(__FILE__, M3U8_LOGGER_PFX_SRC_PATH)     \
+     ? strstr(__FILE__, M3U8_LOGGER_PFX_SRC_PATH) \
+     : __FILE__)
 
 /**
- * @def DEBUG
+ * @def M3U8_DEBUG
  * @brief Macro to log a debug message.
- *
  * @param message The debug message.
  * @param ... Additional arguments for the debug message.
  */
-#define DEBUG(message, ...) \
-  logger(message, __RLT__, __LINE__, DEBUG, ##__VA_ARGS__);
+#define M3U8_DEBUG(message, ...)                                   \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_DEBUG, \
+              ##__VA_ARGS__);
 
 /**
- * @def INFO
+ * @def M3U8_INFO
  * @brief Macro to log an informational message.
- *
  * @param message The informational message.
  * @param ... Additional arguments for the informational message.
  */
-#define INFO(message, ...) \
-  logger(message, __RLT__, __LINE__, INFO, ##__VA_ARGS__);
+#define M3U8_INFO(message, ...)                                   \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_INFO, \
+              ##__VA_ARGS__);
 
 /**
- * @def WARN
+ * @def M3U8_WARN
  * @brief Macro to log a warning message.
- *
  * @param message The warning message.
  * @param ... Additional arguments for the warning message.
  */
-#define WARN(message, ...) \
-  logger(message, __RLT__, __LINE__, WARN, ##__VA_ARGS__);
+#define M3U8_WARN(message, ...)                                   \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_WARN, \
+              ##__VA_ARGS__);
 
 /**
- * @def ERROR
+ * @def M3U8_ERROR
  * @brief Macro to log an error message.
- *
  * @param message The error message.
  * @param ... Additional arguments for the error message.
  */
-#define ERROR(message, ...) \
-  logger(message, __RLT__, __LINE__, ERROR, ##__VA_ARGS__);
+#define M3U8_ERROR(message, ...)                                   \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_ERROR, \
+              ##__VA_ARGS__);
 
 /**
- * @def CRIT
+ * @def M3U8_CRIT
  * @brief Macro to log a critical message.
- *
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define CRIT(message, ...) \
-  logger(message, __RLT__, __LINE__, CRIT, ##__VA_ARGS__);
+#define M3U8_CRIT(message, ...)                                   \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_CRIT, \
+              ##__VA_ARGS__);
 
 /**
- * @def RAISE
+ * @def M3U8_RAISE
  * @brief Macro to change status to bad code and go to clean up.
- *
  * @param __status The status code to set.
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define RAISE(__status, message, ...)                       \
-  logger(message, __RLT__, __LINE__, ERROR, ##__VA_ARGS__); \
-  status = __status;                                        \
+#define M3U8_RAISE(__status, message, ...)                         \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_ERROR, \
+              ##__VA_ARGS__);                                      \
+  status = __status;                                               \
   goto clean_up
-
-/**  */
 
 /**
  * @brief Writes a log event to stdout or stderr based on severity.
- *
  * @param event The log event to write.
  */
-static void logger_write_stdout_handler(LogEvent event) __attribute__((used));
+static void m3u8_logger_write_stdout_handler(m3u8_logger_event_t event)
+  __attribute__((used));
 
 /**
  * @brief Dummy function for handling log events to a file.
- *
  * @param event The log event to handle.
  */
-static void logger_write_file_handler(LogEvent event) __attribute__((used));
+static void m3u8_logger_write_file_handler(m3u8_logger_event_t event)
+  __attribute__((used));
 
 /**
- * @brief Call the thread-handler function with this wrapper.
- *
- * @param vargs The `LogEventHandler` will be injected here.
+ * @brief Call the thread-signature function with this wrapper.
+ * @param vargs The `m3u8_logger_event_handler_t` will be injected here.
  */
-static void* logger_pthread_handler_fn(void* vargs) __attribute__((used));
+static void* m3u8_logger_pthread_handler_fn(void* vargs) __attribute__((used));
 
 /**
  * @brief Logs a msg with the specified severity.
- *
  * @param msg The log msg.
  * @param rlt The relative path of the source file.
  * @param line The line number in the source file.
  * @param severity The severity of the log msg.
  * @param ... Additional arguments for the log msg.
  */
-void logger(char* msg, char* rlt, int line, LogSeverity severity, ...);
-
-/**  */
+void m3u8_logger(char* msg, char* rlt, int line,
+                 m3u8_logger_severity_t severity, ...);
 
 /**
- * @brief Adds a log handler to the logger.
- *
- * @param name The name of the log handler.
- * @param fnp The function pointer to the log handler.
- * @return int Status code indicating the result of the operation.
- * @retval LOGGER_NO_ERROR Success.
- * @retval LOGGER_HANDLER_LIMIT_ERROR Maximum number of handlers
- * exceeded.
+ * @brief Adds a log signature to the m3u8_logger.
+ * @param name The name of the log signature.
+ * @param fnp The function pointer to the log signature.
+ * @return @ref M3U8_LOGGER_NO_ERROR on success.
+ * @return @ref M3U8_LOGGER_HANDLER_LIMIT_ERROR if maximum number of handlers
+ *              is exceeded.
  */
-extern int logger_add_log_handler(char* name, log_handler fnp);
+extern int m3u8_logger_add_log_handler(char* name, m3u8_logger_handler_t fnp);
 
 /**
- * @brief Removes a log handler from the logger.
- *
- * @param name The name of the log handler to remove.
- * @return int Status code indicating the result of the operation.
- * @retval LOGGER_NO_ERROR Success.
- * @retval LOGGER_HANDLER_NOT_FOUND Handler not found.
+ * @brief Removes a log signature from the m3u8_logger.
+ * @param name The name of the log signature to remove.
+ * @return @ref M3U8_LOGGER_NO_ERROR on success.
+ * @return @ref M3U8_LOGGER_HANDLER_NOT_FOUND if signature is not found.
  */
-extern int logger_remove_log_handler(char* name);
+extern int m3u8_logger_remove_log_handler(char* name);
 
 /**
- * @brief Sets the log attribute for the logger.
- *
+ * @brief Sets the log attribute for the m3u8_logger.
  * @param attr The log attribute to set.
- * @return int Status code indicating the result of the operation.
- * @retval LOGGER_NO_ERROR Success.
- * @retval LOGGER_RESOURCE_ALLOCATION_PROBLEM Resource allocation
- * problem.
+ * @return @ref M3U8_LOGGER_NO_ERROR on success.
+ * @return @ref M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM if resource allocation
+ *              problem occurs.
  */
-extern int logger_set_log_attribute(LogAttribute attr);
+extern int m3u8_logger_set_log_attribute(m3u8_logger_attribute_t attr);
 
 #endif  // _M3U8_LOGGER_H_

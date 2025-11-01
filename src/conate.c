@@ -12,15 +12,15 @@ conate_status_t conate_timenow(long* obuff) {
   struct timeval  tv;
 
   if (obuff == NULL) {
-    RAISE(M3U8_CONATE_INVALID_POINTER, "Invalid argument obuff (null)");
+    M3U8_RAISE(M3U8_CONATE_INVALID_POINTER, "Invalid argument obuff (null)");
   }
 
   if (gettimeofday(&tv, NULL) != 0) {
-    RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
+    M3U8_RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
   }
 
   if (tv.tv_sec < 0) {
-    RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
+    M3U8_RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
   }
 
   *obuff = tv.tv_sec;
@@ -38,7 +38,7 @@ conate_status_t conate_timefmt(long* tms, char* obuff, int size,
   tm_info = localtime(&timestamp);
 
   if (strftime(obuff, size, fmt, tm_info) == 0) {
-    RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
+    M3U8_RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
   }
 
 clean_up:
@@ -54,7 +54,7 @@ conate_status_t conate_timefmt_utc(long* tms, char* obuff, int size,
   tm_info = gmtime(&timestamp);
 
   if (strftime(obuff, size, fmt, tm_info) == 0) {
-    RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
+    M3U8_RAISE(M3U8_CONATE_TIME_ERROR, "Invalid input type format");
   }
 
 clean_up:

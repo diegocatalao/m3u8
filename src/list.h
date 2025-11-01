@@ -2,7 +2,6 @@
  * @file list.h
  * @brief Circular doubly-linked list implementation for general use.
  */
-
 #ifndef _M3U8_LIST_H_
 #define _M3U8_LIST_H_
 
@@ -10,47 +9,38 @@
 #include <stddef.h>
 
 /**
- * @brief Operation completed successfully.
- *
- * @details Returned when a function completes without error.
+ * @enum m3u8_list_status_t
+ * @brief Represents the status of a list operation.
  */
-#define M3U8_LIST_STATUS_NO_ERROR      0x10000000
+typedef enum {
+  /** Operation completed successfully. */
+  M3U8_LIST_STATUS_NO_ERROR = 0,
+  /** Invalid argument received. */
+  M3U8_LIST_STATUS_INVALID_ARGS = 1,
+  /** Memory allocation failure. */
+  M3U8_LIST_STATUS_MEM_ALL_ERROR = 2,
+  /** Node not found in the list. */
+  M3U8_LIST_STATUS_NOT_FOUND = 3,
+  /** Unknown error occurred. */
+  M3U8_LIST_STATUS_UNKNOWN_ERROR = 99
+} m3u8_list_status_t;
 
 /**
- * @brief Invalid argument received.
- *
- * @details Returned when a parameter is NULL or otherwise invalid.
+ * @struct m3u8_list_node_t
+ * @brief Node structure for a circular doubly-linked list.
  */
-#define M3U8_LIST_STATUS_INVALID_ARGS  (M3U8_LIST_STATUS_NO_ERROR + 0x01)
-
-/**
- * @brief Memory allocation failure.
- *
- * @details Returned when memory allocation or reallocation fails.
- */
-#define M3U8_LIST_STATUS_MEM_ALL_ERROR (M3U8_LIST_STATUS_NO_ERROR + 0x02)
-
-/**
- * @brief Node not found in the list.
- *
- * @details Returned when a requested node cannot be located.
- */
-#define M3U8_LIST_STATUS_NOT_FOUND     (M3U8_LIST_STATUS_NO_ERROR + 0x03)
-
-/**
- * @brief Unknown error occurred.
- *
- * @details Returned when an unexpected or undefined error occurs.
- */
-#define M3U8_LIST_STATUS_UNKNOWN_ERROR (M3U8_LIST_STATUS_NO_ERROR + 0x99)
+typedef struct m3u8_list_node {
+  /** Pointer to the next node. */
+  struct m3u8_list_node* next;
+  /** Pointer to the previous node. */
+  struct m3u8_list_node* prev;
+} m3u8_list_node_t;
 
 /**
  * @brief Retrieves the structure containing a given member pointer.
- *
  * @param ptr    Pointer to the member.
  * @param type   Structure type.
  * @param member Member name.
- *
  * @return Pointer to the containing structure.
  */
 #define m3u8_list_container_of(ptr, type, member) \
@@ -58,10 +48,8 @@
 
 /**
  * @brief Gets the next entry in the list.
- *
  * @param pos    Pointer to the current structure.
  * @param member Name of the list field in the structure.
- * 
  * @return Pointer to the next structure.
  */
 #define m3u8_list_next(pos, type, member) \
@@ -69,11 +57,9 @@
 
 /**
  * @brief Gets the previous entry in the list.
- *
  * @param pos    Pointer to the current structure.
  * @param type   Structure type.
  * @param member Name of the list field in the structure.
- *
  * @return Pointer to the previous structure.
  */
 #define m3u8_list_prev(pos, type, member) \
@@ -81,7 +67,6 @@
 
 /**
  * @brief Iterates over elements of a circular doubly-linked list.
- *
  * @param entry  Loop variable of type (type*).
  * @param head   Pointer to the list head node.
  * @param type   Structure type.
@@ -94,76 +79,58 @@
        _pos = _pos->next)
 
 /**
- * @struct m3u8_list_node_t
- * @brief Node structure for a circular doubly-linked list.
- */
-typedef struct m3u8_list_node {
-  struct m3u8_list_node* next; /**< Pointer to the next node. */
-  struct m3u8_list_node* prev; /**< Pointer to the previous node. */
-} m3u8_list_node_t;
-
-/**
  * @brief Initializes a circular list head node.
- *
- * @param[out] head Pointer to a list node to initialize.
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If head is NULL.
+ * @param head Pointer to a list node to initialize.
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p head is NULL.
  */
-int m3u8_list_init(m3u8_list_node_t* head);
+m3u8_list_status_t m3u8_list_init(m3u8_list_node_t* head);
 
 /**
  * @brief Inserts a node after the head node.
- *
- * @param[in] head Pointer to the head node.
- * @param[in] node Pointer to the node to insert.
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
+ * @param head Pointer to the head node.
+ * @param node Pointer to the node to insert.
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p head or @p node is NULL.
  */
-int m3u8_list_ina(m3u8_list_node_t* head, m3u8_list_node_t* node);
+m3u8_list_status_t m3u8_list_ina(m3u8_list_node_t* head,
+                                 m3u8_list_node_t* node);
 
 /**
  * @brief Inserts a node before the head node.
- *
- * @param[in] head Pointer to the head node.
- * @param[in] node Pointer to the node to insert.
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
+ * @param head Pointer to the head node.
+ * @param node Pointer to the node to insert.
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p head or @p node is NULL.
  */
-int m3u8_list_inb(m3u8_list_node_t* head, m3u8_list_node_t* node);
+m3u8_list_status_t m3u8_list_inb(m3u8_list_node_t* head,
+                                 m3u8_list_node_t* node);
 
 /**
  * @brief Removes a node from the list.
- *
- * @param[in] node Pointer to the node to remove.
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If node or its links are NULL.
+ * @param node Pointer to the node to remove.
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p node is NULL.
  */
-int m3u8_list_remove(m3u8_list_node_t* node);
+m3u8_list_status_t m3u8_list_remove(m3u8_list_node_t* node);
 
 /**
  * @brief Checks whether the list is empty.
- *
- * @param[in]  head     Pointer to the list head.
- * @param[out] is_empty Output flag (true if empty).
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
+ * @param head     Pointer to the list head.
+ * @param is_empty Output flag (true if empty).
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p head or @p is_empty is NULL.
  */
-int m3u8_list_is_empty(const m3u8_list_node_t* head, bool* is_empty);
+m3u8_list_status_t m3u8_list_is_empty(const m3u8_list_node_t* head,
+                                      bool*                   is_empty);
 
 /**
  * @brief Counts the nodes in the list (excluding head).
- *
- * @param[in]  head Pointer to the list head.
- * @param[out] size Output pointer for node count.
- *
- * @retval M3U8_LIST_STATUS_NO_ERROR      On success.
- * @retval M3U8_LIST_STATUS_INVALID_ARGS  If any pointer is NULL.
+ * @param head Pointer to the list head.
+ * @param size Output pointer for node count.
+ * @return @ref M3U8_LIST_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_LIST_STATUS_INVALID_ARGS if @p head or @p size is NULL.
  */
-int m3u8_list_count(const m3u8_list_node_t* head, int* size);
+m3u8_list_status_t m3u8_list_count(const m3u8_list_node_t* head, int* size);
 
 #endif  // _M3U8_LIST_H_

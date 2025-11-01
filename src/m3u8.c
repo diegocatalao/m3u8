@@ -4,25 +4,26 @@
 
 #include "logger.h"
 #include "m3u8.h"
-#include "manifest.h"
-#include "playlist.h"
+#include "master.h"
+#include "media.h"
+#include "validate.h"
 
 m3u8_status_t m3u8_create(m3u8_t** m3u8) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
 
   if (m3u8 == NULL) {
-    RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
   }
 
   if ((*m3u8 = (m3u8_t*)malloc(sizeof(m3u8_t))) == NULL) {
-    RAISE(M3U8_STATUS_MEM_ALLOC_ERROR, "Failed to allocate m3u8");
+    M3U8_RAISE(M3U8_STATUS_MEM_ALLOC_ERROR, "Failed to allocate m3u8");
   }
 
   memset(m3u8, 0, sizeof(m3u8_t));
 
   /** must be allocated before */
-  (*m3u8)->manifest = NULL;
-  (*m3u8)->playlist = NULL;
+  (*m3u8)->master = NULL;
+  (*m3u8)->media = NULL;
 
 clean_up:
   return status;
@@ -32,23 +33,23 @@ m3u8_status_t m3u8_destroy(m3u8_t* m3u8) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
 
   if (m3u8 == NULL) {
-    RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
   }
 
-  if (m3u8_manifest_destroy(m3u8->manifest) != M3U8_MANIFEST_STATUS_NO_ERROR) {
-    RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy manifest");
+  if (m3u8_manifest_destroy(m3u8->master) != M3U8_MANIFEST_STATUS_NO_ERROR) {
+    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy master");
   }
 
-  if (m3u8_playlist_destroy(m3u8->playlist) != M3U8_PLAYLIST_STATUS_NO_ERROR) {
-    RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy playlist");
+  if (m3u8_media_destroy(m3u8->media) != M3U8_MEDIA_STATUS_NO_ERROR) {
+    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy media");
   }
 
-  if (m3u8->manifest != NULL) {
-    m3u8_manifest_destroy(m3u8->manifest);
+  if (m3u8->master != NULL) {
+    m3u8_manifest_destroy(m3u8->master);
   }
 
-  if (m3u8->playlist != NULL) {
-    m3u8_playlist_destroy(m3u8->playlist);
+  if (m3u8->media != NULL) {
+    m3u8_media_destroy(m3u8->media);
   }
 
   free(m3u8);
@@ -61,29 +62,42 @@ m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
 
   if (m3u8 == NULL || buffer == NULL) {
-    RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 or buffer (null)");
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG,
+               "Invalid argument m3u8 or buffer (null)");
   }
 
-  manifest_type_t type = m3u8_get_playlist_type(buffer);
+  playlist_type_t type = m3u8_get_playlist_type(buffer);
 
   switch (type) {
-    case MASTER_PLAYLIST:
+    case M3U8_MASTER_PLAYLIST:
       status = m3u8_manifest_parse(m3u8, buffer);
       break;
-    case MEDIA_PLAYLIST:
+    case M3U8_MEDIA_PLAYLIST:
       status = m3u8_playlist_parse(m3u8, buffer);
       break;
-    case UNKNOWN_PLAYLIST:
-      RAISE(M3U8_STATUS_INVALID_MANIFEST, "Invalid manifest type");
+    case M3U8_UNKNOWN_PLAYLIST:
+      M3U8_RAISE(M3U8_STATUS_INVALID_MASTER_PLAYLIST, "Invalid master type");
   }
 
 clean_up:
   return status;
 }
 
-manifest_type_t m3u8_get_playlist_type(const char* buffer) {
+m3u8_status_t m3u8_validate_master_playlist(master_t* master) {
+  m3u8_status_t status = M3U8_STATUS_NO_ERROR;
+clean_up:
+  return 0;
+}
+
+m3u8_status_t m3u8_validate_media_playlist(media_t* media) {
+  m3u8_status_t status = M3U8_STATUS_NO_ERROR;
+clean_up:
+  return 0;
+}
+
+playlist_type_t m3u8_get_playlist_type(const char* buffer) {
   if (buffer == NULL) {
-    return UNKNOWN_PLAYLIST;
+    return M3U8_UNKNOWN_PLAYLIST;
   }
 
   const char* cursor = buffer;
@@ -97,17 +111,17 @@ manifest_type_t m3u8_get_playlist_type(const char* buffer) {
       break;
     }
 
-    if (strncmp(cursor, "#EXT-X-STREAM-INF:", 18) == 0) {
+    if (strncmp(cursor, "EXT-X-STREAM-INF:", 18) == 0) {
       /** https://datatracker.ietf.org/doc/html/rfc8216#section-4.3.4.2 */
-      return MASTER_PLAYLIST;
-    } else if (strncmp(cursor, "#EXT-X-TARGETDURATION:", 22) == 0) {
+      return M3U8_MASTER_PLAYLIST;
+    } else if (strncmp(cursor, "EXT-X-TARGETDURATION:", 22) == 0) {
       /** https://datatracker.ietf.org/doc/html/rfc8216#section-4.3.3.1 */
-      return MEDIA_PLAYLIST;
+      return M3U8_MEDIA_PLAYLIST;
     } else if (strncmp(cursor, "#EXTINF:", 8) == 0) {
       /** https://datatracker.ietf.org/doc/html/rfc8216#section-4.3.2.1 */
-      return MEDIA_PLAYLIST;
+      return M3U8_MEDIA_PLAYLIST;
     } else {
-      DEBUG("No markup tag was found in the buffer: %s", cursor);
+      M3U8_DEBUG("No markup tag was found in the buffer: %s", cursor);
     }
 
     if ((cursor = strchr(cursor, '\n')) != NULL) {
@@ -115,5 +129,5 @@ manifest_type_t m3u8_get_playlist_type(const char* buffer) {
     }
   }
 
-  return UNKNOWN_PLAYLIST;
+  return M3U8_UNKNOWN_PLAYLIST;
 }
