@@ -207,7 +207,7 @@ typedef struct {
  * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
  * @return @ref M3U8_MANIFEST_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_manifest_status_t m3u8_manifest_create(master_t** master);
+m3u8_manifest_status_t m3u8_master_create(master_t** master);
 
 /**
  * @brief Destroys an M3U8 master playlist object.
@@ -215,7 +215,7 @@ m3u8_manifest_status_t m3u8_manifest_create(master_t** master);
  * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
  * @return @ref M3U8_MANIFEST_STATUS_INVALID_ARG if @p master is NULL.
  */
-m3u8_manifest_status_t m3u8_manifest_destroy(master_t* master);
+m3u8_manifest_status_t m3u8_master_destroy(master_t* master);
 
 /**
  * @brief Validates the integrity and conformance of a master playlist object.
@@ -223,7 +223,7 @@ m3u8_manifest_status_t m3u8_manifest_destroy(master_t* master);
  * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR if the playlist is valid.
  * @return @ref M3U8_MANIFEST_STATUS_INVALID_MANIFEST if validation fails.
  */
-m3u8_manifest_status_t m3u8_manifest_validate(master_t* master);
+m3u8_manifest_status_t m3u8_master_validate(master_t* master);
 
 /**
  * @brief Parses an M3U8 master playlist from a string.
@@ -232,6 +232,6 @@ m3u8_manifest_status_t m3u8_manifest_validate(master_t* master);
  * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
  * @return @ref M3U8_MANIFEST_STATUS_INVALID_MANIFEST if parsing fails.
  */
-m3u8_manifest_status_t m3u8_manifest_parse(master_t* master, char* buffer);
+m3u8_manifest_status_t m3u8_master_parse(master_t* master, char* buffer);
 
 #endif  // _M3U8_MASTER_H_

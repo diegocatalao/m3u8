@@ -178,7 +178,7 @@ m3u8_media_status_t m3u8_media_destroy(media_t* media);
  * @return @ref M3U8_MEDIA_STATUS_NO_ERROR if the playlist is valid.
  * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if validation fails.
  */
-m3u8_media_status_t m3u8_playlist_validate(media_t* media);
+m3u8_media_status_t m3u8_media_validate(media_t* media);
 
 /**
  * @brief Parses an M3U8 media playlist from a string.
@@ -187,6 +187,6 @@ m3u8_media_status_t m3u8_playlist_validate(media_t* media);
  * @return @ref M3U8_MEDIA_STATUS_NO_ERROR on success.
  * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if parsing fails.
  */
-m3u8_media_status_t m3u8_playlist_parse(media_t* media, char* buffer);
+m3u8_media_status_t m3u8_media_parse(media_t* media, char* buffer);
 
 #endif  // _M3U8_MEDIA_H_
