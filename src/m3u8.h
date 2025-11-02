@@ -76,7 +76,7 @@ m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer);
  * @return @ref M3U8_STATUS_INVALID_MANIFEST if the master playlist is invalid.
  * @return @ref M3U8_STATUS_INVALID_PLAYLIST if the media playlist is invalid.
  */
-m3u8_status_t m3u8_validate_manifest(m3u8_t* m3u8);
+m3u8_status_t m3u8_validate(m3u8_t* m3u8);
 
 /**
  * @brief Validates a master playlist against HLS specification rules.
