@@ -1,10 +1,8 @@
 /**
- * @file attr.h
- * @brief Key-value attribute parsing for M3U8 playlists.
+ * @file parser.h
  */
-
-#ifndef _M3U8_ATTR_H_
-#define _M3U8_ATTR_H_
+#ifndef _M3U8_PARSER_H_
+#define _M3U8_PARSER_H_
 
 #include "list.h"
 
@@ -45,7 +43,8 @@ typedef struct {
 /**
  * @brief Parses a buffer containing key-value attributes.
  * @param buffer The null-terminated string containing tag attributes.
- * @param attrs  Pointer to an @ref m3u8_attr_t structure where parsed attributes will be stored.
+ * @param attrs  Pointer to an @ref m3u8_attr_t structure where parsed
+ *               attributes will be stored.
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
  * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p buffer or @p attrs is NULL.
  * @return @ref M3U8_ATTR_STATUS_MEM_ALLOC_ERROR if memory allocation fails.
@@ -61,7 +60,8 @@ int m3u8_attr_parse(char* buffer, m3u8_attr_t* attrs);
  * @param key   The key of the attribute to find.
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
  * @return @ref M3U8_ATTR_STATUS_NOT_FOUND if the key is not found.
- * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs, @p attr, or @p key is NULL.
+ * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs, @p attr, or @p key
+ *                                           is NULL.
  */
 m3u8_attr_status_t m3u8_attr_from_key(m3u8_attr_t* attrs, m3u8_attr_t** attr,
                                       char* key);
@@ -83,4 +83,4 @@ m3u8_attr_status_t m3u8_attr_count(m3u8_attr_t* attrs, int* size);
  */
 m3u8_attr_status_t m3u8_attr_destroy(m3u8_attr_t* attrs);
 
-#endif  // _M3U8_ATTR_H_
+#endif  // _M3U8_PARSER_H_
