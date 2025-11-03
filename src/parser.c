@@ -141,11 +141,15 @@ clean_up:
   return status;
 }
 
-m3u8_parser_status_t m3u8_parser_from_str(const char*     buffer,
-                                          m3u8_parser_t** parser) {
+m3u8_parser_status_t m3u8_parser_from_str(const char*    buffer,
+                                          m3u8_parser_t* parser) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
+clean_up:
+  return status;
 }
 
 m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* buffer) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
+clean_up:
+  return status;
 }
