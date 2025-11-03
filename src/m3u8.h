@@ -15,21 +15,21 @@
 
 /** @brief Represents the status of an M3U8 operation. */
 typedef enum {
-  M3U8_STATUS_NO_ERROR = 0,                /**< No error occurred */
-  M3U8_STATUS_INVALID_ARG = 1,             /**< Invalid argument provided */
-  M3U8_STATUS_MEM_ALLOC_ERROR = 2,         /**< Memory allocation error */
-  M3U8_STATUS_INVALID_MASTER_PLAYLIST = 3, /**< Invalid master format */
-  M3U8_STATUS_INVALID_MEDIA_PLAYLIST = 4,  /**< Invalid media format */
-  M3U8_STATUS_INVALID_ATTRS = 5,           /**< Invalid attributes format */
-  M3U8_STATUS_UNKNOWN_ERROR = 6,           /**< Unknown or unexpected error */
+  /** No error occurred */
+  M3U8_STATUS_NO_ERROR = 0,
+  /** Invalid argument provided */
+  M3U8_STATUS_INVALID_ARG = 1,
+  /** Memory allocation error */
+  M3U8_STATUS_MEM_ALLOC_ERROR = 2,
+  /** Invalid master format */
+  M3U8_STATUS_INVALID_MASTER_PLAYLIST = 3,
+  /** Invalid media format */
+  M3U8_STATUS_INVALID_MEDIA_PLAYLIST = 4,
+  /** Invalid attributes format */
+  M3U8_STATUS_INVALID_ATTRS = 5,
+  /** Unknown or unexpected error */
+  M3U8_STATUS_UNKNOWN_ERROR = 6,
 } m3u8_status_t;
-
-/** @brief Represents the type of an M3U8 media. */
-typedef enum {
-  M3U8_MASTER_PLAYLIST,  /**< Represents a master media */
-  M3U8_MEDIA_PLAYLIST,   /**< Represents a media media */
-  M3U8_UNKNOWN_PLAYLIST, /**< Represents a unknown media */
-} playlist_type_t;
 
 /** @brief Represents an M3U8 media, which can be a master or media. */
 typedef struct {
