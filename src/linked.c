@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "linked.h"
-#include "logger/logger.h"
+#include "logger.h"
 
 m3u8_linked_status_t m3u8_linked_init(m3u8_linked_node_t* head) {
   m3u8_linked_status_t status = M3U8_LINKED_STATUS_NO_ERROR;
