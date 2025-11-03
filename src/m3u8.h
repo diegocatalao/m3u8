@@ -93,14 +93,4 @@ m3u8_status_t m3u8_validate_master_playlist(master_t* master);
  */
 m3u8_status_t m3u8_validate_media_playlist(media_t* media);
 
-/**
- * @brief Check if is a master or media media.
- * @param buffer string of current master.
- * @return @ref M3U8_MASTER_PLAYLIST a master media from buffer.
- * @return @ref M3U8_MEDIA_PLAYLIST a media media from buffer.
- * @return @ref M3U8_UNKNOWN_PLAYLIST a unknown media if no valid arguments are
- *              received.
- */
-playlist_type_t m3u8_get_playlist_type(const char* buffer);
-
 #endif  // _M3U8_H_
