@@ -36,20 +36,20 @@ m3u8_status_t m3u8_destroy(m3u8_t* m3u8) {
     M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
   }
 
-  if (m3u8_manifest_destroy(m3u8->master) != M3U8_MANIFEST_STATUS_NO_ERROR) {
-    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy master");
-  }
-
-  if (m3u8_media_destroy(m3u8->media) != M3U8_MEDIA_STATUS_NO_ERROR) {
-    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy media");
-  }
-
-  if (m3u8->master != NULL) {
-    m3u8_manifest_destroy(m3u8->master);
+  if (m3u8->master == NULL) {
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument master (null)");
   }
 
   if (m3u8->media != NULL) {
-    m3u8_media_destroy(m3u8->media);
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument media (null)");
+  }
+
+  if (!m3u8_master_destroy(m3u8->master)) {
+    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy master");
+  }
+
+  if (!m3u8_media_destroy(m3u8->media)) {
+    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy media");
   }
 
   free(m3u8);
@@ -60,25 +60,6 @@ clean_up:
 
 m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
-
-  if (m3u8 == NULL || buffer == NULL) {
-    M3U8_RAISE(M3U8_STATUS_INVALID_ARG,
-               "Invalid argument m3u8 or buffer (null)");
-  }
-
-  playlist_type_t type = m3u8_get_playlist_type(buffer);
-
-  switch (type) {
-    case M3U8_MASTER_PLAYLIST:
-      status = m3u8_manifest_parse(m3u8, buffer);
-      break;
-    case M3U8_MEDIA_PLAYLIST:
-      status = m3u8_playlist_parse(m3u8, buffer);
-      break;
-    case M3U8_UNKNOWN_PLAYLIST:
-      M3U8_RAISE(M3U8_STATUS_INVALID_MASTER_PLAYLIST, "Invalid master type");
-  }
-
 clean_up:
   return status;
 }
