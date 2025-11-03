@@ -10,14 +10,18 @@
 typedef enum {
   /** Operation completed successfully. */
   M3U8_LOGGER_NO_ERROR = 0,
+  /** Invalid argument received in function */
+  M3U8_LOGGER_INVALID_ARG = 1,
   /** Resource allocation problem. */
-  M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM = 1,
+  M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM = 2,
   /** Maximum number of handlers exceeded. */
-  M3U8_LOGGER_HANDLER_LIMIT_ERROR = 2,
+  M3U8_LOGGER_HANDLER_LIMIT_ERROR = 3,
   /** Log signature not found. */
-  M3U8_LOGGER_HANDLER_NOT_FOUND = 3,
+  M3U8_LOGGER_HANDLER_NOT_FOUND = 4,
   /** Log attribute already initialized. */
-  M3U8_LOGGER_LOG_ATTR_ALREADY_INITIALIZED = 4,
+  M3U8_LOGGER_LOG_ATTR_ALREADY_INITIALIZED = 5,
+  /** Received an invalid time error from some function */
+  M3U8_LOGGER_TIME_ERROR = 6,
 } m3u8_logger_status_t;
 
 /**
@@ -26,21 +30,21 @@ typedef enum {
  */
 typedef enum {
   /** Detailed information */
-  M3U8_LOG_SEVERITY_VERBOSE = 0,
+  M3U8_LOGGER_SEVERITY_VERBOSE = 0,
   /** General information */
-  M3U8_LOG_SEVERITY_INFO = 1,
+  M3U8_LOGGER_SEVERITY_INFO = 1,
   /** Debugging information */
-  M3U8_LOG_SEVERITY_DEBUG = 2,
+  M3U8_LOGGER_SEVERITY_DEBUG = 2,
   /** Warning conditions */
-  M3U8_LOG_SEVERITY_WARN = 3,
+  M3U8_LOGGER_SEVERITY_WARN = 3,
   /** Error conditions */
-  M3U8_LOG_SEVERITY_ERROR = 4,
+  M3U8_LOGGER_SEVERITY_ERROR = 4,
   /** Critical conditions */
-  M3U8_LOG_SEVERITY_CRIT = 5,
+  M3U8_LOGGER_SEVERITY_CRIT = 5,
 } m3u8_logger_severity_t;
 
 /**
- * @struct m3u8_logger_attribute_t
+ * @struct m3u8_logger_attr_t
  * @brief Attributes for configuring log files.
  */
 typedef struct {
@@ -48,7 +52,7 @@ typedef struct {
   char* path;
   /** Maximum size of a log lines in file. */
   int max_line_size;
-} m3u8_logger_attribute_t;
+} m3u8_logger_attr_t;
 
 /**
  * @struct m3u8_logger_event_t
@@ -134,8 +138,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The debug message.
  * @param ... Additional arguments for the debug message.
  */
-#define M3U8_DEBUG(message, ...)                                   \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_DEBUG, \
+#define M3U8_DEBUG(message, ...)                                      \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_DEBUG, \
               ##__VA_ARGS__);
 
 /**
@@ -144,8 +148,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The informational message.
  * @param ... Additional arguments for the informational message.
  */
-#define M3U8_INFO(message, ...)                                   \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_INFO, \
+#define M3U8_INFO(message, ...)                                      \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_INFO, \
               ##__VA_ARGS__);
 
 /**
@@ -154,8 +158,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The warning message.
  * @param ... Additional arguments for the warning message.
  */
-#define M3U8_WARN(message, ...)                                   \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_WARN, \
+#define M3U8_WARN(message, ...)                                      \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_WARN, \
               ##__VA_ARGS__);
 
 /**
@@ -164,8 +168,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The error message.
  * @param ... Additional arguments for the error message.
  */
-#define M3U8_ERROR(message, ...)                                   \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_ERROR, \
+#define M3U8_ERROR(message, ...)                                      \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
               ##__VA_ARGS__);
 
 /**
@@ -174,8 +178,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define M3U8_CRIT(message, ...)                                   \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_CRIT, \
+#define M3U8_CRIT(message, ...)                                      \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_CRIT, \
               ##__VA_ARGS__);
 
 /**
@@ -185,11 +189,32 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define M3U8_RAISE(__status, message, ...)                         \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOG_SEVERITY_ERROR, \
-              ##__VA_ARGS__);                                      \
-  status = __status;                                               \
+#define M3U8_RAISE(__status, message, ...)                            \
+  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
+              ##__VA_ARGS__);                                         \
+  status = __status;                                                  \
   goto clean_up
+
+/**
+ * @brief Gets the current time as a Unix timestamp.
+ * @param obuff Pointer to a long integer to store the timestamp.
+ * @return @ref CONATE_NO_ERROR on success.
+ * @return @ref CONATE_INVALID_POINTER if @p obuff is NULL.
+ * @return @ref CONATE_TIME_ERROR on failure to get time.
+ */
+m3u8_logger_status_t m3u8_logger_timenow(long* obuff);
+
+/**
+ * @brief Formats a timestamp into a string.
+ * @param tms   Pointer to the timestamp to format.
+ * @param obuff Output buffer for the formatted string.
+ * @param size  Size of the output buffer.
+ * @param fmt   The format string (e.g., "%Y-%m-%d").
+ * @return @ref CONATE_NO_ERROR on success.
+ * @return @ref CONATE_INVALID_POINTER if @p tms or @p obuff is NULL.
+ */
+m3u8_logger_status_t m3u8_logger_timefmt(long* tms, char* obuff, int size,
+                                         const char* fmt);
 
 /**
  * @brief Writes a log event to stdout or stderr based on severity.
@@ -230,7 +255,8 @@ void m3u8_logger(char* msg, char* rlt, int line,
  * @return @ref M3U8_LOGGER_HANDLER_LIMIT_ERROR if maximum number of handlers
  *              is exceeded.
  */
-extern int m3u8_logger_add_log_handler(char* name, m3u8_logger_handler_t fnp);
+m3u8_logger_status_t m3u8_logger_add_log_handler(char*                 name,
+                                                 m3u8_logger_handler_t fnp);
 
 /**
  * @brief Removes a log signature from the m3u8_logger.
@@ -238,7 +264,7 @@ extern int m3u8_logger_add_log_handler(char* name, m3u8_logger_handler_t fnp);
  * @return @ref M3U8_LOGGER_NO_ERROR on success.
  * @return @ref M3U8_LOGGER_HANDLER_NOT_FOUND if signature is not found.
  */
-extern int m3u8_logger_remove_log_handler(char* name);
+m3u8_logger_status_t m3u8_logger_remove_log_handler(char* name);
 
 /**
  * @brief Sets the log attribute for the m3u8_logger.
@@ -247,6 +273,6 @@ extern int m3u8_logger_remove_log_handler(char* name);
  * @return @ref M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM if resource allocation
  *              problem occurs.
  */
-extern int m3u8_logger_set_log_attribute(m3u8_logger_attribute_t attr);
+m3u8_logger_status_t m3u8_logger_set_log_attribute(m3u8_logger_attr_t attr);
 
 #endif  // _M3U8_LOGGER_H_

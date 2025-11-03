@@ -11,14 +11,12 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include "conate.h"
-
-static m3u8_logger_attribute_t* __log_attribute = NULL;
+static m3u8_logger_attr_t* __log_attribute = NULL;
 
 static const char* str_log_severities[] = {
-  "M3U8_LOG_SEVERITY_VERBOSE", "M3U8_LOG_SEVERITY_INFO",
-  "M3U8_LOG_SEVERITY_DEBUG",   "M3U8_LOG_SEVERITY_WARN",
-  "M3U8_LOG_SEVERITY_ERROR",   "M3U8_LOG_SEVERITY_CRIT",
+  "M3U8_LOGGER_SEVERITY_VERBOSE", "M3U8_LOGGER_SEVERITY_INFO",
+  "M3U8_LOGGER_SEVERITY_DEBUG",   "M3U8_LOGGER_SEVERITY_WARN",
+  "M3U8_LOGGER_SEVERITY_ERROR",   "M3U8_LOGGER_SEVERITY_CRIT",
 };
 
 static m3u8_logger_signature_t
@@ -37,23 +35,61 @@ static m3u8_logger_signature_t
 static pthread_mutex_t write_file_handler_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t write_stdout_handler_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+m3u8_logger_status_t m3u8_logger_timenow(long* obuff) {
+  m3u8_logger_status_t status = M3U8_LOGGER_NO_ERROR;
+  struct timeval       tv;
+
+  if (obuff == NULL) {
+    M3U8_RAISE(M3U8_LOGGER_INVALID_ARG, "Invalid argument obuff (null)");
+  }
+
+  if (gettimeofday(&tv, NULL) != 0) {
+    M3U8_RAISE(M3U8_LOGGER_TIME_ERROR, "Invalid input type format");
+  }
+
+  if (tv.tv_sec < 0) {
+    M3U8_RAISE(M3U8_LOGGER_TIME_ERROR, "Invalid input type format");
+  }
+
+  *obuff = tv.tv_sec;
+
+clean_up:
+  return status;
+}
+
+m3u8_logger_status_t m3u8_logger_timefmt(long* tms, char* obuff, int size,
+                                         const char* fmt) {
+  m3u8_logger_status_t status = M3U8_LOGGER_NO_ERROR;
+  struct tm*           tm_info;
+  time_t               timestamp = (time_t)(*tms);
+
+  tm_info = localtime(&timestamp);
+
+  if (strftime(obuff, size, fmt, tm_info) == 0) {
+    M3U8_RAISE(M3U8_LOGGER_TIME_ERROR, "Invalid input type format");
+  }
+
+clean_up:
+  return status;
+}
+
 static void m3u8_logger_write_stdout_handler(m3u8_logger_event_t event) {
   pthread_mutex_lock(&write_stdout_handler_mutex);
 
   char        obuff[64];
   const char* msg = "[%s][%s] - %s:%d - %s\n";
-  FILE* outf = (event.severity > M3U8_LOG_SEVERITY_DEBUG ? stderr : stdout);
+  FILE* outf = (event.severity > M3U8_LOGGER_SEVERITY_DEBUG ? stderr : stdout);
 
   const char* cseverity = str_log_severities[event.severity];
 
   long tms;
 
-  if (conate_timenow(&tms) != M3U8_CONATE_NO_ERROR) {
+  if (!m3u8_logger_timenow(&tms)) {
     tms = 0;
   }
 
-  if (conate_timefmt(&tms, obuff, sizeof(obuff), M3U8_LOGGER_TIME_FMT) !=
-      M3U8_CONATE_NO_ERROR) {
+  if (m3u8_logger_timefmt(&tms, obuff, sizeof(obuff), M3U8_LOGGER_TIME_FMT) !=
+      M3U8_LOGGER_NO_ERROR) {
     snprintf(obuff, sizeof(obuff), "UNKNOWN_TIME");
   }
 
@@ -98,12 +134,12 @@ static void m3u8_logger_write_file_handler(m3u8_logger_event_t event) {
 
   long tms;
 
-  if (conate_timenow(&tms) != M3U8_CONATE_NO_ERROR) {
+  if (!conate_timenow(&tms)) {
     tms = 0;
   }
 
   if (conate_timefmt(&tms, obuff, sizeof(obuff), M3U8_LOGGER_TIME_FMT) !=
-      M3U8_CONATE_NO_ERROR) {
+      M3U8_LOGGER_NO_ERROR) {
     snprintf(obuff, sizeof(obuff), "UNKNOWN_TIME");
   }
 
@@ -173,7 +209,8 @@ void m3u8_logger(char* msg, char* rlt, int line,
   }
 }
 
-int m3u8_logger_add_log_handler(char* name, m3u8_logger_handler_t fnp) {
+m3u8_logger_status_t m3u8_logger_add_log_handler(char*                 name,
+                                                 m3u8_logger_handler_t fnp) {
   int status = M3U8_LOGGER_NO_ERROR;
 
   int                     sent_index = -1;
@@ -205,7 +242,7 @@ clean_up:
   return status;
 }
 
-int m3u8_logger_remove_log_handler(char* name) {
+m3u8_logger_status_t m3u8_logger_remove_log_handler(char* name) {
   int status = M3U8_LOGGER_NO_ERROR;
 
   int n = 0;
@@ -236,7 +273,7 @@ clean_up:
   return status;
 }
 
-int m3u8_logger_set_log_attribute(m3u8_logger_attribute_t attr) {
+m3u8_logger_status_t m3u8_logger_set_log_attribute(m3u8_logger_attr_t attr) {
   int status = M3U8_LOGGER_NO_ERROR;
 
   if (__log_attribute != NULL) {
@@ -244,12 +281,12 @@ int m3u8_logger_set_log_attribute(m3u8_logger_attribute_t attr) {
     goto clean_up;
   }
 
-  if ((__log_attribute = malloc(sizeof(m3u8_logger_attribute_t))) == NULL) {
+  if ((__log_attribute = malloc(sizeof(m3u8_logger_attr_t))) == NULL) {
     status = M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM;
     goto clean_up;
   }
 
-  if (memset(__log_attribute, 0, sizeof(m3u8_logger_attribute_t)) == NULL) {
+  if (memset(__log_attribute, 0, sizeof(m3u8_logger_attr_t)) == NULL) {
     status = M3U8_LOGGER_RESOURCE_ALLOCATION_PROBLEM;
     goto clean_up;
   }
