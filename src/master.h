@@ -1,10 +1,10 @@
 #ifndef _M3U8_MASTER_H_
 #define _M3U8_MASTER_H_
 
+#include "linked.h"
+
 #include <stdbool.h>
 #include <stdint.h>
-
-#include "list.h"
 
 /**
  * @enum m3u8_manifest_status_t

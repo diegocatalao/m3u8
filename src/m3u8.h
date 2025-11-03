@@ -8,11 +8,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "attr.h"
-#include "list.h"
-#include "master.h"
-#include "media.h"
-
 /** @brief Represents the status of an M3U8 operation. */
 typedef enum {
   /** No error occurred */
