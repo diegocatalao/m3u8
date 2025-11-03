@@ -152,8 +152,8 @@ m3u8_parser_status_t m3u8_parser_attr_destroy(m3u8_parser_attr_t* attrs);
  * @return @ref M3U8_PARSER_STATUS_INVALID_ARG if @p buffer or @p parser is NULL.
  * @return @ref M3U8_PARSER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_parser_status_t m3u8_parser_from_str(const char*     buffer,
-                                          m3u8_parser_t** parser);
+m3u8_parser_status_t m3u8_parser_from_str(const char*    buffer,
+                                          m3u8_parser_t* parser);
 
 /**
  * @brief Check if is a master or media media.
