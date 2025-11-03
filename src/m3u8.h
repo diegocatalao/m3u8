@@ -79,24 +79,4 @@ m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer);
  */
 m3u8_status_t m3u8_validate(m3u8_t* m3u8);
 
-/**
- * @brief Validates a master playlist against HLS specification rules.
- * @param master pointer to a @ref master_t structure to be validated.
- * @return @ref M3U8_STATUS_NO_ERROR on success.
- * @return @ref M3U8_STATUS_INVALID_ARG if @p master is NULL.
- * @return @ref M3U8_STATUS_INVALID_MASTER_PLAYLIST if the playlist fails
- *              validation.
- */
-m3u8_status_t m3u8_validate_master_playlist(master_t* master);
-
-/**
- * @brief Validates a media playlist against HLS specification rules.
- * @param media pointer to a @ref media_t structure to be validated.
- * @return @ref M3U8_STATUS_NO_ERROR on success.
- * @return @ref M3U8_STATUS_INVALID_ARG if @p media is NULL.
- * @return @ref M3U8_STATUS_INVALID_MEDIA_PLAYLIST if the playlist fails
- *              validation.
- */
-m3u8_status_t m3u8_validate_media_playlist(media_t* media);
-
 #endif  // _M3U8_H_

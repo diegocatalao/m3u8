@@ -69,15 +69,3 @@ m3u8_status_t m3u8_validate(m3u8_t* m3u8) {
 clean_up:
   return 0;
 }
-
-m3u8_status_t m3u8_validate_master_playlist(master_t* master) {
-  m3u8_status_t status = M3U8_STATUS_NO_ERROR;
-clean_up:
-  return 0;
-}
-
-m3u8_status_t m3u8_validate_media_playlist(media_t* media) {
-  m3u8_status_t status = M3U8_STATUS_NO_ERROR;
-clean_up:
-  return 0;
-}
