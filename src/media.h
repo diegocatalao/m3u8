@@ -173,20 +173,24 @@ m3u8_media_status_t m3u8_media_create(media_t** media);
 m3u8_media_status_t m3u8_media_destroy(media_t* media);
 
 /**
+ * @brief Parses an M3U8 media playlist from a string buffer.
+ * @param[out] media  A pointer to a @ref media_t structure that will be
+ *                    populated with the parsed data.
+ * @param[in]  buffer The input string buffer containing the M3U8 media playlist.
+ * @return @ref M3U8_MEDIA_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_MEDIA_STATUS_INVALID_ARG if @p media or @p buffer are NULL.
+ * @return @ref M3U8_MEDIA_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
+ * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if the playlist is malformed.
+ */
+m3u8_media_status_t m3u8_media_parser_from_str(media_t*    media,
+                                               const char* buffer);
+
+/**
  * @brief Validates the integrity and conformance of a media playlist object.
  * @param media The media playlist object to validate.
  * @return @ref M3U8_MEDIA_STATUS_NO_ERROR if the playlist is valid.
  * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if validation fails.
  */
 m3u8_media_status_t m3u8_media_validate(media_t* media);
-
-/**
- * @brief Parses an M3U8 media playlist from a string.
- * @param media  A pointer to a valid @ref media_t object to be filled.
- * @param buffer The string buffer containing the media playlist content.
- * @return @ref M3U8_MEDIA_STATUS_NO_ERROR on success.
- * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if parsing fails.
- */
-m3u8_media_status_t m3u8_media_parse(media_t* media, char* buffer);
 
 #endif  // _M3U8_MEDIA_H_

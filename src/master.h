@@ -217,4 +217,27 @@ m3u8_master_status_t m3u8_master_create(master_t** master);
  */
 m3u8_master_status_t m3u8_master_destroy(master_t* master);
 
+/**
+ * @brief Parses an M3U8 master playlist from a string buffer.
+ * @param[out] master A pointer to a @ref master_t structure that will be
+ *                    populated with the parsed data.
+ * @param[in]  buffer The input string buffer containing the M3U8 master playlist.
+ * @return @ref M3U8_MASTER_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_MASTER_STATUS_INVALID_ARG if @p master or @p buffer are NULL.
+ * @return @ref M3U8_MASTER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
+ * @return @ref M3U8_MASTER_STATUS_INVALID_MANIFEST if the playlist is malformed.
+ */
+m3u8_master_status_t m3u8_master_parser_from_str(master_t*   master,
+                                                 const char* buffer);
+
+/**
+ * @brief Validates a master playlist against HLS specification rules.
+ * @param master pointer to a @ref master_t structure to be validated.
+ * @return @ref M3U8_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_STATUS_INVALID_ARG if @p master is NULL.
+ * @return @ref M3U8_STATUS_INVALID_MASTER_PLAYLIST if the playlist fails
+ *              validation.
+ */
+m3u8_master_status_t m3u8_master_validate(master_t* master);
+
 #endif  // _M3U8_MASTER_H_
