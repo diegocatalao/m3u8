@@ -99,17 +99,17 @@ typedef struct {
 } m3u8_parser_attr_t;
 
 /**
- * @brief Parses a buffer containing key-value attributes.
- * @param buffer The null-terminated string containing tag attributes.
+ * @brief Parses a line containing key-value attributes.
+ * @param line The null-terminated string containing tag attributes.
  * @param attrs  Pointer to an @ref m3u8_parser_attr_t structure where parsed
  *               attributes will be stored.
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
- * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p buffer or @p attrs is NULL.
+ * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p line or @p attrs is NULL.
  * @return @ref M3U8_ATTR_STATUS_MEM_ALLOC_ERROR if memory allocation fails.
  * @return @ref M3U8_ATTR_STATUS_REG_PATTERN_ERROR if regex compilation fails.
  * @return @ref M3U8_ATTR_STATUS_LIST_ERROR if insertion into the list fails.
  */
-m3u8_parser_status_t m3u8_parser_attr(char* buffer, m3u8_parser_attr_t* attrs);
+m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs);
 
 /**
  * @brief Retrieves an attribute from the list by its key.
@@ -145,21 +145,21 @@ m3u8_parser_status_t m3u8_parser_attr_destroy(m3u8_parser_attr_t* attrs);
 
 /**
  * @brief Parses an M3U8 string and initializes a parser object.
- * @param buffer The M3U8 string buffer to be parsed.
+ * @param line The M3U8 string line to be parsed.
  * @param parser Double pointer to an @ref m3u8_parser_t object that will be
  *               created.
  * @return @ref M3U8_PARSER_STATUS_NO_ERROR on success.
- * @return @ref M3U8_PARSER_STATUS_INVALID_ARG if @p buffer or @p parser is NULL.
+ * @return @ref M3U8_PARSER_STATUS_INVALID_ARG if @p line or @p parser is NULL.
  * @return @ref M3U8_PARSER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_parser_status_t m3u8_parser_from_str(const char*    buffer,
+m3u8_parser_status_t m3u8_parser_from_str(const char*    line,
                                           m3u8_parser_t* parser);
 
 /**
  * @brief Check if is a master or media media.
- * @param buffer string of current master.
- * @return @ref M3U8_MASTER_PLAYLIST a master media from buffer.
- * @return @ref M3U8_MEDIA_PLAYLIST a media media from buffer.
+ * @param buffer string of current manifest.
+ * @return @ref M3U8_MASTER_PLAYLIST a master media from line.
+ * @return @ref M3U8_MEDIA_PLAYLIST a media media from line.
  * @return @ref M3U8_UNKNOWN_PLAYLIST a unknown media if no valid arguments are
  *              received.
  */
