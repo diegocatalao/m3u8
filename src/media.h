@@ -30,7 +30,7 @@ typedef enum {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Duration of the media segment in seconds. */
   double duration;
   /** Optional title or description of the segment. */
@@ -45,7 +45,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Length of the byte range in bytes. */
   uint64_t length;
   /** Optional start offset in bytes. */
@@ -58,7 +58,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Cryptography method. */
   char* method;
   /** Link to remote key resource. */
@@ -77,7 +77,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** URI to the initialization segment. */
   char* uri;
   /** Optional byte range. */
@@ -90,7 +90,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Unique identifier for the date range. */
   char* id;
   /** Optional class attribute. */
@@ -112,7 +112,7 @@ typedef struct {
   /** Optional, stop media when in next segment. */
   bool is_end_on_next;
   /** Raw string with other optional attributes. */
-  m3u8_attr_t attributes;
+  m3u8_parser_attr_t attributes;
 } ext_x_daterange_t;
 
 /**
@@ -121,7 +121,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** If the playlist is started by EXTM3U tag. */
   bool is_signed;
   /** HLS protocol version number. */
