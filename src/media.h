@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "attr.h"
-#include "list.h"
+#include "linked.h"
+#include "parser.h"
 
 /**
  * @enum m3u8_media_status_t
