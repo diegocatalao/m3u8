@@ -7,25 +7,25 @@
 #include <stdint.h>
 
 /**
- * @enum m3u8_manifest_status_t
+ * @enum m3u8_master_status_t
  * @brief Represents the status of a master playlist operation.
  */
 typedef enum {
   /** Operation completed successfully. */
-  M3U8_MANIFEST_STATUS_NO_ERROR,
+  M3U8_MASTER_STATUS_NO_ERROR,
   /** Invalid argument provided to a function. */
-  M3U8_MANIFEST_STATUS_INVALID_ARG,
+  M3U8_MASTER_STATUS_INVALID_ARG,
   /** Invalid value of an attribute given a tag. */
-  M3U8_MANIFEST_STATUS_INVALID_VALUE,
+  M3U8_MASTER_STATUS_INVALID_VALUE,
   /** Memory allocation failed. */
-  M3U8_MANIFEST_STATUS_MEM_ALLOC_ERROR,
+  M3U8_MASTER_STATUS_MEM_ALLOC_ERROR,
   /** Invalid or malformed master playlist. */
-  M3U8_MANIFEST_STATUS_INVALID_MANIFEST,
+  M3U8_MASTER_STATUS_INVALID_MANIFEST,
   /** Invalid attributes found. */
-  M3U8_MANIFEST_STATUS_INVALID_ATTRS,
+  M3U8_MASTER_STATUS_INVALID_ATTRS,
   /** An unknown or unspecified error occurred. */
-  M3U8_MANIFEST_STATUS_UNKNOWN_ERROR,
-} m3u8_manifest_status_t;
+  M3U8_MASTER_STATUS_UNKNOWN_ERROR,
+} m3u8_master_status_t;
 
 /**
  * @enum ext_x_media_type_t
@@ -59,7 +59,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Unique identifier for the session data. */
   char* data_id;
   /** Inline value, mutually exclusive with uri. */
@@ -76,7 +76,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** The encryption method (e.g., AES-128). */
   char* method;
   /** URI to the key file. */
@@ -95,7 +95,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Media type: AUDIO, VIDEO, SUBTITLES, etc. */
   ext_x_media_type_t type;
   /** The group to which this rendition belongs. */
@@ -128,7 +128,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Peak segment bit rate. */
   uint32_t bandwidth;
   /** Average segment bit rate. */
@@ -159,7 +159,7 @@ typedef struct {
  */
 typedef struct {
   /** Embedded node for circular linked list. */
-  m3u8_list_node_t list;
+  m3u8_linked_node_t list;
   /** Peak segment bit rate. */
   uint32_t bandwidth;
   /** Average segment bit rate. */
@@ -204,34 +204,17 @@ typedef struct {
 /**
  * @brief Creates a new M3U8 master playlist object.
  * @param master A pointer to a @ref master_t* that will be populated.
- * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
- * @return @ref M3U8_MANIFEST_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
+ * @return @ref M3U8_MASTER_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_MASTER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_manifest_status_t m3u8_master_create(master_t** master);
+m3u8_master_status_t m3u8_master_create(master_t** master);
 
 /**
  * @brief Destroys an M3U8 master playlist object.
  * @param master The master playlist object to destroy.
- * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
- * @return @ref M3U8_MANIFEST_STATUS_INVALID_ARG if @p master is NULL.
+ * @return @ref M3U8_MASTER_STATUS_NO_ERROR on success.
+ * @return @ref M3U8_MASTER_STATUS_INVALID_ARG if @p master is NULL.
  */
-m3u8_manifest_status_t m3u8_master_destroy(master_t* master);
-
-/**
- * @brief Validates the integrity and conformance of a master playlist object.
- * @param master The master playlist object to validate.
- * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR if the playlist is valid.
- * @return @ref M3U8_MANIFEST_STATUS_INVALID_MANIFEST if validation fails.
- */
-m3u8_manifest_status_t m3u8_master_validate(master_t* master);
-
-/**
- * @brief Parses an M3U8 master playlist from a string.
- * @param master A pointer to a valid @ref master_t object to be filled.
- * @param buffer The string buffer containing the master playlist content.
- * @return @ref M3U8_MANIFEST_STATUS_NO_ERROR on success.
- * @return @ref M3U8_MANIFEST_STATUS_INVALID_MANIFEST if parsing fails.
- */
-m3u8_manifest_status_t m3u8_master_parse(master_t* master, char* buffer);
+m3u8_master_status_t m3u8_master_destroy(master_t* master);
 
 #endif  // _M3U8_MASTER_H_
