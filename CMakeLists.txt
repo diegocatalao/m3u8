@@ -36,8 +36,6 @@ if(COMPILE_TESTS)
     find_package(GTest REQUIRED)
 
     file(GLOB TEST_SOURCES "${CMAKE_SOURCE_DIR}/tests/*.cc")
-    file(GLOB MOCK_SOURCES "${CMAKE_SOURCE_DIR}/tests/mocks/*.cc")
-    file(GLOB MOCK_HEADERS "${CMAKE_SOURCE_DIR}/tests/mocks/*.hh")
 
     foreach(test_file ${TEST_SOURCES})
         get_filename_component(test_name ${test_file} NAME_WE)
@@ -46,7 +44,7 @@ if(COMPILE_TESTS)
         target_link_libraries(${test_name} PRIVATE -fsanitize=address)
         target_include_directories(${test_name} PRIVATE ${CMAKE_SOURCE_DIR}/m3u8 ${CMAKE_SOURCE_DIR}/tests/mocks)
         target_link_libraries(${test_name} PRIVATE m3u8 GTest::gmock GTest::gtest GTest::gtest_main pthread)
-    
+
         include(GoogleTest)
         gtest_discover_tests(${test_name})
     endforeach()
