@@ -47,7 +47,8 @@ m3u8_parser_status_t m3u8_parser_attr(char* buffer, m3u8_parser_attr_t* attrs) {
     attr->key = strndup(cursor + pmatch[1].rm_so, key_s);
     attr->value = strndup(cursor + pmatch[2].rm_so, value_s);
 
-    if (!m3u8_linked_inb(&attrs->list, &attr->list)) {
+    if (m3u8_linked_inb(&attrs->list, &attr->list) !=
+        M3U8_LINKED_STATUS_NO_ERROR) {
       M3U8_RAISE(M3U8_PARSER_STATUS_LIST_ERROR,
                  "Could not insert attr in list");
     }
