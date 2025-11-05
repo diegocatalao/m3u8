@@ -21,7 +21,7 @@ extern "C" {
 
 // ----------- m3u8_parser_attr -----------
 
-TEST(m3u8_parser_test_attr, given_valid_attributes_parses_successfully) {
+TEST(m3u8_parser_attr_test, given_valid_attributes_parses_successfully) {
   m3u8_parser_attr_t  attrs;
   m3u8_parser_attr_t* pivot = &attrs;
   char*               buffer = strdup(MOCK_EXT_X_STREAM_SHORT);
@@ -42,7 +42,7 @@ TEST(m3u8_parser_test_attr, given_valid_attributes_parses_successfully) {
   EXPECT_STREQ(pivot->value, "750000");
 }
 
-TEST(m3u8_parser_test_attr, given_null_pointer_returns_error) {
+TEST(m3u8_parser_attr_test, given_null_pointer_returns_error) {
   m3u8_parser_attr_t attrs;
   int                size = 0;
   char*              buffer = strdup(MOCK_EXT_X_STREAM);
@@ -53,7 +53,7 @@ TEST(m3u8_parser_test_attr, given_null_pointer_returns_error) {
   EXPECT_EQ(m3u8_parser_attr(nullptr, nullptr), M3U8_PARSER_STATUS_INVALID_ARG);
 }
 
-TEST(m3u8_parser_test_attr, given_empty_string_returns_no_attributes) {
+TEST(m3u8_parser_attr_test, given_empty_string_returns_no_attributes) {
   m3u8_parser_attr_t  attrs;
   m3u8_parser_attr_t* pivot = &attrs;
   char*               buffer = strdup("EXT-X-STREAM-INF");
@@ -70,7 +70,7 @@ TEST(m3u8_parser_test_attr, given_empty_string_returns_no_attributes) {
   EXPECT_EQ(pivot->value, nullptr);
 }
 
-TEST(m3u8_parser_test_attr, given_null_buffer_returns_an_error) {
+TEST(m3u8_parser_attr_test, given_null_buffer_returns_an_error) {
   m3u8_parser_attr_t  attrs;
   m3u8_parser_attr_t* pivot = &attrs;
   char*               buffer = nullptr;
@@ -80,7 +80,7 @@ TEST(m3u8_parser_test_attr, given_null_buffer_returns_an_error) {
   EXPECT_EQ(m3u8_parser_attr(buffer, &attrs), M3U8_PARSER_STATUS_INVALID_ARG);
 }
 
-TEST(m3u8_parser_test_attr, given_duplicate_keys_stores_all) {
+TEST(m3u8_parser_attr_test, given_duplicate_keys_stores_all) {
   m3u8_parser_attr_t  attrs;
   m3u8_parser_attr_t* pivot = &attrs;
   char* buffer = strdup("EXT-X-STREAM-INF:AUDIO=\"audio\",AUDIO=\"audio\"");
@@ -140,7 +140,7 @@ TEST(m3u8_parser_attr_from_key_test, given_nonexistent_key_returns_not_found) {
 
 // ----------- m3u8_parser_attr_count -----------
 
-TEST(m3u8_count_testr_attr, given_list_returns_correct_count) {
+TEST(m3u8_parser_attr_count_test, given_list_returns_correct_count) {
   m3u8_parser_attr_t attrs;
   int                size = 0;
   char*              buffer = strdup(MOCK_EXT_X_STREAM);
@@ -152,7 +152,7 @@ TEST(m3u8_count_testr_attr, given_list_returns_correct_count) {
   EXPECT_EQ(size, 7);
 }
 
-TEST(m3u8_count_testr_attr, given_empty_list_returns_zero) {
+TEST(m3u8_parser_attr_count_test, given_empty_list_returns_zero) {
   m3u8_parser_attr_t attrs;
   int                size = -1;
 
@@ -164,7 +164,7 @@ TEST(m3u8_count_testr_attr, given_empty_list_returns_zero) {
 
 // ----------- m3u8_parser_attr_destroy -----------
 
-TEST(m3u8_destroy_testr_attr, given_valid_list_frees_all_allocated_data) {
+TEST(m3u8_parser_attr_destroy_test, given_valid_list_frees_all_allocated_data) {
   m3u8_parser_attr_t attrs;
   int                size = 0;
   char*              buffer = strdup(MOCK_EXT_X_STREAM);
@@ -179,7 +179,7 @@ TEST(m3u8_destroy_testr_attr, given_valid_list_frees_all_allocated_data) {
   EXPECT_EQ(size, 0);
 }
 
-TEST(m3u8_destroy_testr_attr, given_null_pointer_returns_error) {
+TEST(m3u8_parser_attr_destroy_test, given_null_pointer_returns_error) {
   m3u8_parser_attr_t attrs;
 
   EXPECT_EQ(m3u8_parser_attr_destroy(nullptr), M3U8_PARSER_STATUS_INVALID_ARG);
