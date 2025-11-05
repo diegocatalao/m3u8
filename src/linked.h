@@ -72,11 +72,11 @@ typedef struct m3u8_linked_node {
  * @param type   Structure type.
  * @param member List node field name.
  */
-#define m3u8_linked_foreach(entry, head, type, member)           \
-  for (m3u8_linked_node_t* _pos = (head)->next;                  \
-       _pos != (head) &&                                         \
-       ((entry) = m3u8_linked_container_of(_pos, type, member)); \
-       _pos = _pos->next)
+#define m3u8_linked_foreach(entry, head, type, member)            \
+  for (m3u8_linked_node_t* _pos = (head)->next, *_n = _pos->next; \
+       _pos != (head) &&                                          \
+       ((entry) = m3u8_linked_container_of(_pos, type, member));  \
+       _pos = _n, _n = _pos->next)
 
 /**
  * @brief Initializes a circular list head node.
