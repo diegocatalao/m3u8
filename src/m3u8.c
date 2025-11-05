@@ -20,7 +20,7 @@ m3u8_status_t m3u8_create(m3u8_t** m3u8) {
   }
 
   /** the master and media will be initialized with NULL values first */
-  memset(m3u8, 0, sizeof(m3u8_t));
+  memset(*m3u8, 0, sizeof(m3u8_t));
 
 clean_up:
   return status;
