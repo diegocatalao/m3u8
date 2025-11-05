@@ -14,11 +14,10 @@ set(PROJECT_VERSION "1.0.0")
 
 include(GNUInstallDirs)
 
-set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-file(GLOB SRC_FILES "${SRC_DIR}/*.c")
-file(GLOB HEADER_FILES "${SRC_DIR}/*.h")
+file(GLOB SOURCE "${CMAKE_SOURCE_DIR}/src/*.c")
+file(GLOB HEADER "${CMAKE_SOURCE_DIR}/src/*.h")
 
-add_library(m3u8 SHARED ${SRC_FILES})
+add_library(m3u8 SHARED ${SOURCE})
 
 target_compile_options(m3u8 PRIVATE -Wall -g -pthread)
 target_link_libraries(m3u8 PRIVATE pthread)
@@ -29,7 +28,7 @@ message(${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 install(FILES ${CMAKE_BINARY_DIR}/m3u8.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 install(TARGETS m3u8 LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${HEADER_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/m3u8)
+install(FILES ${HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/m3u8)
 
 if(COMPILE_TESTS)
     enable_testing()
