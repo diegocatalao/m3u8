@@ -19,11 +19,8 @@ m3u8_status_t m3u8_create(m3u8_t** m3u8) {
     M3U8_RAISE(M3U8_STATUS_MEM_ALLOC_ERROR, "Failed to allocate m3u8");
   }
 
+  /** the master and media will be initialized with NULL values first */
   memset(m3u8, 0, sizeof(m3u8_t));
-
-  /** must be allocated before */
-  (*m3u8)->master = NULL;
-  (*m3u8)->media = NULL;
 
 clean_up:
   return status;
