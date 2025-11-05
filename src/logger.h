@@ -124,10 +124,10 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
 #define M3U8_LOGGER_PFX_SRC_PATH     "src"
 
 /**
- * @def __RLT__
+ * @def __M3U8_RLT__
  * @brief Macro to get the relative path of the source file.
  */
-#define __RLT__                                   \
+#define __M3U8_RLT__                              \
   (strstr(__FILE__, M3U8_LOGGER_PFX_SRC_PATH)     \
      ? strstr(__FILE__, M3U8_LOGGER_PFX_SRC_PATH) \
      : __FILE__)
@@ -138,8 +138,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The debug message.
  * @param ... Additional arguments for the debug message.
  */
-#define M3U8_DEBUG(message, ...)                                      \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_DEBUG, \
+#define M3U8_DEBUG(message, ...)                                           \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_DEBUG, \
               ##__VA_ARGS__);
 
 /**
@@ -148,8 +148,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The informational message.
  * @param ... Additional arguments for the informational message.
  */
-#define M3U8_INFO(message, ...)                                      \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_INFO, \
+#define M3U8_INFO(message, ...)                                           \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_INFO, \
               ##__VA_ARGS__);
 
 /**
@@ -158,8 +158,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The warning message.
  * @param ... Additional arguments for the warning message.
  */
-#define M3U8_WARN(message, ...)                                      \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_WARN, \
+#define M3U8_WARN(message, ...)                                           \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_WARN, \
               ##__VA_ARGS__);
 
 /**
@@ -168,8 +168,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The error message.
  * @param ... Additional arguments for the error message.
  */
-#define M3U8_ERROR(message, ...)                                      \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
+#define M3U8_ERROR(message, ...)                                           \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
               ##__VA_ARGS__);
 
 /**
@@ -178,8 +178,8 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define M3U8_CRIT(message, ...)                                      \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_CRIT, \
+#define M3U8_CRIT(message, ...)                                           \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_CRIT, \
               ##__VA_ARGS__);
 
 /**
@@ -189,18 +189,18 @@ typedef void (*m3u8_logger_handler_t)(m3u8_logger_event_t event);
  * @param message The critical message.
  * @param ... Additional arguments for the critical message.
  */
-#define M3U8_RAISE(__status, message, ...)                            \
-  m3u8_logger(message, __RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
-              ##__VA_ARGS__);                                         \
-  status = __status;                                                  \
+#define M3U8_RAISE(__status, message, ...)                                 \
+  m3u8_logger(message, __M3U8_RLT__, __LINE__, M3U8_LOGGER_SEVERITY_ERROR, \
+              ##__VA_ARGS__);                                              \
+  status = __status;                                                       \
   goto clean_up
 
 /**
  * @brief Gets the current time as a Unix timestamp.
  * @param obuff Pointer to a long integer to store the timestamp.
- * @return @ref CONATE_NO_ERROR on success.
- * @return @ref CONATE_INVALID_POINTER if @p obuff is NULL.
- * @return @ref CONATE_TIME_ERROR on failure to get time.
+ * @return @ref M3U8_NO_ERROR on success.
+ * @return @ref M3U8_INVALID_POINTER if @p obuff is NULL.
+ * @return @ref M3U8_TIME_ERROR on failure to get time.
  */
 m3u8_logger_status_t m3u8_logger_timenow(long* obuff);
 
@@ -210,8 +210,8 @@ m3u8_logger_status_t m3u8_logger_timenow(long* obuff);
  * @param obuff Output buffer for the formatted string.
  * @param size  Size of the output buffer.
  * @param fmt   The format string (e.g., "%Y-%m-%d").
- * @return @ref CONATE_NO_ERROR on success.
- * @return @ref CONATE_INVALID_POINTER if @p tms or @p obuff is NULL.
+ * @return @ref M3U8_NO_ERROR on success.
+ * @return @ref M3U8_INVALID_POINTER if @p tms or @p obuff is NULL.
  */
 m3u8_logger_status_t m3u8_logger_timefmt(long* tms, char* obuff, int size,
                                          const char* fmt);

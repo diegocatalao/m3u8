@@ -34,8 +34,8 @@ typedef enum {
 
 /** @brief Represents an M3U8 media, which can be a master or media. */
 typedef struct {
-  master_t* master; /** Master playlist with differents video formats */
-  media_t*  media;  /** Media playlist with differents types and formats */
+  m3u8_master_t* master; /** Master playlist with differents video formats */
+  m3u8_media_t*  media;  /** Media playlist with differents types and formats */
 } m3u8_t;
 
 /**
