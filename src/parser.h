@@ -82,9 +82,6 @@ typedef enum {
   M3U8_PARSER_UNKNOWN_PLAYLIST, /**< Represents a unknown media */
 } m3u8_parser_playlist_type_t;
 
-typedef struct {
-} m3u8_parser_t;
-
 /**
  * @struct m3u8_parser_attr_t
  * @brief Represents a single key-value attribute parsed from an M3U8 tag.
@@ -97,6 +94,19 @@ typedef struct {
   /** Embedded node for circular linked list. */
   m3u8_linked_node_t list;
 } m3u8_parser_attr_t;
+
+/**
+ * @struct m3u8_parser_t
+ * @brief Represents a parsed line from playlist.
+ */
+typedef struct {
+  /** The tag name from RFC tag list */
+  char* tag;
+  /** The value of this tag, NULL if tag has no value */
+  char* value;
+  /** Parsed attributes from this tag, NULL if tag has no attributes  */
+  m3u8_parser_attr_t* attrs;
+} m3u8_parser_t;
 
 /**
  * @brief Parses a line containing key-value attributes.
@@ -152,8 +162,8 @@ m3u8_parser_status_t m3u8_parser_attr_destroy(m3u8_parser_attr_t* attrs);
  * @return @ref M3U8_PARSER_STATUS_INVALID_ARG if @p line or @p parser is NULL.
  * @return @ref M3U8_PARSER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_parser_status_t m3u8_parser_from_str(const char*    line,
-                                          m3u8_parser_t* parser);
+m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
+                                          m3u8_parser_t** parser);
 
 /**
  * @brief Check if is a master or media media.
