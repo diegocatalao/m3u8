@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "logger.h"
 
 #include <regex.h>
 #include <stdlib.h>
@@ -141,15 +142,15 @@ clean_up:
   return status;
 }
 
-m3u8_parser_status_t m3u8_parser_from_str(const char*    line,
-                                          m3u8_parser_t* parser) {
+m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
+                                          m3u8_parser_t** parser) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
+  M3U8_RAISE(M3U8_PARSER_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:
   return status;
 }
 
 m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* buffer) {
-  m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
-clean_up:
-  return status;
+  m3u8_parser_playlist_type_t type = M3U8_PARSER_UNKNOWN_PLAYLIST;
+  return type;
 }
