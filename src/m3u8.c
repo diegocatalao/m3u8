@@ -15,6 +15,10 @@ m3u8_status_t m3u8_create(m3u8_t** m3u8) {
     M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
   }
 
+  if (*m3u8 != NULL) {
+    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument *m3u8 (not null)");
+  }
+
   if ((*m3u8 = (m3u8_t*)malloc(sizeof(m3u8_t))) == NULL) {
     M3U8_RAISE(M3U8_STATUS_MEM_ALLOC_ERROR, "Failed to allocate m3u8");
   }
