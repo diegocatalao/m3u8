@@ -33,22 +33,21 @@ m3u8_status_t m3u8_destroy(m3u8_t* m3u8) {
     M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
   }
 
-  if (m3u8->master == NULL) {
-    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument master (null)");
+  if (m3u8->master != NULL) {
+    /** destroy the content including data structures */
+    if (m3u8_master_destroy(m3u8->master) != M3U8_MASTER_STATUS_NO_ERROR) {
+      M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy master");
+    }
   }
 
   if (m3u8->media != NULL) {
-    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument media (null)");
+    /** destroy the content including data structures and embedded list */
+    if (m3u8_media_destroy(m3u8->media) != M3U8_MEDIA_STATUS_NO_ERROR) {
+      M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy media");
+    }
   }
 
-  if (!m3u8_master_destroy(m3u8->master)) {
-    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy master");
-  }
-
-  if (!m3u8_media_destroy(m3u8->media)) {
-    M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Failed to destroy media");
-  }
-
+  /** release the memory from m3u8 struct */
   free(m3u8);
 
 clean_up:
