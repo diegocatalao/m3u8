@@ -84,7 +84,7 @@ static void m3u8_logger_write_stdout_handler(m3u8_logger_event_t event) {
 
   long tms;
 
-  if (!m3u8_logger_timenow(&tms)) {
+  if (m3u8_logger_timenow(&tms) != M3U8_LOGGER_NO_ERROR) {
     tms = 0;
   }
 
@@ -134,11 +134,11 @@ static void m3u8_logger_write_file_handler(m3u8_logger_event_t event) {
 
   long tms;
 
-  if (!conate_timenow(&tms)) {
+  if (m3u8_logger_timenow(&tms) != M3U8_LOGGER_NO_ERROR) {
     tms = 0;
   }
 
-  if (conate_timefmt(&tms, obuff, sizeof(obuff), M3U8_LOGGER_TIME_FMT) !=
+  if (m3u8_logger_timefmt(&tms, obuff, sizeof(obuff), M3U8_LOGGER_TIME_FMT) !=
       M3U8_LOGGER_NO_ERROR) {
     snprintf(obuff, sizeof(obuff), "UNKNOWN_TIME");
   }
