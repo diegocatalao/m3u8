@@ -67,25 +67,7 @@ clean_up:
 
 m3u8_status_t m3u8_validate(m3u8_t* m3u8) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
-
-  if (m3u8 == NULL) {
-    M3U8_RAISE(M3U8_STATUS_INVALID_ARG, "Invalid argument m3u8 (null)");
-  }
-
-  if (m3u8->master != NULL) {
-    if (m3u8_master_validate(m3u8->master) != M3U8_MASTER_STATUS_NO_ERROR) {
-      M3U8_RAISE(M3U8_STATUS_INVALID_MASTER_PLAYLIST, "Bad master playlist");
-    }
-  }
-
-  if (m3u8->media != NULL) {
-    m3u8_media_t* entry = NULL;
-
-    if (m3u8_media_validate(m3u8->master) != M3U8_MEDIA_STATUS_NO_ERROR) {
-      M3U8_RAISE(M3U8_STATUS_INVALID_MEDIA_PLAYLIST, "Bad media playlist");
-    }
-  }
-
+  M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:
   return status;
 }
