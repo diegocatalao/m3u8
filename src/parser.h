@@ -30,7 +30,7 @@ typedef enum {
  */
 typedef enum {
   /** Indicates the file is an M3U8 playlist. */
-  M3U8_PARSER_EXTM3U,
+  M3U8_PARSER_EXTM3U = 0,
   /** Specifies the playlist compatibility version. */
   M3U8_PARSER_EXT_X_VERSION,
   /** Samples can be decoded without other segments. */
@@ -73,6 +73,8 @@ typedef enum {
   M3U8_PARSER_EXT_X_DATERANGE,
   /** Indicates no more segments will be added to the playlist. */
   M3U8_PARSER_EXT_X_ENDLIST,
+  /** Indicates a unknown tag assigned, but can be a URI too */
+  M3U8_PARSER_EXT_UNKNOWN,
 } m3u8_parser_tag_t;
 
 /** @brief Represents the type of an M3U8 media. */
