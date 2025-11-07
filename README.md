@@ -24,16 +24,16 @@ $ cd m3u8
 
 2. create and navigate to the build directory, then run make:
 ```bash
-$ mkdir -p build
-$ cmake .. && make
-$ sudo make install
+$ cmake -S . -B build
+$ cmake --build build
+$ cmake --install build
 ```
 
 3. (optional) build and run all unittests
 ```bash
-$ mkdir -p build
-$ cmake -DCOMPILE_TESTS=ON .. && make
-$ sudo make install
+$ cmake -S . -B build -DCMAKE_INSTALL_PREFIX=$HOME/.local -DCOMPILE_TESTS=ON
+$ cmake --build build
+$ cmake --install build
 $ ctest --test-dir=build --extra-verbose --output-on-failure
 ```
 
