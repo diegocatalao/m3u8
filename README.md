@@ -1,17 +1,17 @@
 # M3U8
 
 M3U8 is a C library for parsing, generating, and managing M3U8 playlists.
-Designed for performance and strict adherence to both the current M3U8 RFC 
+Designed for performance and strict adherence to both the current M3U8 RFC
 standards and the Apple HLS specification.
 
 ## Features
 
-- *Compliant Generation*: Creates M3U8 playlists that adhere to both the latest 
+- *Compliant Generation*: Creates M3U8 playlists that adhere to both the latest
 M3U8 RFCs and Apple's HLS specification.
-- *Clear Data Structures*: Provides intuitive C structures for representing M3U8 
+- *Clear Data Structures*: Provides intuitive C structures for representing M3U8
 tags and attributes.
-- *Dual Standard Adherence*: Developed to comply with both the current M3U8 RFC 
-(e.g., RFC 8216) and the Apple M3U8 specification and associated licensing 
+- *Dual Standard Adherence*: Developed to comply with both the current M3U8 RFC
+(e.g., RFC 8216) and the Apple M3U8 specification and associated licensing
 terms.
 
 ## Installation
@@ -34,7 +34,7 @@ $ sudo make install
 $ mkdir -p build
 $ cmake -DCOMPILE_TESTS=ON .. && make
 $ sudo make install
-$ ctest --extra-verbose --output-on-failure
+$ ctest --test-dir=build --extra-verbose --output-on-failure
 ```
 
 ## Documentation
@@ -51,12 +51,12 @@ $ doxygen Doxyfile
 
 ## Releases
 
-Stay up-to-date with the latest improvements and features! We publish new 
+Stay up-to-date with the latest improvements and features! We publish new
 versions of M3U8 regularly.
 
-For a detailed history of changes, new features, and bug fixes for each 
+For a detailed history of changes, new features, and bug fixes for each
 version, please refer to our [CHANGELOG.md][changelog] file.
-You can also find all released versions and their associated assets on 
+You can also find all released versions and their associated assets on
 our [GitHub Releases page][github_releases].
 
 ## Basic usage example
@@ -76,7 +76,7 @@ int main() {
     "http://example.com/movie/segment1.ts\n";
 
   m3u8_t *playlist_ptr = NULL;
-  
+
   if (m3u8_create_playlist(&playlist_ptr) != M3U8_STATUS_NO_ERROR) {
     fprintf(stderr, "Unable to allocated playlist.\n");
     return -1;
@@ -104,18 +104,18 @@ int main() {
 
 ## Licensing
 
-**M3U8** adheres to both the current M3U8 RFC standards (e.g., RFC 8216) and the 
-**Apple M3U8 License** and specification. This ensures broad compatibility and 
-compliance with both open standards and Apple's proprietary extensions to the 
-HLS standard. Refer to the [IETF RFC 8216][ietf_rfc_8216] and the 
-[Apple HLS Authoring Specifications][apple_hls_spec] for Apple Devices for 
+**M3U8** adheres to both the current M3U8 RFC standards (e.g., RFC 8216) and the
+**Apple M3U8 License** and specification. This ensures broad compatibility and
+compliance with both open standards and Apple's proprietary extensions to the
+HLS standard. Refer to the [IETF RFC 8216][ietf_rfc_8216] and the
+[Apple HLS Authoring Specifications][apple_hls_spec] for Apple Devices for
 full terms.
 
 ## Contributing
 
-We warmly welcome contributions to this library. Your involvement is invaluable 
-in enhancing this library and ensuring its continued evolving M3U8 standards. 
-To maintain a high quality and consistent development flow, please review the 
+We warmly welcome contributions to this library. Your involvement is invaluable
+in enhancing this library and ensuring its continued evolving M3U8 standards.
+To maintain a high quality and consistent development flow, please review the
 guidelines below before initiating any contributions.
 
 [doxygen_documentation]: https://www.doxygen.nl/download.html#google_vignette "Dogygen documentation"
