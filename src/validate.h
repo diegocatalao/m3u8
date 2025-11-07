@@ -22,12 +22,12 @@ typedef enum {
 } m3u8_validate_status_t;
 
 /**
- * @brief Validates the presence and placement of the EXTM3U tag.
- * @param master Pointer to the @ref m3u8_master_t object to validate.
+ * @brief Validates the presence of the EXTM3U tag on any playlist.
+ * @param playlist Pointer to the common playlist data.
  * @return @ref M3U8_VALIDATE_STATUS_NO_ERROR on success.
  * @return @ref M3U8_VALIDATE_STATUS_FAILURE if validation fails.
  */
-m3u8_validate_status_t m3u8_validate_extm3u(m3u8_master_t* master);
+m3u8_validate_status_t m3u8_validate_extm3u(bool is_signed);
 
 /**
  * @brief Validates the EXT-X-VERSION tag.
@@ -35,7 +35,7 @@ m3u8_validate_status_t m3u8_validate_extm3u(m3u8_master_t* master);
  * @return @ref M3U8_VALIDATE_STATUS_NO_ERROR on success.
  * @return @ref M3U8_VALIDATE_STATUS_FAILURE if validation fails.
  */
-m3u8_validate_status_t m3u8_validate_ext_x_version(m3u8_master_t* master);
+m3u8_validate_status_t m3u8_validate_ext_x_version(int version);
 
 /**
  * @brief Validates the EXT-X-INDEPENDENT-SEGMENTS tag.
