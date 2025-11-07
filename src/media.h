@@ -90,8 +90,13 @@ typedef struct {
   m3u8_linked_node_t list;
   /** Unique identifier for the date range. */
   char* id;
-  /** Optional class attribute. */
-  char* class;
+  /**
+   * Optional class attribute.
+   *
+   * NOTE: The actual name of this field is 'class' but for compatibility
+   * purposes with cpp it was changed to klass.
+   */
+  char* klass;
   /** ISO 8601 start datetime. */
   char* start_date;
   /** Optional ISO 8601 end datetime. */
