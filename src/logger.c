@@ -195,14 +195,14 @@ void m3u8_logger(char* msg, char* rlt, int line,
     log_event_handler->event = ptr_log_event;
     log_event_handler->signature = ptr_log_handler;
 
-#ifndef M3U8_PREEMPTIVE_LOGS
+#ifdef M3U8_PREEMPTIVE_LOGGER
+    m3u8_logger_pthread_handler_fn((void*)log_event_handler);
+    free(log_event_handler);
+#else
     pthread_t thread_id;
     pthread_create(&thread_id, NULL, m3u8_logger_pthread_handler_fn,
                    (void*)log_event_handler);
     pthread_detach(thread_id);
-#else
-    m3u8_logger_pthread_handler_fn((void*)log_event_handler);
-    free(log_event_handler);
 #endif
 
     ptr_log_handler++;

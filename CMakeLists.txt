@@ -6,6 +6,7 @@ if(POLICY CMP0074)
 endif()
 
 option(COMPILE_TESTS "Compile test executables" OFF)
+option(M3U8_ENABLE_PREEMPTIVE_LOGGER "Enable preemptive logger" OFF)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -18,6 +19,11 @@ file(GLOB SOURCE "${CMAKE_SOURCE_DIR}/src/*.c")
 file(GLOB HEADER "${CMAKE_SOURCE_DIR}/src/*.h")
 
 add_library(m3u8 SHARED ${SOURCE})
+
+# compile definitions
+if (M3U8_ENABLE_PREEMPTIVE_LOGGER)
+  target_compile_definitions(m3u8 PRIVATE M3U8_PREEMPTIVE_LOGGER)
+endif()
 
 target_compile_options(m3u8 PRIVATE -Wall -g -pthread)
 target_link_libraries(m3u8 PRIVATE pthread)

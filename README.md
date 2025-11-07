@@ -37,6 +37,17 @@ $ cmake --install build
 $ ctest --test-dir=build --extra-verbose --output-on-failure
 ```
 
+## Compilation Definitions
+
+You can compile with some flags and definitions using cmake:
+
+| Definition             | Value      | Description                          |
+|------------------------|------------|--------------------------------------|
+| CMAKE_INSTALL_PREFIX   | /usr/local | Base directory installation          |
+| COMPILE_TESTS          | YES/NO     | Compile tests or not                 |
+| M3U8_PREEMPTIVE_LOGGER | ON/OFF     | Enable or disable the async/sink log |
+
+
 ## Documentation
 
 You can generate the doxygen documentation following this steps:
