@@ -1,14 +1,14 @@
 #include "validate.h"
 #include "logger.h"
 
-m3u8_validate_status_t m3u8_validate_extm3u(m3u8_master_t* master) {
+m3u8_validate_status_t m3u8_validate_extm3u(bool is_signed) {
   m3u8_validate_status_t status = M3U8_VALIDATE_STATUS_NO_ERROR;
   M3U8_RAISE(M3U8_VALIDATE_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:
   return status;
 }
 
-m3u8_validate_status_t m3u8_validate_ext_x_version(m3u8_master_t* master) {
+m3u8_validate_status_t m3u8_validate_ext_x_version(int version) {
   m3u8_validate_status_t status = M3U8_VALIDATE_STATUS_NO_ERROR;
   M3U8_RAISE(M3U8_VALIDATE_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:
