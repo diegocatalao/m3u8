@@ -21,7 +21,7 @@ typedef enum {
   M3U8_LINKED_STATUS_MEM_ALL_ERROR = 2,
   /** Node not found in the list. */
   M3U8_LINKED_STATUS_NOT_FOUND = 3,
-  /** Unknown error occurred. */
+  /** An unknown or unspecified error occurred. */
   M3U8_LINKED_STATUS_UNKNOWN_ERROR = 99
 } m3u8_linked_status_t;
 

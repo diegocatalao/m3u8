@@ -22,6 +22,8 @@ typedef enum {
   M3U8_LOGGER_LOG_ATTR_ALREADY_INITIALIZED = 5,
   /** Received an invalid time error from some function */
   M3U8_LOGGER_TIME_ERROR = 6,
+  /** An unknown or unspecified error occurred. */
+  M3U8_LOGGER_STATUS_UNKNOWN_ERROR = 99
 } m3u8_logger_status_t;
 
 /**

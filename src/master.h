@@ -12,19 +12,19 @@
  */
 typedef enum {
   /** Operation completed successfully. */
-  M3U8_MASTER_STATUS_NO_ERROR,
+  M3U8_MASTER_STATUS_NO_ERROR = 0,
   /** Invalid argument provided to a function. */
-  M3U8_MASTER_STATUS_INVALID_ARG,
+  M3U8_MASTER_STATUS_INVALID_ARG = 1,
   /** Invalid value of an attribute given a tag. */
-  M3U8_MASTER_STATUS_INVALID_VALUE,
+  M3U8_MASTER_STATUS_INVALID_VALUE = 2,
   /** Memory allocation failed. */
-  M3U8_MASTER_STATUS_MEM_ALLOC_ERROR,
+  M3U8_MASTER_STATUS_MEM_ALLOC_ERROR = 3,
   /** Invalid or malformed master playlist. */
-  M3U8_MASTER_STATUS_INVALID_MANIFEST,
+  M3U8_MASTER_STATUS_INVALID_MANIFEST = 4,
   /** Invalid attributes found. */
-  M3U8_MASTER_STATUS_INVALID_ATTRS,
+  M3U8_MASTER_STATUS_INVALID_ATTRS = 5,
   /** An unknown or unspecified error occurred. */
-  M3U8_MASTER_STATUS_UNKNOWN_ERROR,
+  M3U8_MASTER_STATUS_UNKNOWN_ERROR = 99,
 } m3u8_master_status_t;
 
 /**

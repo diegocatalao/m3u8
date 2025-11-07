@@ -9,19 +9,19 @@
  */
 typedef enum {
   /** Operation completed successfully. */
-  M3U8_PARSER_STATUS_NO_ERROR,
+  M3U8_PARSER_STATUS_NO_ERROR = 0,
   /** A validation rule was not met. */
-  M3U8_PARSER_STATUS_FAILURE,
+  M3U8_PARSER_STATUS_FAILURE = 1,
   /** Invalid argument provided to a function. */
-  M3U8_PARSER_STATUS_INVALID_ARG,
+  M3U8_PARSER_STATUS_INVALID_ARG = 2,
   /** Memory allocation failed. */
-  M3U8_PARSER_STATUS_MEM_ALLOC_ERROR,
+  M3U8_PARSER_STATUS_MEM_ALLOC_ERROR = 3,
   /** An error occurred when trying to manipulate the list */
-  M3U8_PARSER_STATUS_LIST_ERROR,
+  M3U8_PARSER_STATUS_LIST_ERROR = 4,
   /** Given a key from list, attribute was not found */
-  M3U8_PARSER_STATUS_NOT_FOUND,
+  M3U8_PARSER_STATUS_NOT_FOUND = 5,
   /** An unknown or unspecified error occurred. */
-  M3U8_PARSER_STATUS_UNKNOWN_ERROR,
+  M3U8_PARSER_STATUS_UNKNOWN_ERROR = 99,
 } m3u8_parser_status_t;
 
 /**

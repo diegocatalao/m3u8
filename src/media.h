@@ -10,15 +10,15 @@
  */
 typedef enum {
   /** Operation completed successfully. */
-  M3U8_MEDIA_STATUS_NO_ERROR,
+  M3U8_MEDIA_STATUS_NO_ERROR = 0,
   /** Invalid argument provided to a function. */
-  M3U8_MEDIA_STATUS_INVALID_ARG,
+  M3U8_MEDIA_STATUS_INVALID_ARG = 1,
   /** Memory allocation failed. */
-  M3U8_MEDIA_STATUS_MEM_ALLOC_ERROR,
+  M3U8_MEDIA_STATUS_MEM_ALLOC_ERROR = 2,
   /** Invalid or malformed media playlist. */
-  M3U8_MEDIA_STATUS_INVALID_PLAYLIST,
+  M3U8_MEDIA_STATUS_INVALID_PLAYLIST = 3,
   /** An unknown or unspecified error occurred. */
-  M3U8_MEDIA_STATUS_UNKNOWN_ERROR,
+  M3U8_MEDIA_STATUS_UNKNOWN_ERROR = 99,
 } m3u8_media_status_t;
 
 /**
