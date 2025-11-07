@@ -4,19 +4,19 @@
 #include <regex.h>
 #include <stdlib.h>
 
-m3u8_parser_status_t m3u8_parser_attr(char* buffer, m3u8_parser_attr_t* attrs) {
+m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
 
   regex_t    regex;
   regmatch_t pmatch[3];  // 0: full match, 1: key, 2: value
 
-  char* cursor = buffer;
+  char* cursor = line;
   char* pattern = "([A-Z0-9_-]+)=(\"[^\"]*\"|[^,]+)";
 
   memset(&regex, 0, sizeof(regex_t));
 
-  if (buffer == NULL) {
-    M3U8_RAISE(M3U8_PARSER_STATUS_INVALID_ARG, "Invalid arg buffer (null)");
+  if (line == NULL) {
+    M3U8_RAISE(M3U8_PARSER_STATUS_INVALID_ARG, "Invalid arg line (null)");
   }
 
   if (attrs == NULL) {
@@ -151,7 +151,7 @@ clean_up:
   return status;
 }
 
-m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* buffer) {
+m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* line) {
   m3u8_parser_playlist_type_t type = M3U8_PARSER_UNKNOWN_PLAYLIST;
   return type;
 }
