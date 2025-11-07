@@ -3,6 +3,7 @@
 
 #include <regex.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * @struct m3u8_parser_tag_entry_t
@@ -240,7 +241,54 @@ m3u8_parser_tag_t m3u8_parser_tag_from_str(const char* line) {
   return tag;
 }
 
-m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* line) {
-  m3u8_parser_playlist_type_t type = M3U8_PARSER_UNKNOWN_PLAYLIST;
-  return type;
+m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* manifest) {
+  if (manifest == NULL) {
+    return M3U8_PARSER_UNKNOWN_PLAYLIST;
+  }
+
+  char*       buffer = NULL;
+  const char* pivot = manifest;
+
+  while (*pivot != '\0') {
+    const char* line = strchr(pivot, '\n');
+    size_t      length = line == NULL ? strlen(pivot) : line - pivot;
+
+    if (length == 0 && line == NULL) {
+      // if line is empty and EOF, just not found nothing
+      return M3U8_PARSER_UNKNOWN_PLAYLIST;
+    } else if (length == 0) {
+      // if line is empty only, go to next line find something
+      pivot = line + 1;
+      continue;
+    }
+
+    // allocates the line size and try find something
+    if ((buffer = (char*)malloc(length + 1)) != NULL) {
+      strncpy(buffer, pivot, length);
+      buffer[length] = '\0';
+    } else {
+      return M3U8_PARSER_UNKNOWN_PLAYLIST;
+    }
+
+    if (strstr(buffer, "#EXT-X-STREAM-INF") != NULL) {
+      free(buffer);  // Libera o buffer antes de retornar
+      return M3U8_PARSER_MASTER_PLAYLIST;
+    }
+
+    if (strstr(buffer, "#EXTINF") != NULL) {
+      free(buffer);
+      return M3U8_PARSER_MEDIA_PLAYLIST;
+    }
+
+    free(buffer);
+    buffer = NULL;
+
+    if (line != NULL) {
+      pivot = line + 1;
+    } else {
+      return M3U8_PARSER_UNKNOWN_PLAYLIST;
+    }
+  }
+
+  return M3U8_PARSER_UNKNOWN_PLAYLIST;
 }

@@ -177,12 +177,12 @@ m3u8_parser_tag_t m3u8_parser_tag_from_str(const char* line);
 
 /**
  * @brief Check if is a master or media media.
- * @param line string of current manifest.
- * @return @ref M3U8_MASTER_PLAYLIST a master media from line.
- * @return @ref M3U8_MEDIA_PLAYLIST a media media from line.
+ * @param manifest string of current manifest.
+ * @return @ref M3U8_MASTER_PLAYLIST a master playlist from manifest.
+ * @return @ref M3U8_MEDIA_PLAYLIST a media playlist from manifest.
  * @return @ref M3U8_UNKNOWN_PLAYLIST a unknown media if no valid arguments are
  *              received.
  */
-m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* line);
+m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* manifest);
 
 #endif  // _M3U8_PARSER_H_

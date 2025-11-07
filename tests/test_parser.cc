@@ -233,6 +233,81 @@ TEST(m3u8_parser_tag_from_str_test, empty_string_returns_unknown) {
   free(line);
 }
 
+// ----------- m3u8_parser_playlist_type -----------
+
+TEST(m3u8_parser_playlist_type_test, master_playlist_detects_stream_inf) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#EXT-X-STREAM-INF:BANDWIDTH=150000\n"
+    "media.m3u8\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MASTER_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, media_playlist_detects_extinf) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#EXTINF:10.0,\n"
+    "segment1.ts\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MEDIA_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, unknown_playlist_no_tags) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#SOME_OTHER_TAG\n"
+    "file.ts\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_UNKNOWN_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, empty_manifest_returns_unknown) {
+  const char* manifest = "";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_UNKNOWN_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, null_manifest_returns_unknown) {
+  EXPECT_EQ(m3u8_parser_playlist_type(nullptr), M3U8_PARSER_UNKNOWN_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, extm3u_only_returns_unknown) {
+  const char* manifest = "#EXTM3U\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_UNKNOWN_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, manifest_with_empty_lines) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "\n"
+    "#EXTINF:10.0,\n"
+    "\n"
+    "segment1.ts\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MEDIA_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, manifest_no_final_newline) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#EXT-X-STREAM-INF:BANDWIDTH=150000";  // No final newline
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MASTER_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, master_tag_first_returns_master) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#EXT-X-STREAM-INF:BANDWIDTH=150000\n"
+    "#EXTINF:10.0,\n"  // Media tag after master
+    "media.m3u8\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MASTER_PLAYLIST);
+}
+
+TEST(m3u8_parser_playlist_type_test, media_tag_first_returns_media) {
+  const char* manifest =
+    "#EXTM3U\n"
+    "#EXTINF:10.0,\n"  // Media tag first
+    "#EXT-X-STREAM-INF:BANDWIDTH=150000\n"
+    "segment1.ts\n";
+  EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MEDIA_PLAYLIST);
+}
+
 // ----------- main -----------
 
 int main(int argc, char** argv) {
