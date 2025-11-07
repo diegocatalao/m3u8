@@ -185,6 +185,54 @@ TEST(m3u8_parser_attr_destroy_test, given_null_pointer_returns_error) {
   EXPECT_EQ(m3u8_parser_attr_destroy(nullptr), M3U8_PARSER_STATUS_INVALID_ARG);
 }
 
+// ----------- m3u8_parser_tag_from_str -----------
+
+TEST(m3u8_parser_tag_from_str_test, valid_extm3u_tag_returns_correct_enum) {
+  char* line = strdup("#EXTM3U");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXTM3U);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, valid_ext_x_version_tag_returns_enum) {
+  char* line = strdup("#EXT-X-VERSION:1");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXT_X_VERSION);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, valid_extinf_tag_returns_correct_enum) {
+  char* line = strdup("#EXTINF:10.0");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXTINF);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, invalid_tag_no_ext_returns_unknown) {
+  char* line = strdup("NOT_A_TAG");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXT_UNKNOWN);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, invalid_tag_hash_no_ext_returns_unknown) {
+  char* line = strdup("#NOTEXT");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXT_UNKNOWN);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, unknown_ext_tag_returns_unknown) {
+  char* line = strdup("#EXT-X-UNKNOWN-TAG:value");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXT_UNKNOWN);
+  free(line);
+}
+
+TEST(m3u8_parser_tag_from_str_test, null_input_returns_unknown) {
+  EXPECT_EQ(m3u8_parser_tag_from_str(nullptr), M3U8_PARSER_EXT_UNKNOWN);
+}
+
+TEST(m3u8_parser_tag_from_str_test, empty_string_returns_unknown) {
+  char* line = strdup("");
+  EXPECT_EQ(m3u8_parser_tag_from_str(line), M3U8_PARSER_EXT_UNKNOWN);
+  free(line);
+}
+
 // ----------- main -----------
 
 int main(int argc, char** argv) {

@@ -4,6 +4,42 @@
 #include <regex.h>
 #include <stdlib.h>
 
+/**
+ * @struct m3u8_parser_tag_entry_t
+ * @brief Represents a single entry in the M3U8 tag map, associating a tag
+ *        name with its enum identifier @ref m3u8_parser_tag_t.
+ */
+typedef struct {
+  const char*       name; /** tag name from m3u8 specification */
+  m3u8_parser_tag_t tag;  /** tag identifier from m3u8 specification */
+} m3u8_parser_tag_entry_t;
+
+static const m3u8_parser_tag_entry_t m3u8_parser_tag_map[] = {
+  {"EXTM3U", M3U8_PARSER_EXTM3U},
+  {"EXT-X-VERSION", M3U8_PARSER_EXT_X_VERSION},
+  {"EXT-X-INDEPENDENT-SEGMENTS", M3U8_PARSER_EXT_X_INDEPENDENT_SEGMENTS},
+  {"EXT_X_I_FRAME-STREAM_INF", M3U8_PARSER_EXT_X_I_FRAME_STREAM_INF},
+  {"EXT-X-MEDIA", M3U8_PARSER_EXT_X_MEDIA},
+  {"EXT-X-SESSION-DATA", M3U8_PARSER_EXT_X_SESSION_DATA},
+  {"EXT-X-SESSION-KEY", M3U8_PARSER_EXT_X_SESSION_KEY},
+  {"EXT-X-START", M3U8_PARSER_EXT_X_START},
+  {"EXT-X-STREAM-INF", M3U8_PARSER_EXT_X_STREAM_INF},
+  {"EXT-X-PLAYLIST-TYPE", M3U8_PARSER_EXT_X_PLAYLIST_TYPE},
+  {"EXT-X-I-FRAMES-ONLY", M3U8_PARSER_EXT_X_I_FRAMES_ONLY},
+  {"EXT-X-TARGETDURATION", M3U8_PARSER_EXT_X_TARGETDURATION},
+  {"EXT-X-MEDIA-SEQUENCE", M3U8_PARSER_EXT_X_MEDIA_SEQUENCE},
+  {"EXT-X-DISCONTINUITY_SEQUENCE", M3U8_PARSER_EXT_X_DISCONTINUITY_SEQUENCE},
+  {"EXTINF", M3U8_PARSER_EXTINF},
+  {"EXT-X-BYTERANGE", M3U8_PARSER_EXT_X_BYTERANGE},
+  {"EXT-X-DISCONTINUITY", M3U8_PARSER_EXT_X_DISCONTINUITY},
+  {"EXT-X-KEY", M3U8_PARSER_EXT_X_KEY},
+  {"EXT-X-MAP", M3U8_PARSER_EXT_X_MAP},
+  {"EXT-X-PROGRAM-DATE-TIME", M3U8_PARSER_EXT_X_PROGRAM_DATE_TIME},
+  {"EXT-X-DATERANGE", M3U8_PARSER_EXT_X_DATERANGE},
+  {"EXT-X-ENDLIST", M3U8_PARSER_EXT_X_ENDLIST},
+  {"EXT-UNKNOWN", M3U8_PARSER_EXT_UNKNOWN},
+};
+
 m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
 
@@ -149,6 +185,59 @@ m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
   M3U8_RAISE(M3U8_PARSER_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:
   return status;
+}
+
+m3u8_parser_tag_t m3u8_parser_tag_from_str(const char* line) {
+  regex_t    regex;
+  regmatch_t pmatch[2];  // 0: full match, 1: match
+
+  size_t length = 0;
+  char*  match = NULL;
+
+  const char*        pivot = line;
+  m3u8_parser_tag_t  tag = M3U8_PARSER_EXT_UNKNOWN;
+  static const char* pattern = "^#(EXT(-X-[A-Z0-9-]+|[A-Z0-9-]+))(:.*)?";
+
+  if (line == NULL) {
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  if (*pivot != '#' || strncmp(line, "#EXT", 4) != 0) {
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  memset(&regex, 0, sizeof(regex_t));
+
+  if (regcomp(&regex, pattern, REG_EXTENDED) != 0) {
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  if (regexec(&regex, line, 2, pmatch, 0) != 0) {
+    regfree(&regex);
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  if (pmatch[1].rm_so < 0 || pmatch[1].rm_eo < pmatch[1].rm_so) {
+    regfree(&regex);
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  length = pmatch[1].rm_eo - pmatch[1].rm_so;
+
+  if ((match = strndup(line + pmatch[1].rm_so, length)) == NULL) {
+    regfree(&regex);
+    return M3U8_PARSER_EXT_UNKNOWN;
+  }
+
+  for (tag = M3U8_PARSER_EXTM3U; tag < M3U8_PARSER_EXT_UNKNOWN; tag++) {
+    if (strcmp(match, m3u8_parser_tag_map[tag].name) == 0) {
+      break;
+    }
+  }
+
+  free(match);
+  regfree(&regex);
+  return tag;
 }
 
 m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* line) {
