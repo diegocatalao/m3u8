@@ -1,9 +1,6 @@
 #ifndef _M3U8_MEDIA_H_
 #define _M3U8_MEDIA_H_
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "linked.h"
 #include "parser.h"
 
