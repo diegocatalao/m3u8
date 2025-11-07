@@ -44,9 +44,9 @@ typedef struct {
   /** Embedded node for circular linked list. */
   m3u8_linked_node_t list;
   /** Length of the byte range in bytes. */
-  uint64_t length;
+  int length;
   /** Optional start offset in bytes. */
-  uint64_t offset;
+  int offset;
 } m3u8_ext_x_byterange_t;
 
 /**
@@ -61,7 +61,7 @@ typedef struct {
   /** Link to remote key resource. */
   char* uri;
   /** Initialization vector in hex. */
-  uint8_t iv[16];
+  int iv[16];
   /** Key format, default is "identity". */
   char* key_format;
   /** Key format versions, default is 1. */
@@ -122,7 +122,7 @@ typedef struct {
   /** If the playlist is started by EXTM3U tag. */
   bool is_signed;
   /** HLS protocol version number. */
-  uint8_t version;
+  int version;
   /** If segments can be decoded without previous ones. */
   bool is_independent_segments;
   /** True if the next segment starts a discontinuity. */
