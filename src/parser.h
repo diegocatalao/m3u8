@@ -168,6 +168,14 @@ m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
                                           m3u8_parser_t** parser);
 
 /**
+ * @brief Converts a string to an M3U8 parser tag enum.
+ * @param line The input string containing the M3U8 tag (e.g., "#EXTM3U").
+ * @return The corresponding `m3u8_parser_tag_t` enum value if a match is
+ *         found.
+ */
+m3u8_parser_tag_t m3u8_parser_tag_from_str(const char* line);
+
+/**
  * @brief Check if is a master or media media.
  * @param buffer string of current manifest.
  * @return @ref M3U8_MASTER_PLAYLIST a master media from line.
