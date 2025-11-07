@@ -61,8 +61,7 @@ m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs) {
   }
 
   if (m3u8_linked_init(&attrs->list) != M3U8_LINKED_STATUS_NO_ERROR) {
-    M3U8_RAISE(M3U8_PARSER_STATUS_LIST_ERROR,
-               "Fail to initialize the attribute list");
+    M3U8_RAISE(M3U8_PARSER_STATUS_LIST_ERROR, "Fail to initialize the attribute list");
   }
 
   if (regcomp(&regex, pattern, REG_EXTENDED) != 0) {
@@ -84,10 +83,8 @@ m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs) {
     attr->key = strndup(cursor + pmatch[1].rm_so, key_s);
     attr->value = strndup(cursor + pmatch[2].rm_so, value_s);
 
-    if (m3u8_linked_inb(&attrs->list, &attr->list) !=
-        M3U8_LINKED_STATUS_NO_ERROR) {
-      M3U8_RAISE(M3U8_PARSER_STATUS_LIST_ERROR,
-                 "Could not insert attr in list");
+    if (m3u8_linked_inb(&attrs->list, &attr->list) != M3U8_LINKED_STATUS_NO_ERROR) {
+      M3U8_RAISE(M3U8_PARSER_STATUS_LIST_ERROR, "Could not insert attr in list");
     }
 
     if (pmatch[0].rm_eo == 0)
@@ -101,9 +98,8 @@ clean_up:
   return status;
 }
 
-m3u8_parser_status_t m3u8_parser_attr_from_key(m3u8_parser_attr_t*  attrs,
-                                               m3u8_parser_attr_t** attr,
-                                               char*                key) {
+m3u8_parser_status_t m3u8_parser_attr_from_key(m3u8_parser_attr_t* attrs, m3u8_parser_attr_t** attr,
+                                               char* key) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
   m3u8_parser_attr_t*  entry = NULL;
 
@@ -132,8 +128,7 @@ clean_up:
   return status;
 }
 
-m3u8_parser_status_t m3u8_parser_attr_count(m3u8_parser_attr_t* attrs,
-                                            int*                size) {
+m3u8_parser_status_t m3u8_parser_attr_count(m3u8_parser_attr_t* attrs, int* size) {
   int                  count = 0;
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
 
@@ -180,8 +175,7 @@ clean_up:
   return status;
 }
 
-m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
-                                          m3u8_parser_t** parser) {
+m3u8_parser_status_t m3u8_parser_from_str(const char* line, m3u8_parser_t** parser) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
   M3U8_RAISE(M3U8_PARSER_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:

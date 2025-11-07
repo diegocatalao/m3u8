@@ -16,8 +16,7 @@ extern "C" {
   "AUDIO=\"audio\","                  \
   "SUBTITLES=\"subs\""
 
-#define MOCK_EXT_X_STREAM_SHORT \
-  "EXT-X-STREAM-INF:BANDWIDTH=800000,AVERAGE-BANDWIDTH=750000"
+#define MOCK_EXT_X_STREAM_SHORT "EXT-X-STREAM-INF:BANDWIDTH=800000,AVERAGE-BANDWIDTH=750000"
 
 // ----------- m3u8_parser_attr -----------
 
@@ -83,7 +82,7 @@ TEST(m3u8_parser_attr_test, given_null_buffer_returns_an_error) {
 TEST(m3u8_parser_attr_test, given_duplicate_keys_stores_all) {
   m3u8_parser_attr_t  attrs;
   m3u8_parser_attr_t* pivot = &attrs;
-  char* buffer = strdup("EXT-X-STREAM-INF:AUDIO=\"audio\",AUDIO=\"audio\"");
+  char*               buffer = strdup("EXT-X-STREAM-INF:AUDIO=\"audio\",AUDIO=\"audio\"");
 
   memset(&attrs, 0, sizeof(m3u8_parser_attr_t));
 
@@ -118,9 +117,8 @@ TEST(m3u8_parser_attr_from_key_test, given_existing_key_returns_attribute) {
   EXPECT_STREQ(attr_audio->key, strdup("AUDIO"));
   EXPECT_STREQ(attr_audio->value, strdup("\"audio\""));
 
-  EXPECT_EQ(
-    m3u8_parser_attr_from_key(&attrs, &attr_bandwidth, strdup("BANDWIDTH")),
-    M3U8_PARSER_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_parser_attr_from_key(&attrs, &attr_bandwidth, strdup("BANDWIDTH")),
+            M3U8_PARSER_STATUS_NO_ERROR);
 
   EXPECT_STREQ(attr_bandwidth->key, strdup("BANDWIDTH"));
   EXPECT_STREQ(attr_bandwidth->value, strdup("800000"));

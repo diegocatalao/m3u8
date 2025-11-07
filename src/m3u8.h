@@ -53,7 +53,6 @@ m3u8_status_t m3u8_create(m3u8_t** m3u8);
 
 /**
  * @brief Deallocates and cleans up a previously created m3u8_t structure.
- * @details
  * @param m3u8 pointer to an @ref m3u8_t structure to be deallocated.
  * @return @ref M3U8_STATUS_NO_ERROR on success.
  * @return @ref M3U8_STATUS_INVALID_ARG if @p m3u8 is NULL.

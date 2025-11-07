@@ -90,9 +90,9 @@ typedef enum {
  */
 typedef struct {
   /** The attribute key (e.g., "BANDWIDTH"). */
-  char* key;
+  char *key;
   /** The attribute value (e.g., "1280000"). */
-  char* value;
+  char *value;
   /** Embedded node for circular linked list. */
   m3u8_linked_node_t list;
 } m3u8_parser_attr_t;
@@ -102,12 +102,14 @@ typedef struct {
  * @brief Represents a parsed line from playlist.
  */
 typedef struct {
-  /** The tag name from RFC tag list */
-  char* tag;
+  /** The tag name string from RFC tag list */
+  char *name;
   /** The value of this tag, NULL if tag has no value */
-  char* value;
+  char *value;
+  /** The tag identifier from RFC tag list */
+  m3u8_parser_tag_t tag;
   /** Parsed attributes from this tag, NULL if tag has no attributes  */
-  m3u8_parser_attr_t* attrs;
+  m3u8_parser_attr_t *attrs;
 } m3u8_parser_t;
 
 /**
@@ -121,7 +123,7 @@ typedef struct {
  * @return @ref M3U8_ATTR_STATUS_REG_PATTERN_ERROR if regex compilation fails.
  * @return @ref M3U8_ATTR_STATUS_LIST_ERROR if insertion into the list fails.
  */
-m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs);
+m3u8_parser_status_t m3u8_parser_attr(char *line, m3u8_parser_attr_t *attrs);
 
 /**
  * @brief Retrieves an attribute from the list by its key.
@@ -130,12 +132,10 @@ m3u8_parser_status_t m3u8_parser_attr(char* line, m3u8_parser_attr_t* attrs);
  * @param key   The key of the attribute to find.
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
  * @return @ref M3U8_ATTR_STATUS_NOT_FOUND if the key is not found.
- * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs, @p attr, or @p key
- *                                           is NULL.
+ * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs, @p attr, or @p key is NULL.
  */
-m3u8_parser_status_t m3u8_parser_attr_from_key(m3u8_parser_attr_t*  attrs,
-                                               m3u8_parser_attr_t** attr,
-                                               char*                key);
+m3u8_parser_status_t m3u8_parser_attr_from_key(m3u8_parser_attr_t *attrs, m3u8_parser_attr_t **attr,
+                                               char *key);
 
 /**
  * @brief Counts the number of attributes in the list.
@@ -144,8 +144,7 @@ m3u8_parser_status_t m3u8_parser_attr_from_key(m3u8_parser_attr_t*  attrs,
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
  * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs or @p size is NULL.
  */
-m3u8_parser_status_t m3u8_parser_attr_count(m3u8_parser_attr_t* attrs,
-                                            int*                size);
+m3u8_parser_status_t m3u8_parser_attr_count(m3u8_parser_attr_t *attrs, int *size);
 
 /**
  * @brief Frees all memory associated with the attribute list.
@@ -153,36 +152,32 @@ m3u8_parser_status_t m3u8_parser_attr_count(m3u8_parser_attr_t* attrs,
  * @return @ref M3U8_ATTR_STATUS_NO_ERROR on success.
  * @return @ref M3U8_ATTR_STATUS_INVALID_ARG if @p attrs is NULL.
  */
-m3u8_parser_status_t m3u8_parser_attr_destroy(m3u8_parser_attr_t* attrs);
+m3u8_parser_status_t m3u8_parser_attr_destroy(m3u8_parser_attr_t *attrs);
 
 /**
  * @brief Parses an M3U8 string and initializes a parser object.
  * @param line The M3U8 string line to be parsed.
- * @param parser Double pointer to an @ref m3u8_parser_t object that will be
- *               created.
+ * @param parser Double pointer to an @ref m3u8_parser_t object that will be created.
  * @return @ref M3U8_PARSER_STATUS_NO_ERROR on success.
  * @return @ref M3U8_PARSER_STATUS_INVALID_ARG if @p line or @p parser is NULL.
  * @return @ref M3U8_PARSER_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  */
-m3u8_parser_status_t m3u8_parser_from_str(const char*     line,
-                                          m3u8_parser_t** parser);
+m3u8_parser_status_t m3u8_parser_from_str(const char *line, m3u8_parser_t **parser);
 
 /**
  * @brief Converts a string to an M3U8 parser tag enum.
  * @param line The input string containing the M3U8 tag (e.g., "#EXTM3U").
- * @return The corresponding `m3u8_parser_tag_t` enum value if a match is
- *         found.
+ * @return The corresponding `m3u8_parser_tag_t` enum value if a match is found.
  */
-m3u8_parser_tag_t m3u8_parser_tag_from_str(const char* line);
+m3u8_parser_tag_t m3u8_parser_tag_from_str(const char *line);
 
 /**
  * @brief Check if is a master or media media.
  * @param manifest string of current manifest.
  * @return @ref M3U8_MASTER_PLAYLIST a master playlist from manifest.
  * @return @ref M3U8_MEDIA_PLAYLIST a media playlist from manifest.
- * @return @ref M3U8_UNKNOWN_PLAYLIST a unknown media if no valid arguments are
- *              received.
+ * @return @ref M3U8_UNKNOWN_PLAYLIST a unknown media if no valid arguments are received.
  */
-m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char* manifest);
+m3u8_parser_playlist_type_t m3u8_parser_playlist_type(const char *manifest);
 
-#endif  // _M3U8_PARSER_H_
+#endif // _M3U8_PARSER_H_

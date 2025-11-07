@@ -43,8 +43,7 @@ typedef struct m3u8_linked_node {
  * @param member Member name.
  * @return Pointer to the containing structure.
  */
-#define m3u8_linked_container_of(ptr, type, member) \
-  ((type*)((char*)(ptr) - offsetof(type, member)))
+#define m3u8_linked_container_of(ptr, type, member) ((type*)((char*)(ptr) - offsetof(type, member)))
 
 /**
  * @brief Gets the next entry in the list.
@@ -72,10 +71,9 @@ typedef struct m3u8_linked_node {
  * @param type   Structure type.
  * @param member List node field name.
  */
-#define m3u8_linked_foreach(entry, head, type, member)            \
-  for (m3u8_linked_node_t* _pos = (head)->next, *_n = _pos->next; \
-       _pos != (head) &&                                          \
-       ((entry) = m3u8_linked_container_of(_pos, type, member));  \
+#define m3u8_linked_foreach(entry, head, type, member)                             \
+  for (m3u8_linked_node_t* _pos = (head)->next, *_n = _pos->next;                  \
+       _pos != (head) && ((entry) = m3u8_linked_container_of(_pos, type, member)); \
        _pos = _n, _n = _pos->next)
 
 /**
@@ -93,8 +91,7 @@ m3u8_linked_status_t m3u8_linked_init(m3u8_linked_node_t* head);
  * @return @ref M3U8_LINKED_STATUS_NO_ERROR on success.
  * @return @ref M3U8_LINKED_STATUS_INVALID_ARGS if @p head or @p node is NULL.
  */
-m3u8_linked_status_t m3u8_linked_ina(m3u8_linked_node_t* head,
-                                     m3u8_linked_node_t* node);
+m3u8_linked_status_t m3u8_linked_ina(m3u8_linked_node_t* head, m3u8_linked_node_t* node);
 
 /**
  * @brief Inserts a node before the head node.
@@ -103,8 +100,7 @@ m3u8_linked_status_t m3u8_linked_ina(m3u8_linked_node_t* head,
  * @return @ref M3U8_LINKED_STATUS_NO_ERROR on success.
  * @return @ref M3U8_LINKED_STATUS_INVALID_ARGS if @p head or @p node is NULL.
  */
-m3u8_linked_status_t m3u8_linked_inb(m3u8_linked_node_t* head,
-                                     m3u8_linked_node_t* node);
+m3u8_linked_status_t m3u8_linked_inb(m3u8_linked_node_t* head, m3u8_linked_node_t* node);
 
 /**
  * @brief Removes a node from the list.
@@ -122,8 +118,7 @@ m3u8_linked_status_t m3u8_linked_remove(m3u8_linked_node_t* node);
  * @return @ref M3U8_LINKED_STATUS_INVALID_ARGS if @p head or @p is_empty
  *                                              is NULL.
  */
-m3u8_linked_status_t m3u8_linked_is_empty(const m3u8_linked_node_t* head,
-                                          bool*                     is_empty);
+m3u8_linked_status_t m3u8_linked_is_empty(const m3u8_linked_node_t* head, bool* is_empty);
 
 /**
  * @brief Counts the nodes in the list (excluding head).
@@ -132,7 +127,6 @@ m3u8_linked_status_t m3u8_linked_is_empty(const m3u8_linked_node_t* head,
  * @return @ref M3U8_LINKED_STATUS_NO_ERROR on success.
  * @return @ref M3U8_LINKED_STATUS_INVALID_ARGS if @p head or @p size is NULL.
  */
-m3u8_linked_status_t m3u8_linked_count(const m3u8_linked_node_t* head,
-                                       int*                      size);
+m3u8_linked_status_t m3u8_linked_count(const m3u8_linked_node_t* head, int* size);
 
 #endif  // _M3U8_LINKED_H_

@@ -14,22 +14,20 @@
 static m3u8_logger_attr_t* __log_attribute = NULL;
 
 static const char* str_log_severities[] = {
-  "M3U8_LOGGER_SEVERITY_VERBOSE", "M3U8_LOGGER_SEVERITY_INFO",
-  "M3U8_LOGGER_SEVERITY_DEBUG",   "M3U8_LOGGER_SEVERITY_WARN",
-  "M3U8_LOGGER_SEVERITY_ERROR",   "M3U8_LOGGER_SEVERITY_CRIT",
+  "M3U8_LOGGER_SEVERITY_VERBOSE", "M3U8_LOGGER_SEVERITY_INFO",  "M3U8_LOGGER_SEVERITY_DEBUG",
+  "M3U8_LOGGER_SEVERITY_WARN",    "M3U8_LOGGER_SEVERITY_ERROR", "M3U8_LOGGER_SEVERITY_CRIT",
 };
 
-static m3u8_logger_signature_t
-  __log_handlers[M3U8_LOGGER_SET_MAX_HANDLERS + 1] = {
-    {
-      .name = "m3u8_logger_write_stdout_handler",
-      .fnp = (m3u8_logger_handler_t*)m3u8_logger_write_stdout_handler,
-    },
-    {
-      .name = "m3u8_logger_write_file_handler",
-      .fnp = (m3u8_logger_handler_t*)m3u8_logger_write_file_handler,
-    },
-    {.name = NULL, .fnp = NULL},  // SENTINEL
+static m3u8_logger_signature_t __log_handlers[M3U8_LOGGER_SET_MAX_HANDLERS + 1] = {
+  {
+    .name = "m3u8_logger_write_stdout_handler",
+    .fnp = (m3u8_logger_handler_t*)m3u8_logger_write_stdout_handler,
+  },
+  {
+    .name = "m3u8_logger_write_file_handler",
+    .fnp = (m3u8_logger_handler_t*)m3u8_logger_write_file_handler,
+  },
+  {.name = NULL, .fnp = NULL},  // SENTINEL
 };
 
 static pthread_mutex_t write_file_handler_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -57,8 +55,7 @@ clean_up:
   return status;
 }
 
-m3u8_logger_status_t m3u8_logger_timefmt(long* tms, char* obuff, int size,
-                                         const char* fmt) {
+m3u8_logger_status_t m3u8_logger_timefmt(long* tms, char* obuff, int size, const char* fmt) {
   m3u8_logger_status_t status = M3U8_LOGGER_NO_ERROR;
   struct tm*           tm_info;
   time_t               timestamp = (time_t)(*tms);
@@ -78,7 +75,7 @@ static void m3u8_logger_write_stdout_handler(m3u8_logger_event_t event) {
 
   char        obuff[64];
   const char* msg = "[%s][%s] - %s:%d - %s\n";
-  FILE* outf = (event.severity > M3U8_LOGGER_SEVERITY_DEBUG ? stderr : stdout);
+  FILE*       outf = (event.severity > M3U8_LOGGER_SEVERITY_DEBUG ? stderr : stdout);
 
   const char* cseverity = str_log_severities[event.severity];
 
@@ -152,10 +149,9 @@ static void m3u8_logger_write_file_handler(m3u8_logger_event_t event) {
 }
 
 static void* m3u8_logger_pthread_handler_fn(void* vargs) {
-  m3u8_logger_event_handler_t* ptr_log_event_handler =
-    (m3u8_logger_event_handler_t*)(vargs);
-  m3u8_logger_event_t   event = *ptr_log_event_handler->event;
-  m3u8_logger_handler_t signature = (*ptr_log_event_handler).signature->fnp;
+  m3u8_logger_event_handler_t* ptr_log_event_handler = (m3u8_logger_event_handler_t*)(vargs);
+  m3u8_logger_event_t          event = *ptr_log_event_handler->event;
+  m3u8_logger_handler_t        signature = (*ptr_log_event_handler).signature->fnp;
 
   // Calls the function with the appropriate injected event
   ((m3u8_logger_handler_t)signature)(event);
@@ -163,8 +159,7 @@ static void* m3u8_logger_pthread_handler_fn(void* vargs) {
   return NULL;
 }
 
-void m3u8_logger(char* msg, char* rlt, int line,
-                 m3u8_logger_severity_t severity, ...) {
+void m3u8_logger(char* msg, char* rlt, int line, m3u8_logger_severity_t severity, ...) {
   va_list ap;
   va_start(ap, severity);
 
@@ -183,8 +178,7 @@ void m3u8_logger(char* msg, char* rlt, int line,
   ptr_log_event->timestamp = (int)time(NULL);
 
   while (ptr_log_handler->name != NULL && ptr_log_handler->fnp != NULL) {
-    m3u8_logger_event_handler_t* log_event_handler =
-      malloc(sizeof(m3u8_logger_event_handler_t));
+    m3u8_logger_event_handler_t* log_event_handler = malloc(sizeof(m3u8_logger_event_handler_t));
 
     if (log_event_handler == NULL) {
       free(ptr_log_event->msg);
@@ -200,8 +194,7 @@ void m3u8_logger(char* msg, char* rlt, int line,
     free(log_event_handler);
 #else
     pthread_t thread_id;
-    pthread_create(&thread_id, NULL, m3u8_logger_pthread_handler_fn,
-                   (void*)log_event_handler);
+    pthread_create(&thread_id, NULL, m3u8_logger_pthread_handler_fn, (void*)log_event_handler);
     pthread_detach(thread_id);
 #endif
 
@@ -209,14 +202,12 @@ void m3u8_logger(char* msg, char* rlt, int line,
   }
 }
 
-m3u8_logger_status_t m3u8_logger_add_log_handler(char*                 name,
-                                                 m3u8_logger_handler_t fnp) {
+m3u8_logger_status_t m3u8_logger_add_log_handler(char* name, m3u8_logger_handler_t fnp) {
   int status = M3U8_LOGGER_NO_ERROR;
 
   int                     sent_index = -1;
-  m3u8_logger_signature_t signature = {.name = name,
-                                       .fnp = (m3u8_logger_handler_t*)fnp};
-  int nhandlers = sizeof(__log_handlers) / sizeof(__log_handlers[0]);
+  m3u8_logger_signature_t signature = {.name = name, .fnp = (m3u8_logger_handler_t*)fnp};
+  int                     nhandlers = sizeof(__log_handlers) / sizeof(__log_handlers[0]);
 
   for (int i = 0; i < nhandlers; i++) {
     if (__log_handlers[i].name == NULL && __log_handlers[i].fnp == NULL) {

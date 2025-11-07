@@ -113,8 +113,7 @@ TEST(m3u8_linked_inb, inserts_multiple_nodes) {
 
   m3u8_linked_node_t node1;
   memset(&node1, 0, sizeof(m3u8_linked_node_t));
-  EXPECT_EQ(m3u8_linked_inb(&head, &node1),
-            M3U8_LINKED_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_linked_inb(&head, &node1), M3U8_LINKED_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node1);
@@ -123,8 +122,7 @@ TEST(m3u8_linked_inb, inserts_multiple_nodes) {
 
   m3u8_linked_node_t node2;
   memset(&node2, 0, sizeof(m3u8_linked_node_t));
-  EXPECT_EQ(m3u8_linked_inb(&head, &node2),
-            M3U8_LINKED_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_linked_inb(&head, &node2), M3U8_LINKED_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node2);
@@ -162,8 +160,7 @@ TEST(m3u8_linked_remove_test, given_valid_node_removes_node_from_list) {
 
   m3u8_linked_node_t node1;
   memset(&node1, 0, sizeof(m3u8_linked_node_t));
-  EXPECT_EQ(m3u8_linked_inb(&head, &node1),
-            M3U8_LINKED_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_linked_inb(&head, &node1), M3U8_LINKED_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node1);
@@ -172,8 +169,7 @@ TEST(m3u8_linked_remove_test, given_valid_node_removes_node_from_list) {
 
   m3u8_linked_node_t node2;
   memset(&node2, 0, sizeof(m3u8_linked_node_t));
-  EXPECT_EQ(m3u8_linked_inb(&head, &node2),
-            M3U8_LINKED_STATUS_NO_ERROR);
+  EXPECT_EQ(m3u8_linked_inb(&head, &node2), M3U8_LINKED_STATUS_NO_ERROR);
 
   EXPECT_EQ(head.next, &node1);
   EXPECT_EQ(head.prev, &node2);

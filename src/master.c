@@ -11,8 +11,7 @@ m3u8_master_status_t m3u8_master_create(m3u8_master_t** master) {
   }
 
   if ((*master = (m3u8_master_t*)malloc(sizeof(m3u8_master_t))) == NULL) {
-    M3U8_RAISE(M3U8_MASTER_STATUS_MEM_ALLOC_ERROR,
-               "Failed to allocate m3u8_master_t");
+    M3U8_RAISE(M3U8_MASTER_STATUS_MEM_ALLOC_ERROR, "Failed to allocate m3u8_master_t");
   }
 
   memset(*master, 0, sizeof(m3u8_master_t));
@@ -32,8 +31,7 @@ clean_up:
   return status;
 }
 
-m3u8_master_status_t m3u8_master_parser_from_str(m3u8_master_t* master,
-                                                 const char*    buffer) {
+m3u8_master_status_t m3u8_master_parser_from_str(m3u8_master_t* master, const char* buffer) {
   m3u8_master_status_t status = M3U8_MASTER_STATUS_NO_ERROR;
   M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:

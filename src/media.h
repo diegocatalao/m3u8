@@ -93,8 +93,8 @@ typedef struct {
   /**
    * Optional class attribute.
    *
-   * NOTE: The actual name of this field is 'class' but for compatibility
-   * purposes with cpp it was changed to klass.
+   * NOTE: The actual name of this field is 'class' but for compatibility purposes with cpp it was
+   *       changed to klass.
    */
   char* klass;
   /** ISO 8601 start datetime. */
@@ -176,16 +176,15 @@ m3u8_media_status_t m3u8_media_destroy(m3u8_media_t* media);
 
 /**
  * @brief Parses an M3U8 media playlist from a string buffer.
- * @param[out] media  A pointer to a @ref m3u8_media_t structure that will be
- *                    populated with the parsed data.
+ * @param[out] media  A pointer to a @ref m3u8_media_t structure that will be populated with the
+ *                    parsed data.
  * @param[in]  buffer The input string buffer containing the M3U8 media playlist.
  * @return @ref M3U8_MEDIA_STATUS_NO_ERROR on success.
  * @return @ref M3U8_MEDIA_STATUS_INVALID_ARG if @p media or @p buffer are NULL.
  * @return @ref M3U8_MEDIA_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  * @return @ref M3U8_MEDIA_STATUS_INVALID_PLAYLIST if the playlist is malformed.
  */
-m3u8_media_status_t m3u8_media_parser_from_str(m3u8_media_t* media,
-                                               const char*   buffer);
+m3u8_media_status_t m3u8_media_parser_from_str(m3u8_media_t* media, const char* buffer);
 
 /**
  * @brief Validates the integrity and conformance of a media playlist object.
