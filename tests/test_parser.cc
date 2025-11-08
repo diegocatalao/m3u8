@@ -306,6 +306,83 @@ TEST(m3u8_parser_playlist_type_test, media_tag_first_returns_media) {
   EXPECT_EQ(m3u8_parser_playlist_type(manifest), M3U8_PARSER_MEDIA_PLAYLIST);
 }
 
+// ----------- m3u8_parser_from_str -----------
+
+TEST(m3u8_parser_from_str, given_tag_with_value_parses_successfully) {
+  m3u8_parser_t*       parser = NULL;
+  const char*          line = "#EXT-X-VERSION:7";
+  m3u8_parser_status_t status = m3u8_parser_from_str(line, &parser);
+
+  ASSERT_EQ(status, M3U8_PARSER_STATUS_NO_ERROR);
+  ASSERT_NE(parser, nullptr);
+  EXPECT_EQ(parser->tag, M3U8_PARSER_EXT_X_VERSION);
+  ASSERT_NE(parser->value, nullptr);
+  EXPECT_STREQ(parser->value, "7");
+  EXPECT_NE(parser->attrs, nullptr);
+}
+
+TEST(m3u8_parser_from_str, given_valueless_tag_parses_successfully) {
+  m3u8_parser_t*       parser = NULL;
+  const char*          line = "#EXT-X-ENDLIST";
+  m3u8_parser_status_t status = m3u8_parser_from_str(line, &parser);
+
+  ASSERT_EQ(status, M3U8_PARSER_STATUS_NO_ERROR);
+  ASSERT_NE(parser, nullptr);
+  EXPECT_EQ(parser->tag, M3U8_PARSER_EXT_X_ENDLIST);
+  EXPECT_EQ(parser->value, nullptr);
+  EXPECT_EQ(parser->attrs, nullptr);
+}
+
+TEST(m3u8_parser_from_str, given_tag_with_attributes_parses_successfully) {
+  m3u8_parser_t*       parser = NULL;
+  const char*          line = "#EXT-X-STREAM-INF:BANDWIDTH=1280000,CODECS=\"avc1.4d401f\"";
+  m3u8_parser_status_t status = m3u8_parser_from_str(line, &parser);
+
+  ASSERT_EQ(status, M3U8_PARSER_STATUS_NO_ERROR);
+  ASSERT_NE(parser, nullptr);
+  EXPECT_EQ(parser->tag, M3U8_PARSER_EXT_X_STREAM_INF);
+  ASSERT_NE(parser->value, nullptr);
+  ASSERT_NE(parser->attrs, nullptr);
+
+  int attr_count = 0;
+  m3u8_parser_attr_count(parser->attrs, &attr_count);
+  EXPECT_EQ(attr_count, 2);
+}
+
+TEST(m3u8_parser_from_str, given_tag_with_value_and_no_attributes) {
+  m3u8_parser_t*       parser = NULL;
+  const char*          line = "#EXTINF:9.009,";
+  m3u8_parser_status_t status = m3u8_parser_from_str(line, &parser);
+
+  ASSERT_EQ(status, M3U8_PARSER_STATUS_NO_ERROR);
+  ASSERT_NE(parser, nullptr);
+  EXPECT_EQ(parser->tag, M3U8_PARSER_EXTINF);
+  ASSERT_NE(parser->value, nullptr);
+  EXPECT_STREQ(parser->value, "9.009,");
+  ASSERT_NE(parser->attrs, nullptr);
+
+  int attr_count = 0;
+  m3u8_parser_attr_count(parser->attrs, &attr_count);
+  EXPECT_EQ(attr_count, 0);
+}
+
+TEST(m3u8_parser_from_str, given_invalid_line_returns_failure) {
+  m3u8_parser_t*       parser = NULL;
+  const char*          line = "THIS IS NOT A VALID TAG";
+  m3u8_parser_status_t status = m3u8_parser_from_str(line, &parser);
+
+  EXPECT_EQ(status, M3U8_PARSER_STATUS_FAILURE);
+  EXPECT_EQ(parser, nullptr);
+}
+
+TEST(m3u8_parser_from_str, given_null_line_returns_invalid_arg) {
+  m3u8_parser_t*       parser = NULL;
+  m3u8_parser_status_t status = m3u8_parser_from_str(NULL, &parser);
+
+  EXPECT_EQ(status, M3U8_PARSER_STATUS_INVALID_ARG);
+  EXPECT_EQ(parser, nullptr);
+}
+
 // ----------- main -----------
 
 int main(int argc, char** argv) {

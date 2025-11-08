@@ -177,7 +177,52 @@ clean_up:
 
 m3u8_parser_status_t m3u8_parser_from_str(const char* line, m3u8_parser_t** parser) {
   m3u8_parser_status_t status = M3U8_PARSER_STATUS_NO_ERROR;
-  M3U8_RAISE(M3U8_PARSER_STATUS_UNKNOWN_ERROR, "Not implemented");
+
+  if (line == NULL) {
+    M3U8_RAISE(M3U8_PARSER_STATUS_INVALID_ARG, "Invalid argument line (null)");
+  }
+
+  if (parser == NULL) {
+    M3U8_RAISE(M3U8_PARSER_STATUS_INVALID_ARG, "Invalid argument parser (null)");
+  }
+
+  if (*parser != NULL) {
+    M3U8_RAISE(M3U8_PARSER_STATUS_INVALID_ARG, "Invalid argument parser content (not null)");
+  }
+
+  if ((*parser = malloc(sizeof(m3u8_parser_t))) == NULL) {
+    M3U8_RAISE(M3U8_PARSER_STATUS_MEM_ALLOC_ERROR, "Fail to allocate memory for parser");
+  }
+
+  memset(*parser, 0, sizeof(m3u8_parser_t));
+
+  if (((*parser)->tag = m3u8_parser_tag_from_str(line)) == M3U8_PARSER_EXT_UNKNOWN) {
+    free(*parser);
+    *parser = NULL;
+    M3U8_RAISE(M3U8_PARSER_STATUS_FAILURE, "Received an invalid tag from manifest line");
+  }
+
+  const char* separator = strchr(line, ':');
+  (*parser)->name = strdup(m3u8_parser_tag_map[(*parser)->tag].name);
+  (*parser)->value = separator ? strdup(separator + 1) : NULL;
+
+  if ((*parser)->value != NULL) {
+    if (((*parser)->attrs = malloc(sizeof(m3u8_parser_attr_t))) == NULL) {
+      free((*parser)->name);
+      free((*parser)->value);
+      free(*parser);
+      *parser = NULL;
+      M3U8_RAISE(M3U8_PARSER_STATUS_MEM_ALLOC_ERROR, "Fail to allocate memory for attrs");
+    }
+
+    memset((*parser)->attrs, 0, sizeof(m3u8_parser_attr_t));
+
+    if (m3u8_parser_attr((*parser)->value, (*parser)->attrs) != M3U8_PARSER_STATUS_NO_ERROR) {
+      free((*parser)->attrs);
+      (*parser)->attrs = NULL;
+    }
+  }
+
 clean_up:
   return status;
 }
