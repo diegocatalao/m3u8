@@ -15,9 +15,8 @@ m3u8_master_status_t m3u8_master_create(m3u8_master_t** master) {
   }
 
   memset(*master, 0, sizeof(m3u8_master_t));
-
-  /** set the initial value of this struct */
-  (*master)->is_signed = false;
+  /** "version 1 to support interoperability with older clients" */
+  /** https://datatracker.ietf.org/doc/html/rfc8216#section-4.3.1.2 */
   (*master)->version = 1;
 
 clean_up:
