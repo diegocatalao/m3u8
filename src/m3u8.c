@@ -58,7 +58,7 @@ clean_up:
   return status;
 }
 
-m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer) {
+m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* manifest) {
   m3u8_status_t status = M3U8_STATUS_NO_ERROR;
   M3U8_RAISE(M3U8_STATUS_UNKNOWN_ERROR, "Not implemented");
 clean_up:

@@ -62,13 +62,13 @@ m3u8_status_t m3u8_destroy(m3u8_t* m3u8);
 /**
  * @brief Fetches and parses an M3U8 media from a string.
  * @param m3u8   pointer to a valid @ref m3u8_t structure to be filled.
- * @param buffer string of current master.
+ * @param manifest string of current master.
  * @return @ref M3U8_STATUS_NO_ERROR on success.
- * @return @ref M3U8_STATUS_INVALID_ARG if @p m3u8 or @p buffer are NULL.
+ * @return @ref M3U8_STATUS_INVALID_ARG if @p m3u8 or @p manifest are NULL.
  * @return @ref M3U8_STATUS_MEM_ALLOC_ERROR on memory allocation failure.
  * @return @ref M3U8_STATUS_UNKNOWN_ERROR on unexpected failure.
  */
-m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* buffer);
+m3u8_status_t m3u8_parse_from_str(m3u8_t* m3u8, const char* manifest);
 
 /**
  * @brief Validates an M3U8 media.
