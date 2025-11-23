@@ -28,6 +28,10 @@ typedef enum {
   M3U8_STATUS_INVALID_MEDIA_PLAYLIST = 4,
   /** Invalid attributes format */
   M3U8_STATUS_INVALID_ATTRS = 5,
+  /** Fail to parse current manifest string */
+  M3U8_STATUS_MANIFEST_PARSE_FAIL = 6,
+  /** When received an invalid manifest */
+  M3U8_STATUS_INVALID_MANIFEST = 7,
   /** An unknown or unspecified error occurred. */
   M3U8_STATUS_UNKNOWN_ERROR = 99,
 } m3u8_status_t;
