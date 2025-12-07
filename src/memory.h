@@ -6,14 +6,14 @@
 
 #include <stdlib.h>
 
-#define M3U8_MALLOC(ptr, type, size)                                             \
+#define m3u8_memory_check_alloc(ptr, type, size)                                 \
   do {                                                                           \
     if ((ptr = (type*)calloc(1, size)) == NULL) {                                \
       M3U8_RAISE((int)M3U8_STATUS_MEM_ALLOC_ERROR, "Failed to allocate memory"); \
     }                                                                            \
   } while (0)
 
-#define M3U8_CHECK_DEALLOC(ptr)                                                             \
+#define m3u8_memory_check_dealloc(ptr)                                                      \
   do {                                                                                      \
     if ((ptr) == NULL) {                                                                    \
       M3U8_RAISE((int)M3U8_STATUS_MEM_ALLOC_ERROR, "Attempt to deallocate a NULL pointer"); \

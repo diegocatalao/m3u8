@@ -32,7 +32,7 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
   }
 
   if (master->ext_x_start != NULL) {
-    M3U8_CHECK_DEALLOC(master->ext_x_start);
+    m3u8_memory_check_dealloc(master->ext_x_start);
   }
 
   if (master->ext_x_session_data != NULL) {
@@ -44,14 +44,14 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
         M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Fail to remove ext_x_session_data");
       }
 
-      M3U8_CHECK_DEALLOC(entry->data_id);
-      M3U8_CHECK_DEALLOC(entry->value);
-      M3U8_CHECK_DEALLOC(entry->uri);
-      M3U8_CHECK_DEALLOC(entry->language);
-      M3U8_CHECK_DEALLOC(entry);
+      m3u8_memory_check_dealloc(entry->data_id);
+      m3u8_memory_check_dealloc(entry->value);
+      m3u8_memory_check_dealloc(entry->uri);
+      m3u8_memory_check_dealloc(entry->language);
+      m3u8_memory_check_dealloc(entry);
     }
 
-    M3U8_CHECK_DEALLOC(master->ext_x_session_data);
+    m3u8_memory_check_dealloc(master->ext_x_session_data);
   }
 
   if (master->ext_x_session_key != NULL) {
@@ -63,14 +63,14 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
         M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Fail to remove ext_x_session_key");
       }
 
-      M3U8_CHECK_DEALLOC(entry->method);
-      M3U8_CHECK_DEALLOC(entry->uri);
-      M3U8_CHECK_DEALLOC(entry->key_format);
-      M3U8_CHECK_DEALLOC(entry->key_format_versions);
-      M3U8_CHECK_DEALLOC(entry);
+      m3u8_memory_check_dealloc(entry->method);
+      m3u8_memory_check_dealloc(entry->uri);
+      m3u8_memory_check_dealloc(entry->key_format);
+      m3u8_memory_check_dealloc(entry->key_format_versions);
+      m3u8_memory_check_dealloc(entry);
     }
 
-    M3U8_CHECK_DEALLOC(master->ext_x_session_key);
+    m3u8_memory_check_dealloc(master->ext_x_session_key);
   }
 
   if (master->ext_x_media != NULL) {
@@ -82,18 +82,18 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
         M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Fail to remove ext_x_media");
       }
 
-      M3U8_CHECK_DEALLOC(entry->group_id);
-      M3U8_CHECK_DEALLOC(entry->name);
-      M3U8_CHECK_DEALLOC(entry->language);
-      M3U8_CHECK_DEALLOC(entry->assoc_language);
-      M3U8_CHECK_DEALLOC(entry->instream_id);
-      M3U8_CHECK_DEALLOC(entry->characteristics);
-      M3U8_CHECK_DEALLOC(entry->channels);
-      M3U8_CHECK_DEALLOC(entry->uri);
-      M3U8_CHECK_DEALLOC(entry);
+      m3u8_memory_check_dealloc(entry->group_id);
+      m3u8_memory_check_dealloc(entry->name);
+      m3u8_memory_check_dealloc(entry->language);
+      m3u8_memory_check_dealloc(entry->assoc_language);
+      m3u8_memory_check_dealloc(entry->instream_id);
+      m3u8_memory_check_dealloc(entry->characteristics);
+      m3u8_memory_check_dealloc(entry->channels);
+      m3u8_memory_check_dealloc(entry->uri);
+      m3u8_memory_check_dealloc(entry);
     }
 
-    M3U8_CHECK_DEALLOC(master->ext_x_media);
+    m3u8_memory_check_dealloc(master->ext_x_media);
   }
 
   if (master->ext_x_stream_inf != NULL) {
@@ -105,18 +105,18 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
         M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Fail to remove ext_x_stream_inf");
       }
 
-      M3U8_CHECK_DEALLOC(entry->codecs);
-      M3U8_CHECK_DEALLOC(entry->resolution);
-      M3U8_CHECK_DEALLOC(entry->hdcp_level);
-      M3U8_CHECK_DEALLOC(entry->audio);
-      M3U8_CHECK_DEALLOC(entry->video);
-      M3U8_CHECK_DEALLOC(entry->subtitles);
-      M3U8_CHECK_DEALLOC(entry->closed_captions);
-      M3U8_CHECK_DEALLOC(entry->uri);
-      M3U8_CHECK_DEALLOC(entry);
+      m3u8_memory_check_dealloc(entry->codecs);
+      m3u8_memory_check_dealloc(entry->resolution);
+      m3u8_memory_check_dealloc(entry->hdcp_level);
+      m3u8_memory_check_dealloc(entry->audio);
+      m3u8_memory_check_dealloc(entry->video);
+      m3u8_memory_check_dealloc(entry->subtitles);
+      m3u8_memory_check_dealloc(entry->closed_captions);
+      m3u8_memory_check_dealloc(entry->uri);
+      m3u8_memory_check_dealloc(entry);
     }
 
-    M3U8_CHECK_DEALLOC(master->ext_x_stream_inf);
+    m3u8_memory_check_dealloc(master->ext_x_stream_inf);
   }
 
   if (master->ext_x_i_frame_stream_inf != NULL) {
@@ -128,19 +128,19 @@ m3u8_master_status_t m3u8_master_destroy(m3u8_master_t* master) {
         M3U8_RAISE(M3U8_MASTER_STATUS_UNKNOWN_ERROR, "Fail to remove ext_x_i_frame_stream_inf");
       }
 
-      M3U8_CHECK_DEALLOC(entry->codecs);
-      M3U8_CHECK_DEALLOC(entry->resolution);
-      M3U8_CHECK_DEALLOC(entry->hdcp_level);
-      M3U8_CHECK_DEALLOC(entry->video);
-      M3U8_CHECK_DEALLOC(entry->uri);
-      M3U8_CHECK_DEALLOC(entry);
+      m3u8_memory_check_dealloc(entry->codecs);
+      m3u8_memory_check_dealloc(entry->resolution);
+      m3u8_memory_check_dealloc(entry->hdcp_level);
+      m3u8_memory_check_dealloc(entry->video);
+      m3u8_memory_check_dealloc(entry->uri);
+      m3u8_memory_check_dealloc(entry);
     }
 
-    M3U8_CHECK_DEALLOC(master->ext_x_i_frame_stream_inf);
+    m3u8_memory_check_dealloc(master->ext_x_i_frame_stream_inf);
   }
 
   if (master != NULL) {
-    M3U8_CHECK_DEALLOC(master);
+    m3u8_memory_check_dealloc(master);
   }
 
   master = NULL;
