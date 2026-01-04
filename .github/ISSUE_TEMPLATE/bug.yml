@@ -1,0 +1,125 @@
+name: 🐛 Bug Report
+description: Report a problem or unexpected behavior
+title: "[BUG]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thanks for reporting this bug! 
+        Please fill in the information below to help us resolve the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clearly describe the problem you encountered
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what happened instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain the problem
+      placeholder: Paste or drag images here
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: Which operating system are you using?
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - BSD
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS Version
+      description: What version of the operating system?
+      placeholder: e.g. Ubuntu 22.04, macOS 14, Windows 11
+
+  - type: input
+    id: compiler
+    attributes:
+      label: Compiler
+      description: Which compiler are you using?
+      placeholder: e.g. GCC 11.4, Clang 15, MSVC 19.3
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Any other relevant environment information
+      placeholder: |
+        - Architecture: x86_64, ARM64, etc.
+        - Build flags: -O2, -g, etc.
+        - Dependencies versions
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and Error Messages
+      description: Please paste any relevant logs or error messages
+      placeholder: |
+        Paste logs here...
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Add any other context about the problem here
+      placeholder: Stack traces, core dumps, related issues, etc.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm that you have
+      options:
+        - label: I have searched for similar issues before creating this one
+          required: true
+        - label: I have read the documentation
+          required: false
+        - label: I can reproduce this bug consistently
+          required: false
