@@ -23,6 +23,8 @@ typedef enum {
   M3U8_MASTER_STATUS_INVALID_MANIFEST = 4,
   /** Invalid attributes found. */
   M3U8_MASTER_STATUS_INVALID_ATTRS = 5,
+  /** Invalid tag found in the master playlist. */
+  M3U8_MASTER_STATUS_INVALID_TAG = 6,
   /** An unknown or unspecified error occurred. */
   M3U8_MASTER_STATUS_UNKNOWN_ERROR = 99,
 } m3u8_master_status_t;
@@ -41,6 +43,19 @@ typedef enum {
   /** Closed-captions media type. */
   M3U8_EXT_X_MEDIA_TYPE_CLOSED_CAPTIONS,
 } m3u8_ext_x_media_type_t;
+
+/**
+ * @enum m3u8_hdcp_level_t
+ * @brief Represents HDCP level values for EXT-X-STREAM-INF and EXT-X-I-FRAME-STREAM-INF tags.
+ */
+typedef enum {
+  /** HDCP Level TYPE-0 */
+  M3U8_HDCP_LEVEL_TYPE_0,
+  /** HDCP Level TYPE-1 */
+  M3U8_HDCP_LEVEL_TYPE_1,
+  /** HDCP Level NONE */
+  M3U8_HDCP_LEVEL_NONE,
+} m3u8_hdcp_level_t;
 
 /**
  * @struct m3u8_ext_x_start_t
@@ -140,7 +155,7 @@ typedef struct {
   /** The stream's frame rate. */
   double frame_rate;
   /** The HDCP level: "TYPE-0" or "NONE". */
-  char* hdcp_level;
+  m3u8_hdcp_level_t hdcp_level;
   /** The audio group ID. */
   char* audio;
   /** The video group ID. */
