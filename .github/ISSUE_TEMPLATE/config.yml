@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: 🤔 General
+    url: https://github.com/diegocatalao/m3u8/discussions/
+    about: General questions and discussions
+  - name: 📖 Documentation
+    url: https://diegocatalao.github.io/m3u8
+    about: Please, check the documentation before a bug report
