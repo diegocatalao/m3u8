@@ -103,4 +103,7 @@ build/
 # Ignore mac store files
 .DS_Store
 
+# Ignore the cache folder from clangd
+.cache
+
 # End of https://www.toptal.com/developers/gitignore/api/c,vim,cmake
