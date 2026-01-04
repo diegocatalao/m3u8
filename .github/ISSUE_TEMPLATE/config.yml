@@ -1,7 +1,7 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 
 contact_links:
-  - name: 🤔 General
+  - name: 🙋 General
     url: https://github.com/diegocatalao/m3u8/discussions/
     about: General questions and discussions
   - name: 📖 Documentation

@@ -1,0 +1,68 @@
+name: 🤔 Question
+description: Ask a question about the implementation
+title: "[QUESTION]: "
+labels: ["question"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thanks for asking a question! 🤔
+
+        Before proceeding, please check:
+        - [ ] The [documentation](https://diegocatalao.github.io/m3u8)
+        - [ ] Existing issues to see if your question has already been answered
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: Be clear and specific about what you want to know
+      placeholder: Describe your question here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide additional information that may help understand
+      placeholder: |
+        - What are you trying to do?
+        - What have you already tried?
+        - Where did you encounter difficulty?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Question Area
+      description: Which part of the project is your question about?
+      options:
+        - Installation
+        - Configuration
+        - Basic Usage
+        - Advanced Features
+        - Performance
+        - Debugging
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Any other information that might be helpful
+      placeholder: Screenshots, links, references, etc.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched the documentation before asking
+          required: true
+        - label: I have checked that there are no similar issues
+          required: true
