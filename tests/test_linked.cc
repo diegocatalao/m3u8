@@ -6,8 +6,6 @@ extern "C" {
 #include "../src/linked.h"
 }
 
-#define M3U8_PREEMPTIVE_LOGGER
-
 // ----------- m3u8_linked_init -----------
 TEST(m3u8_linked_test, given_a_list_set_next_prev_as_head) {
   m3u8_linked_node_t head;
