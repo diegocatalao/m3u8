@@ -43,4 +43,4 @@ jobs:
           cmake --install build
 
       - name: run the gtests codebase
-        run: cd build && ctest --test-dir=build --extra-verbose --output-on-failure
+        run: cd build && ctest --extra-verbose --output-on-failure
