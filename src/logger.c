@@ -153,8 +153,12 @@ static void* m3u8_logger_pthread_handler_fn(void* vargs) {
   m3u8_logger_event_t          event = *ptr_log_event_handler->event;
   m3u8_logger_handler_t        signature = (*ptr_log_event_handler).signature->fnp;
 
-  // Calls the function with the appropriate injected event
-  ((m3u8_logger_handler_t)signature)(event);
+  if (ptr_log_event_handler != NULL) {
+    // Calls the function with the appropriate injected event
+    ((m3u8_logger_handler_t)signature)(event);
+    // release the event handler pointer
+    free(ptr_log_event_handler);
+  }
 
   return NULL;
 }
